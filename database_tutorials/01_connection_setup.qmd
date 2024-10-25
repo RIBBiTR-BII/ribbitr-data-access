@@ -1,0 +1,63 @@
+---
+title: "Connection Setup"
+author: "Jake Eisaguirre & Cob Staines"
+format: html
+editor: source
+---
+
+## Load required libraries
+
+```{r}
+# install and load librarian if not already required
+if (!require(librarian)){
+  install.packages("librarian")
+  library(librarian)
+}
+
+# librarian downloads and loads required packages listed below
+librarian::shelf(RPostgres, DBI, tidyverse, dbplyr, here, usethis)
+```
+
+## Setting up your database connection: Rstudio
+
+### Access your local .Renviron file
+```{r}
+usethis::edit_r_environ()
+```
+
+### Add your login credentials as follows:
+
+aws_dbname = "ribbitr"
+aws_host = "ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"
+aws_port = "5432"
+aws_user = "[YOUR LOGIN HERE]"
+aws_password = "[YOUR PASSWORD HERE]"
+
+Save and close .Renviron, and restart RStudio
+
+## Establish database connection
+
+```{r}
+tryCatch({
+  cat("Connecting to database... ")
+  dbcon <- dbConnect(dbDriver("Postgres"),
+                          dbname = Sys.getenv("aws_dbname"),
+                          host = Sys.getenv("aws_host"),
+                          port = Sys.getenv("aws_port"),
+                          user = Sys.getenv("aws_user"),
+                          password = Sys.getenv("aws_password"),
+                          timezone=NULL)
+  cat("Connected!")
+},
+error=function(coms) {
+  message("Unable to connect: ", coms$message)
+})
+
+```
+
+## Try out our connection by loading metadata
+
+```{r}
+mdt = tbl(dbcon, Id("public", "all_tables"))
+```
+

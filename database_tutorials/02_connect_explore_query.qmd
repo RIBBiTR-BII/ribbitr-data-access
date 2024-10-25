@@ -1,0 +1,126 @@
+---
+title: "Database Training: Explore the database"
+author: "Jake Eisaguirre & Cob Staines"
+format: html
+editor: source
+---
+
+# Database Training: Connect, Explore & Query
+
+## A RIBBiTR Database tutorial
+
+```{r}
+# eventually these should go in the ribbitr R package
+
+pkey = function(table_str, metadata_columns=metadata_columns) {
+  metadata_columns %>%
+    filter(table_name == table_str,
+           key_type == "PK") %>%
+    pull(column_name)
+}
+
+fkey = function(table_str, metadata_columns=metadata_columns) {
+  metadata_columns %>%
+    filter(table_name == table_str,
+           key_type == "FK") %>%
+    pull(column_name)
+}
+
+nkey = function(table_str, metadata_columns=metadata_columns) {
+  metadata_columns %>%
+    filter(table_name == table_str,
+           natural_key) %>%
+    pull(column_name)
+}
+```
+
+## Load required libraries
+
+```{r}
+# install and load librarian if not already required
+if (!require(librarian)){
+  install.packages("librarian")
+  library(librarian)
+}
+
+# librarian downloads and loads required packages listed below
+librarian::shelf(RPostgres, DBI, tidyverse, dbplyr, here)
+```
+
+## Establish database connection
+
+```{r}
+tryCatch({
+  cat("Connecting to database... ")
+  dbcon <- dbConnect(dbDriver("Postgres"),
+                          dbname = Sys.getenv("aws_dbname"),
+                          host = Sys.getenv("aws_host"),
+                          port = Sys.getenv("aws_port"),
+                          user = Sys.getenv("aws_user"),
+                          password = Sys.getenv("aws_password"),
+                          timezone=NULL)
+  cat("Connected!")
+},
+error=function(coms) {
+  message("Unable to connect: ", coms$message)
+})
+```
+
+## Explore the database
+
+### Accessing database table metadata
+
+```{r}
+# using dbplyr
+dbp_tables = tbl(dbcon, Id("public", "all_tables")) %>%
+  collect()
+
+# using SQL
+sql_tables_q = "SELECT * FROM ribbitr.public.all_tables"
+sql_tables = dbGetQuery(dbcon, sql_tables_q)
+
+```
+
+### Accessing database column metadata
+
+A simple filter: Suppose that, after looking through the database tables, we are only interested in tables within the "survey_data" schema.
+
+```{r}
+# using dbplyr
+dbp_columns = tbl(dbcon, Id("public", "all_columns")) %>%
+  filter(table_schema == "survey_data") %>%
+  collect()
+
+# using SQL + DBI
+sql_columns_q = "SELECT * FROM ribbitr.public.all_columns
+                 WHERE table_schema = 'survey_data'"
+sql_columns = dbGetQuery(dbcon, sql_columns_q)
+
+```
+
+### Accessing data
+
+Having explored the table and column metadata from the survey_data schema, we are interested in taking a closer look at the data from the capture table.
+
+```{r}
+# using dbplyr
+dbp_capture = tbl(dbcon, Id("survey_data", "capture")) %>%
+  select(pkey("capture", dbp_columns),
+         nkey("capture", dbp_columns), # nothing here, meow! I wonder what to do.
+         fkey("capture", dbp_columns)) %>%
+  collect()
+
+# using SQL + DBI
+sql_capture_q = paste0("SELECT ",
+                       paste(c(pkey("capture", dbp_columns),
+                               nkey("capture", dbp_columns),
+                               fkey("capture", dbp_columns)),
+                              collapse = ", "),
+                       " FROM ribbitr.survey_data.capture")
+sql_capture = dbGetQuery(dbcon, sql_capture_q)
+
+```
+
+### Data chains function (in dev)
+
+-one_link_up -n_links_up -to_table -all_links_up
