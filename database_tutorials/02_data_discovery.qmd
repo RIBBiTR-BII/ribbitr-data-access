@@ -1,13 +1,41 @@
 ---
-title: "Database Training: Explore the database"
-author: "Jake Eisaguirre & Cob Staines"
-format: html
-editor: source
+title: "RIBBiTR Database Data Discovery"
+author: "Cob Staines"
+date: today
+format:
+  html: 
+    code-line-numbers: false
+  pdf:
+    code-line-numbers: false
+    geometry: 
+      - top=30mm
+      - left=30mm
 ---
 
-# Database Training: Connect, Explore & Query
+# Motivation
+# Database Data Discovery with RStudio
 
-## A RIBBiTR Database tutorial
+## Load packages
+
+```{r, message=FALSE}
+# install and load "librarian" package if not already required
+if (!require(librarian)) {
+  install.packages("librarian")
+  library(librarian)
+}
+
+# minimal packages for RIBBiTR DB data discovery
+shelf(tidyverse, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
+```
+
+## Establish database connection
+
+```{r}
+# establish database connection
+dbcon = HopToDB("ribbitr")
+```
+
+## Load 
 
 ```{r}
 # eventually these should go in the ribbitr R package
