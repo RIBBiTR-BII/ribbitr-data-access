@@ -13,12 +13,19 @@ format:
       - left=30mm
 ---
 
+```{r setup, include=FALSE}
+library(reticulate)
+use_python("/home/cob/miniconda3/envs/ribbitr/bin/python")
+
+```
+
 # Motivation
 
 -   Connect to the RIBBiTR (or another remote) database with ease and repeatability
 -   Manage login credentials for ease and security, so they won't be lost or shared with your code.
 
 # Database Connection setup for RStudio
+Create a new Rproject in RStudio. Within this project create a new .qmd file (you can also use Rmd or R script), where you will follow the tutorial.
 
 ## Load packages
 
@@ -41,7 +48,7 @@ librarian downloads and loads packages using the "librarian::shelf" function. Be
 shelf(tidyverse, RPostgres, DBI, usethis, RIBBiTR-BII/ribbitrrr)
 ```
 
-## Defining your database connection parameters
+## Store and access your database connection parameters
 
 ### Access your local .Renviron file
 Your .Renviron file a local file where you can save and reference your login credentials for easy use within R and RStudio, without risking losing them or potentially sharing them on accident when you share your code.
@@ -60,7 +67,7 @@ Copy the following database connection parameters to your .Renviron file, substi
 ribbitr.dbname = "ribbitr"
 ribbitr.host = "ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"
 ribbitr.port = "5432"
-ribbitr.user = "[YOUR-LOGIN-HERE]"
+ribbitr.user = "[YOUR-USERNAME-HERE]"
 ribbitr.password = "[YOUR-PASSWORD-HERE]"
 ```
 
@@ -68,14 +75,14 @@ Save and close .Renviron, and restart RStudio.
 
 ## Establish database connection
 
-Now, using the ribbitrrr:HopToDB() function, let's establish a connection!
+Now, using the ribbitrrr:hopToDB() function, let's establish a connection!
 
 ```{r}
 # establish database connection
-dbcon = HopToDB("ribbitr")
+dbcon = hopToDB("ribbitr")
 ```
 
-HopToDB() returns a database connection object ("dbcon"). Keep track of this, you will need it to explore and pull data later.
+hopToDB() returns a database connection object ("dbcon"). Keep track of this, you will need it to explore and pull data later.
 
 ## Begin using your connection!
 
@@ -88,5 +95,69 @@ head(mdt)
 ```
 
 ## Also try
-- For those managing multiple database connections, the HopToDB() function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute "ribbitr" in the example above with your own keyword!
+- For those managing multiple database connections, the hopToDB() function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute "ribbitr" in the example above with your own keyword!
 - Your login credentials can also be accessed explicitly anytime using Sys.getenv("ribbitr.dbname"), etc. In most cases the HopToDB() function is all you need, however.
+
+
+# Database Connection setup for Python
+We recommend setting up a conda environment and installing required packages there.
+
+## Store & access your database connection parameters
+
+### Create a dbconfig file
+We recommend you create a local database config (dbconfig.py) file where you can save and reference your login credentials for easy use in python, without risking losing them or potentially sharing them on accident when you share your code.
+
+Create a file dbconfig.py in your project working directory (or another preferred location). Copy the following to dbconfig.py:
+
+```{python, message=FALSE}
+# dbconfig.py
+
+import psycopg2
+import sqlalchemy as sq
+
+# database login credentials
+ribbitr_url = sq.URL.create(
+    "postgresql",
+    database = "ribbitr",
+    host = "ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com",
+    port = "5432"
+    username = "[YOUR-USERNAME-HERE]"
+    password = "[YOUR-PASSWORD-HERE]",
+)
+
+# create database engine
+ribbitr_engine = sq.create_engine(ribbitr_url)
+
+```
+
+Save dbconfig.py.
+
+Be sure to add dbconfig.py to your local .gitignore file if you are using git/github, so you don't accidentally publish you login credentials!
+
+## Establish database connection
+Create a new .py (or .qmd, .ipynb, etc.) file where you can follow the tutorial and establish the connection.
+
+## Import packages
+
+```{python, message=FALSE}
+import pandas as pd
+import psycopg2
+import sqlalchemy as sq
+import dbconfig
+```
+
+librarian downloads and loads packages using the "librarian::shelf" function. Below are the minimal recommended packages to establish a connection to the RIBBiTR database.
+
+```{python, echo=TRUE, eval=TRUE}
+
+dbeng = dbconfig.ribbitr_engine
+
+mdt_query = "SELECT * FROM public.all_tables;"
+
+# Pull table metadata into local dataframe
+mdt = pd.read_sql(mdt_query, dbeng)
+
+# Display the dataframe
+print(mdt)
+
+```

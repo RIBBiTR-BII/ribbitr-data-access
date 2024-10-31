@@ -35,7 +35,33 @@ shelf(tidyverse, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
 dbcon = HopToDB("ribbitr")
 ```
 
-## Load 
+## Load database metadata
+The ribbitr database is organized into "schemas" (think of these as folders), which can contain any number of tables. Each table consists of columns ("variables") and rows ("entries"). We keep track of information regarding what tables, and columns exist in the database using table and column metadata. To begin our process of data discovery, let's load the table and column metadata
+
+```{r}
+# load table "all_tables" from schema "public"
+mdt = tbl(dbcon, Id("public", "all_tables")) %>%
+  collect()
+
+```
+
+Before we dive into the metadata you just pulled, let's understand the commands we just ran.
+- tbl() - This function is used to create a "lazy" table from a data source. To specify the source, we provide the database connection "dbcon" as well as the pointer using the Id() function. A "lazy" table means that the data only pulled when explicitly asked for. See collect() below.
+- Id() - This function is a pointer to pass hierarchical table identifiers. In this case we use it to generate an identifier for the table "all_tables" in schema "public".
+- collect() - the tbl() function generates a lazy table, which is basically a shopping list. In order to pull the data from the server to your local machine (ie. "do the shopping") we need to pipe in the collect function.
+
+Try running the code above without the collect() function, to see what a lazy table looks like.
+
+```{r}
+view(mdt)
+```
+
+```{r}
+# load table "all_columns" from schema "public"
+mdc = tbl(dbcon, Id("public", "all_columns")) %>%
+  filter(table_schema == "survey_data") %>%
+  collect()
+```
 
 ```{r}
 # eventually these should go in the ribbitr R package
