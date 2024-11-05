@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-10-28">
+<meta name="dcterms.date" content="2024-11-05">
 
 <title>RIBBiTR Database Data Discovery</title>
 <style>
@@ -99,7 +99,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 28, 2024</p>
+      <p class="date">November 5, 2024</p>
     </div>
   </div>
   
@@ -113,153 +113,186 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="motivation" class="level1">
 <h1>Motivation</h1>
-</section>
-<section id="database-data-discovery-with-rstudio" class="level1">
-<h1>Database Data Discovery with RStudio</h1>
+<ul>
+<li>Explore what data are currently available on the database</li>
+<li>Identify structure of data of interest to inform access</li>
+</ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">R Data Discovery</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Python Data Discovery</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">DBeaver Data Discovery</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <section id="load-packages" class="level2">
 <h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install and load "librarian" package if not already required</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(librarian)) {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"librarian"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(librarian)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB data discovery</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">shelf</span>(tidyverse, RPostgres, DBI, RIBBiTR<span class="sc">-</span>BII<span class="sc">/</span>ribbitrrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB data discovery</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR<span class="sc">-</span>BII<span class="sc">/</span>ribbitrrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="establish-database-connection" class="level2">
 <h2 class="anchored" data-anchor-id="establish-database-connection">Establish database connection</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">=</span> <span class="fu">HopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">=</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Connecting to database... Success!</code></pre>
 </div>
 </div>
 </section>
-<section id="load" class="level2">
-<h2 class="anchored" data-anchor-id="load">Load</h2>
+<section id="load-database-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="load-database-metadata">Load database metadata</h2>
+<section id="data-structure-schemas-tables-columns-and-rows" class="level3">
+<h3 class="anchored" data-anchor-id="data-structure-schemas-tables-columns-and-rows">Data structure: Schemas, tables, columns and rows</h3>
+<p>The ribbitr database is organized into “schemas” (think of these as folders), which can contain any number of tables. Each table consists of columns (“variables”) and rows (“entries”).</p>
+</section>
+<section id="metadata-data-about-data" class="level3">
+<h3 class="anchored" data-anchor-id="metadata-data-about-data">Metadata: Data about data</h3>
+<p>We keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let’s learn what tables are present in the data by loading the table metadata.</p>
+</section>
+<section id="table-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="table-metadata">Table Metadata</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># eventually these should go in the ribbitr R package</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>pkey <span class="ot">=</span> <span class="cf">function</span>(table_str, <span class="at">metadata_columns=</span>metadata_columns) {</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  metadata_columns <span class="sc">%&gt;%</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(table_name <span class="sc">==</span> table_str,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>           key_type <span class="sc">==</span> <span class="st">"PK"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(column_name)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fkey <span class="ot">=</span> <span class="cf">function</span>(table_str, <span class="at">metadata_columns=</span>metadata_columns) {</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  metadata_columns <span class="sc">%&gt;%</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(table_name <span class="sc">==</span> table_str,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>           key_type <span class="sc">==</span> <span class="st">"FK"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(column_name)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>nkey <span class="ot">=</span> <span class="cf">function</span>(table_str, <span class="at">metadata_columns=</span>metadata_columns) {</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  metadata_columns <span class="sc">%&gt;%</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(table_name <span class="sc">==</span> table_str,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>           natural_key) <span class="sc">%&gt;%</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(column_name)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_tables" from schema "public"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="some-basic-database-commands" class="level4">
+<h4 class="anchored" data-anchor-id="some-basic-database-commands">Some basic database commands</h4>
+<p>Before we take a look at the metadata you just pulled, let’s understand the command we just ran.</p>
+<ul>
+<li>dplyr::tbl() - This function is used to create a “lazy” table from a data source. To specify the source, we provide the database connection “dbcon”, as well as an pointer or “address” for the table of interest using the Id() function. A “lazy” table means that the data only pulled when explicitly asked for. See collect() below.</li>
+<li>dbplyr::Id() - This function is a pointer to pass hierarchical table identifiers (you can think of this as an address for a given table). In this case we use it to generate an pointer for the table “all_tables” in schema “public”.</li>
+<li>dplyr::collect() - the tbl() function generates a “lazy” table, which is basically a shopping list for the data you want to pull. In order to actually pull the data from the server to your local machine (ie. “do the shopping”) we need to pipe in the collect() function.</li>
+</ul>
+<p><strong>Also try:</strong> Run the code above without the collect() function, to see what a lazy table looks like.</p>
+<p>Now let’s take a look at the table metadata to explore what schemas and tables exist.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(mdt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="load-required-libraries" class="level2">
-<h2 class="anchored" data-anchor-id="load-required-libraries">Load required libraries</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install and load librarian if not already required</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(librarian)){</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"librarian"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(librarian)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># librarian downloads and loads required packages listed below</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(RPostgres, DBI, tidyverse, dbplyr, here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
-<section id="establish-database-connection-1" class="level2">
-<h2 class="anchored" data-anchor-id="establish-database-connection-1">Establish database connection</h2>
+<section id="column-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="column-metadata">Column metadata</h3>
+<p>Suppose our interest is in the survey_data schema. Let’s take a closer look at the tables here.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tryCatch</span>({</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Connecting to database... "</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dbcon <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">dbDriver</span>(<span class="st">"Postgres"</span>),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">dbname =</span> <span class="fu">Sys.getenv</span>(<span class="st">"aws_dbname"</span>),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">host =</span> <span class="fu">Sys.getenv</span>(<span class="st">"aws_host"</span>),</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">port =</span> <span class="fu">Sys.getenv</span>(<span class="st">"aws_port"</span>),</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">user =</span> <span class="fu">Sys.getenv</span>(<span class="st">"aws_user"</span>),</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">password =</span> <span class="fu">Sys.getenv</span>(<span class="st">"aws_password"</span>),</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">timezone=</span><span class="cn">NULL</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Connected!"</span>)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>},</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="at">error=</span><span class="cf">function</span>(coms) {</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Unable to connect: "</span>, coms<span class="sc">$</span>message)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_columns" from schema "public"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_columns"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(table_schema <span class="sc">==</span> <span class="st">"survey_data"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice we used the dplyr::filter() command on the lazy table <em>before</em> running collect(). This effectively revised the shopping list before going to the store, rather than bringing home the entire store and then filtering for what you want in your kitchen. Much less (computationally) expensive!</p>
+<p>Let’s check out the column metadata, and see what you can learn.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(mdc)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># list the columns in our column-metadata table</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Connecting to database... </code></pre>
+<pre><code> [1] "table_schema"             "table_name"              
+ [3] "column_name"              "definition"              
+ [5] "units"                    "accuracy"                
+ [7] "scale"                    "format"                  
+ [9] "natural_key"              "reviewed"                
+[11] "data_type"                "character_maximum_length"
+[13] "numeric_precision"        "datetime_precision"      
+[15] "is_nullable"              "column_default"          
+[17] "ordinal_position"         "pg_description"          
+[19] "key_type"                </code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Unable to connect: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: No such file or directory
-    Is the server running locally and accepting connections on that socket?</code></pre>
 </div>
-</div>
-</section>
-<section id="explore-the-database" class="level2">
-<h2 class="anchored" data-anchor-id="explore-the-database">Explore the database</h2>
-<section id="accessing-database-table-metadata" class="level3">
-<h3 class="anchored" data-anchor-id="accessing-database-table-metadata">Accessing database table metadata</h3>
+<p>Curious about what a certain metadata column means? There’s metadata for that (metametadata?)!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using dbplyr</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dbp_tables <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># using SQL</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>sql_tables_q <span class="ot">=</span> <span class="st">"SELECT * FROM ribbitr.public.all_tables"</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>sql_tables <span class="ot">=</span> <span class="fu">dbGetQuery</span>(dbcon, sql_tables_q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(mdc <span class="sc">%&gt;%</span> <span class="fu">filter</span>(table_name <span class="sc">==</span> <span class="st">"metadata_columns"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>A few columns to point out:</p>
+<ul>
+<li>definition</li>
+<li>units</li>
+<li>data_type</li>
+<li>natural key</li>
+</ul>
+<p>(more on keys later)</p>
 </section>
-<section id="accessing-database-column-metadata" class="level3">
-<h3 class="anchored" data-anchor-id="accessing-database-column-metadata">Accessing database column metadata</h3>
-<p>A simple filter: Suppose that, after looking through the database tables, we are only interested in tables within the “survey_data” schema.</p>
+</section>
+<section id="our-first-data-table" class="level2">
+<h2 class="anchored" data-anchor-id="our-first-data-table">Our first(?) data table</h2>
+<p>Ok, let’s try to apply some of what we have learned by pulling directly from a data table. We can begin by taking a look at the visual encounter surveys (VES).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using dbplyr</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dbp_columns <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_columns"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(table_schema <span class="sc">==</span> <span class="st">"survey_data"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># using SQL + DBI</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>sql_columns_q <span class="ot">=</span> <span class="st">"SELECT * FROM ribbitr.public.all_columns</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">                 WHERE table_schema = 'survey_data'"</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>sql_columns <span class="ot">=</span> <span class="fu">dbGetQuery</span>(dbcon, sql_columns_q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create lazy table for ves (visual encounter survey) table</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="accessing-data" class="level3">
-<h3 class="anchored" data-anchor-id="accessing-data">Accessing data</h3>
-<p>Having explored the table and column metadata from the survey_data schema, we are interested in taking a closer look at the data from the capture table.</p>
+<p>Do these functions look familiar? Turns out, we were pulling data all along! Of course, this is a lazy table (ie. shopping list) so it doesn’t look like data yet. Let’s see what we can learn from it before going to the store to collect the data.</p>
+<p>What columns the table contains:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using dbplyr</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dbp_capture <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"capture"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">pkey</span>(<span class="st">"capture"</span>, dbp_columns),</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">nkey</span>(<span class="st">"capture"</span>, dbp_columns), <span class="co"># nothing here, meow! I wonder what to do.</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>         <span class="fu">fkey</span>(<span class="st">"capture"</span>, dbp_columns)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># using SQL + DBI</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>sql_capture_q <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">"SELECT "</span>,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">paste</span>(<span class="fu">c</span>(<span class="fu">pkey</span>(<span class="st">"capture"</span>, dbp_columns),</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">nkey</span>(<span class="st">"capture"</span>, dbp_columns),</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">fkey</span>(<span class="st">"capture"</span>, dbp_columns)),</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>                              <span class="at">collapse =</span> <span class="st">", "</span>),</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                       <span class="st">" FROM ribbitr.survey_data.capture"</span>)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>sql_capture <span class="ot">=</span> <span class="fu">dbGetQuery</span>(dbcon, sql_capture_q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return columns of lazy table</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_ves)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "species_ves"         "count_ves"           "detection_location" 
+ [4] "microhab"            "life_stage"          "sex"                
+ [7] "comments_ves"        "microhab_moredetail" "observer_ves"       
+[10] "visual_animal_state" "ves_id"              "survey_id"          </code></pre>
+</div>
+</div>
+<p>How many total rows a table contains:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>integer64
+[1] 28390</code></pre>
+</div>
+</div>
+<p><em>The pull() function executes a query to return a single column or variable, synonymous with the collect() function which returns a collection of variables as a table.</em></p>
+<p>How many rows after filtering for unknown species:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows by life stage</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(species_ves),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>         species_ves <span class="sc">!=</span> <span class="st">"unknown_species"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>integer64
+[1] 28232</code></pre>
+</div>
+</div>
+<p>How many rows corresponding to a each life stage:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows by life stage</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(life_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(life_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(row_count)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 2
+  life_stage row_count
+  &lt;chr&gt;        &lt;int64&gt;
+1 tadpole        10276
+2 adult           9551
+3 subadult        7162
+4 &lt;NA&gt;             764
+5 eggmass          625
+6 egg                9
+7 juvenile           2
+8 metamorph          1</code></pre>
+</div>
 </div>
 </section>
-<section id="data-chains-function-in-dev" class="level3">
-<h3 class="anchored" data-anchor-id="data-chains-function-in-dev">Data chains function (in dev)</h3>
-<p>-one_link_up -n_links_up -to_table -all_links_up</p>
+<section id="also-try" class="level2">
+<h2 class="anchored" data-anchor-id="also-try">Also try</h2>
 </section>
-</section>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+
+</div>
+</div>
+</div>
 </section>
 
 </main>

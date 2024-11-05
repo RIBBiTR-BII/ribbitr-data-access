@@ -1,0 +1,65 @@
+---
+title: "RIBBiTR Database Basics"
+format: revealjs
+editor: source
+---
+
+## Basic motivations and mechanisms behind the server
+
+## RIBBiTR Objectives
+
+### Research goals
+
+- core questions (Q1-Q4) span
+  - time scales
+  - spacial scales
+  - and therefore biological levels
+  
+### Community goals
+
+- team science, collaborative research
+  - no one person understands it all
+
+## RIBBiTR Data Sharing Plan
+
+Objective: To facilitate a deeper collective understanding of amphibian resilience to Bd
+
+Data sharing logistics: Open data with RIBBiTR, empowered use with permission from data source
+
+
+## Ideal solution
+
+Data sharing which is:
+
+- Empowering in exploring and testing our understanding of amphibian resilience to Bd
+- Robust (avoiding multiple competing versions, decaying integrity)
+- Accessible for people with different trainings and backgrounds
+- Difficult to misuse
+
+## The database (one solution)
+
+(how it address the above goals)
+
+## How it works (kinda)
+
+### Connecting humans to data
+
+(diagram of human, computer, platform {r, pytho, DBeaver}, SQL pipeline, data tables)
+
+## Results from survey
+
+### Data of interest
+(results)
+
+### Platforms of choice
+(results)
+
+### Data emotions
+(results)
+
+## Closing the loop
+
+- Project goals: Data as connection & understanding (not data for data sake)
+- Community goals: Data as participatory (communicating ad collaborating to lower barriers to access)
+
+## Let's practice!

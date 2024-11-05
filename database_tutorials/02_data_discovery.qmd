@@ -13,48 +13,59 @@ format:
 ---
 
 # Motivation
-# Database Data Discovery with RStudio
+- Explore what data are currently available on the database
+- Identify structure of data of interest to inform access
+
+::: {.panel-tabset}
+
+# R Data Discovery
 
 ## Load packages
 
 ```{r, message=FALSE}
-# install and load "librarian" package if not already required
-if (!require(librarian)) {
-  install.packages("librarian")
-  library(librarian)
-}
-
 # minimal packages for RIBBiTR DB data discovery
-shelf(tidyverse, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
+librarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
 ```
 
 ## Establish database connection
 
 ```{r}
 # establish database connection
-dbcon = HopToDB("ribbitr")
+dbcon = hopToDB("ribbitr")
 ```
 
 ## Load database metadata
-The ribbitr database is organized into "schemas" (think of these as folders), which can contain any number of tables. Each table consists of columns ("variables") and rows ("entries"). We keep track of information regarding what tables, and columns exist in the database using table and column metadata. To begin our process of data discovery, let's load the table and column metadata
+### Data structure: Schemas, tables, columns and rows
+The ribbitr database is organized into "schemas" (think of these as folders), which can contain any number of tables. Each table consists of columns ("variables") and rows ("entries").
+
+### Metadata: Data about data
+We keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let's learn what tables are present in the data by loading the table metadata.
+
+### Table Metadata
 
 ```{r}
 # load table "all_tables" from schema "public"
 mdt = tbl(dbcon, Id("public", "all_tables")) %>%
   collect()
-
 ```
 
-Before we dive into the metadata you just pulled, let's understand the commands we just ran.
-- tbl() - This function is used to create a "lazy" table from a data source. To specify the source, we provide the database connection "dbcon" as well as the pointer using the Id() function. A "lazy" table means that the data only pulled when explicitly asked for. See collect() below.
-- Id() - This function is a pointer to pass hierarchical table identifiers. In this case we use it to generate an identifier for the table "all_tables" in schema "public".
-- collect() - the tbl() function generates a lazy table, which is basically a shopping list. In order to pull the data from the server to your local machine (ie. "do the shopping") we need to pipe in the collect function.
+#### Some basic database commands
 
-Try running the code above without the collect() function, to see what a lazy table looks like.
+Before we take a look at the metadata you just pulled, let's understand the command we just ran.
 
+- dplyr::tbl() - This function is used to create a "lazy" table from a data source. To specify the source, we provide the database connection "dbcon", as well as an pointer or "address" for the table of interest using the Id() function. A "lazy" table means that the data only pulled when explicitly asked for. See collect() below.
+- dbplyr::Id() - This function is a pointer to pass hierarchical table identifiers (you can think of this as an address for a given table). In this case we use it to generate an pointer for the table "all_tables" in schema "public".
+- dplyr::collect() - the tbl() function generates a "lazy" table, which is basically a shopping list for the data you want to pull. In order to actually pull the data from the server to your local machine (ie. "do the shopping") we need to pipe in the collect() function.
+
+**Also try:** Run the code above without the collect() function, to see what a lazy table looks like.
+
+Now let's take a look at the table metadata to explore what schemas and tables exist.
 ```{r}
 view(mdt)
 ```
+
+### Column metadata
+Suppose our interest is in the survey_data schema. Let's take a closer look at the tables here.
 
 ```{r}
 # load table "all_columns" from schema "public"
@@ -63,118 +74,89 @@ mdc = tbl(dbcon, Id("public", "all_columns")) %>%
   collect()
 ```
 
+Notice we used the dplyr::filter() command on the lazy table *before* running collect(). This effectively revised the shopping list before going to the store, rather than bringing home the entire store and then filtering for what you want in your kitchen. Much less (computationally) expensive!
+
+Let's check out the column metadata, and see what you can learn.
+
 ```{r}
-# eventually these should go in the ribbitr R package
+view(mdc)
 
-pkey = function(table_str, metadata_columns=metadata_columns) {
-  metadata_columns %>%
-    filter(table_name == table_str,
-           key_type == "PK") %>%
-    pull(column_name)
-}
-
-fkey = function(table_str, metadata_columns=metadata_columns) {
-  metadata_columns %>%
-    filter(table_name == table_str,
-           key_type == "FK") %>%
-    pull(column_name)
-}
-
-nkey = function(table_str, metadata_columns=metadata_columns) {
-  metadata_columns %>%
-    filter(table_name == table_str,
-           natural_key) %>%
-    pull(column_name)
-}
+# list the columns in our column-metadata table
+colnames(mdc)
 ```
 
-## Load required libraries
+Curious about what a certain metadata column means? There's metadata for that (metametadata?)!
 
 ```{r}
-# install and load librarian if not already required
-if (!require(librarian)){
-  install.packages("librarian")
-  library(librarian)
-}
+view(mdc %>% filter(table_name == "metadata_columns"))
 
-# librarian downloads and loads required packages listed below
-librarian::shelf(RPostgres, DBI, tidyverse, dbplyr, here)
 ```
 
-## Establish database connection
+A few columns to point out:
+
+- definition
+- units
+- data_type
+- natural key
+
+(more on keys later)
+
+## Our first(?) data table
+Ok, let's try to apply some of what we have learned by pulling directly from a data table. We can begin by taking a look at the visual encounter surveys (VES).
+```{r}
+# create lazy table for ves (visual encounter survey) table
+db_ves = tbl(dbcon, Id("survey_data", "ves"))
+
+```
+Do these functions look familiar? Turns out, we were pulling data all along! Of course, this is a lazy table (ie. shopping list) so it doesn't look like data yet. Let's see what we can learn from it before going to the store to collect the data.
+
+What columns the table contains:
 
 ```{r}
-tryCatch({
-  cat("Connecting to database... ")
-  dbcon <- dbConnect(dbDriver("Postgres"),
-                          dbname = Sys.getenv("aws_dbname"),
-                          host = Sys.getenv("aws_host"),
-                          port = Sys.getenv("aws_port"),
-                          user = Sys.getenv("aws_user"),
-                          password = Sys.getenv("aws_password"),
-                          timezone=NULL)
-  cat("Connected!")
-},
-error=function(coms) {
-  message("Unable to connect: ", coms$message)
-})
+# return columns of lazy table
+colnames(db_ves)
+
 ```
 
-## Explore the database
-
-### Accessing database table metadata
+How many total rows a table contains:
 
 ```{r}
-# using dbplyr
-dbp_tables = tbl(dbcon, Id("public", "all_tables")) %>%
+# count rows
+db_ves %>%
+  summarise(row_count = n()) %>%
+  pull(row_count)
+
+```
+*The pull() function executes a query to return a single column or variable, synonymous with the collect() function which returns a collection of variables as a table.*
+
+How many rows after filtering for unknown species:
+
+```{r}
+# count rows by life stage
+db_ves %>%
+  filter(!is.na(species_ves),
+         species_ves != "unknown_species") %>%
+  summarise(row_count = n()) %>%
+  pull(row_count)
+
+```
+
+How many rows corresponding to a each life stage:
+
+```{r}
+# count rows by life stage
+db_ves %>%
+  select(life_stage) %>%
+  group_by(life_stage) %>%
+  summarise(row_count = n()) %>%
+  arrange(desc(row_count)) %>%
   collect()
 
-# using SQL
-sql_tables_q = "SELECT * FROM ribbitr.public.all_tables"
-sql_tables = dbGetQuery(dbcon, sql_tables_q)
-
 ```
+## Also try
 
-### Accessing database column metadata
+# Python Data Discovery
 
-A simple filter: Suppose that, after looking through the database tables, we are only interested in tables within the "survey_data" schema.
+# DBeaver Data Discovery
 
-```{r}
-# using dbplyr
-dbp_columns = tbl(dbcon, Id("public", "all_columns")) %>%
-  filter(table_schema == "survey_data") %>%
-  collect()
-
-# using SQL + DBI
-sql_columns_q = "SELECT * FROM ribbitr.public.all_columns
-                 WHERE table_schema = 'survey_data'"
-sql_columns = dbGetQuery(dbcon, sql_columns_q)
-
-```
-
-### Accessing data
-
-Having explored the table and column metadata from the survey_data schema, we are interested in taking a closer look at the data from the capture table.
-
-```{r}
-# using dbplyr
-dbp_capture = tbl(dbcon, Id("survey_data", "capture")) %>%
-  select(pkey("capture", dbp_columns),
-         nkey("capture", dbp_columns), # nothing here, meow! I wonder what to do.
-         fkey("capture", dbp_columns)) %>%
-  collect()
-
-# using SQL + DBI
-sql_capture_q = paste0("SELECT ",
-                       paste(c(pkey("capture", dbp_columns),
-                               nkey("capture", dbp_columns),
-                               fkey("capture", dbp_columns)),
-                              collapse = ", "),
-                       " FROM ribbitr.survey_data.capture")
-sql_capture = dbGetQuery(dbcon, sql_capture_q)
-
-```
-
-### Data chains function (in dev)
-
--one_link_up -n_links_up -to_table -all_links_up
+:::

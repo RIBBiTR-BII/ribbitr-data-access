@@ -1,0 +1,140 @@
+---
+title: "RIBBiTR Database Data Discovery"
+author: "Cob Staines"
+date: today
+format:
+  html: 
+    code-line-numbers: false
+  pdf:
+    code-line-numbers: false
+    geometry: 
+      - top=30mm
+      - left=30mm
+---
+
+# Motivation
+- Download or "pull" data from the database to our local machine
+- Select and filter to data of interest
+- Understand how different data tables relate to one another, and how to efficiently join them
+
+::: {.panel-tabset}
+
+# R Data Pulling
+
+## Load packages
+
+```{r, message=FALSE}
+# minimal packages for RIBBiTR DB data discovery
+librarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
+```
+
+## Establish database connection
+
+```{r}
+# establish database connection
+dbcon = hopToDB("ribbitr")
+```
+
+## Load column metadata
+We recommend always loading the column metadata along with any data you are pulling. Not only will this give you a quick reference to identify what the data represent, but it will also allow us to automate some data pulling processes (more on that later).
+
+```{r}
+# load table "all_columns" from schema "public", filtering to schema "survey_data"
+mdc = tbl(dbcon, Id("public", "all_columns")) %>%
+  filter(table_schema == "survey_data") %>%
+  collect()
+```
+
+## Pulling data
+Let's construct our first data query.
+
+```{r}
+db_ves = tbl(dbcon, Id("survey_data", "ves")) %>%
+  collect()
+```
+
+Great, that was easy! But what if we don't need all that data? Suppose we are only interested in certain columns? We can select for specific columns:
+
+```{r}
+db_ves = tbl(dbcon, Id("survey_data", "ves")) %>%
+  select(species_ves,
+         count_ves,
+         life_stage,
+         sex,
+         survey_id) %>%
+  collect()
+```
+
+And perhaps we are only interested in adults, in which case we can also filter our table before collecting:
+
+```{r}
+db_ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
+  select(species_ves,
+         count_ves,
+         life_stage,
+         sex,
+         survey_id) %>%
+  filter(life_stage == "adult") %>%
+  collect()
+head(db_ves_adult)
+```
+
+Great, we can now efficiently pull the data of interest without having to pull excess data.
+
+## SQL Aside
+I thought these data were encoded in SQL? Where is the SQL? Turns out, the package dbplyr does all the heavy lifting to convert our dplyr lazy table shopping lists into SQL, which is then run on the back end without us ever having to touch it.
+
+But if we want to see the SQL, we can! Let's take a look at the lazy table for our last query:
+
+```{r}
+ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
+  select(species_ves,
+         count_ves,
+         life_stage,
+         sex,
+         survey_id) %>%
+  filter(life_stage == "adult")
+
+(ves_adult_q = sql_render(ves_adult))
+
+```
+The dbplyr::sql_render() function converts our lazy table "shopping list" into an SQL script. If we want we can interact with this script, and even send it to the database manually using DBI::dbGetQuery()
+
+```{r}
+db_ves_adult_sql = dbGetQuery(dbcon, ves_adult_q)
+head(db_ves_adult_sql)
+```
+On close inspection we see that this is identical to the db_ves_adult_sql above. Now you have two ways to access the same data!
+
+## Joins
+
+### Keys
+
+```{r}
+# eventually these should go in the ribbitr R package
+
+pkey = function(table_str, metadata_columns=metadata_columns) {
+  metadata_columns %>%
+    filter(table_name == table_str,
+           key_type == "PK") %>%
+    pull(column_name)
+}
+
+fkey = function(table_str, metadata_columns=metadata_columns) {
+  metadata_columns %>%
+    filter(table_name == table_str,
+           key_type == "FK") %>%
+    pull(column_name)
+}
+
+nkey = function(table_str, metadata_columns=metadata_columns) {
+  metadata_columns %>%
+    filter(table_name == table_str,
+           natural_key) %>%
+    pull(column_name)
+}
+```
+
+This is all good and well, but I only want data from Brazil... and there is no location information in this table!
+
+Reviewing the column metadata, it seems like the table we need to incorporate to filter to data only from Brazil is called "location".

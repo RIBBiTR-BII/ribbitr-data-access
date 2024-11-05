@@ -20,8 +20,8 @@ use_python("/home/cob/miniconda3/envs/ribbitr/bin/python")
 ```
 
 # Motivation
--   Connect to the RIBBiTR (or another remote) database with ease and repeatability
--   Manage login credentials for ease and security, so they won't be lost or shared with your code.
+- Connect to the RIBBiTR (or another remote) database with ease and repeatability
+- Manage login credentials for ease and security, so they won't be lost or shared with your code
 
 ::: {.panel-tabset}
 
@@ -35,6 +35,7 @@ Your .Renviron file a local file where you can save and reference your login cre
 
 ```{r, eval=FALSE}
 install.packages("usethis")
+
 # open your local .Reniron file
 usethis::edit_r_environ()
 ```
@@ -60,7 +61,7 @@ Create a new R project (or .qmd, .Rmd, .R etc.) file where you can follow the tu
 "librarian" is a package and library management package in R which makes it easier to install, load, update and unload packages to meet dynamic environment needs. There are other ways to download, load, and maintain packages in R (e.g. "install.packages()" and "library()", but we recommend librarian for its simplicity and portability.
 
 ```{r, eval=FALSE}
-# install and load "librarian"
+# install and load "librarian" R package
 install.packages("librarian")
 ```
 
@@ -68,7 +69,7 @@ librarian downloads and loads packages using the "librarian::shelf" function. Be
 
 ```{r, echo=TRUE, eval=TRUE}
 # minimal packages for establishing RIBBiTR DB connection
-librarian::shelf(tidyverse, RPostgres, DBI, usethis, RIBBiTR-BII/ribbitrrr)
+librarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
 ```
 
 ### Connect
@@ -91,8 +92,8 @@ head(mdt)
 ```
 
 ## Also try
--   For those managing multiple database connections, the hopToDB() function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute "ribbitr" in the example above with your own keyword!
--   Your login credentials can also be accessed explicitly anytime using Sys.getenv("ribbitr.dbname"), etc. In most cases the HopToDB() function is all you need, however.
+-   For those managing multiple database connections, the hopToDB() function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute "ribbitr" in the .Renviron example above with your own keywords to juggle multiple logins.
+-   Your login credentials can also be accessed explicitly anytime using Sys.getenv("ribbitr.dbname"), etc. In most cases the hopToDB() function is all you will need, however.
 
 # Python Database Connection
 Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing Python. If you aren't yet familiar with Python, check out this quick [Getting Started tutorial by DATAQUEST](https://www.dataquest.io/blog/jupyter-notebook-tutorial/).
@@ -161,4 +162,7 @@ import sys
 sys.path.append("/path/to/dbconfig/dir/")
 import dbconfig
 ```
+
+# DBeaver Database Connection
+
 :::
