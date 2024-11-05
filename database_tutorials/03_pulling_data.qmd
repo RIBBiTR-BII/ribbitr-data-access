@@ -1,7 +1,8 @@
 ---
-title: "RIBBiTR Database Data Discovery"
+title: "RIBBiTR Data Pulling"
 author: "Cob Staines"
 date: today
+toc: true
 format:
   html: 
     code-line-numbers: false
@@ -14,12 +15,13 @@ format:
 
 # Motivation
 - Download or "pull" data from the database to our local machine
-- Select and filter to data of interest
+- Pre- select and filter to data of interest
 - Understand how different data tables relate to one another, and how to efficiently join them
 
 ::: {.panel-tabset}
 
 # R Data Pulling
+Let's set up our environment to get ready to pull data.
 
 ## Load packages
 
@@ -46,9 +48,10 @@ mdc = tbl(dbcon, Id("public", "all_columns")) %>%
 ```
 
 ## Pulling data
-Let's construct our first data query.
+Let's construct our first data query, building from the previous tutorial.
 
 ```{r}
+# lazy table and collect
 db_ves = tbl(dbcon, Id("survey_data", "ves")) %>%
   collect()
 ```
@@ -56,6 +59,7 @@ db_ves = tbl(dbcon, Id("survey_data", "ves")) %>%
 Great, that was easy! But what if we don't need all that data? Suppose we are only interested in certain columns? We can select for specific columns:
 
 ```{r}
+# lazy table, select, and collect
 db_ves = tbl(dbcon, Id("survey_data", "ves")) %>%
   select(species_ves,
          count_ves,
@@ -68,6 +72,7 @@ db_ves = tbl(dbcon, Id("survey_data", "ves")) %>%
 And perhaps we are only interested in adults, in which case we can also filter our table before collecting:
 
 ```{r}
+# lazy table select, filter, and collect all in one
 db_ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
   select(species_ves,
          count_ves,
@@ -76,17 +81,20 @@ db_ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
          survey_id) %>%
   filter(life_stage == "adult") %>%
   collect()
+
+# preview table
 head(db_ves_adult)
 ```
 
-Great, we can now efficiently pull the data of interest without having to pull excess data.
+Great! The above script is an example of how we can efficiently pull the data of interest without having to pull excess data.
 
-## SQL Aside
-I thought these data were encoded in SQL? Where is the SQL? Turns out, the package dbplyr does all the heavy lifting to convert our dplyr lazy table shopping lists into SQL, which is then run on the back end without us ever having to touch it.
+## SQL aside
+"Wait a minute... I thought these data were encoded in SQL? Where is the SQL?" Turns out, the package dbplyr does all the heavy lifting for us, to convert our dplyr lazy table shopping lists into SQL which is then run on the back end without us ever having to touch it.
 
-But if we want to see the SQL, we can! Let's take a look at the lazy table for our last query:
+But if we want to see the SQL, we can! Let's take a closer look at the lazy table for our last query (dropping the "collect" statement):
 
 ```{r}
+# lazy table only (not collected)
 ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
   select(species_ves,
          count_ves,
@@ -95,46 +103,158 @@ ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
          survey_id) %>%
   filter(life_stage == "adult")
 
+# render sql from lazy table
 (ves_adult_q = sql_render(ves_adult))
 
 ```
 The dbplyr::sql_render() function converts our lazy table "shopping list" into an SQL script. If we want we can interact with this script, and even send it to the database manually using DBI::dbGetQuery()
 
 ```{r}
+# execute SQL statement and return results
 db_ves_adult_sql = dbGetQuery(dbcon, ves_adult_q)
+
+# preview table
 head(db_ves_adult_sql)
 ```
 On close inspection we see that this is identical to the db_ves_adult_sql above. Now you have two ways to access the same data!
 
-## Joins
+We will stick with the dplyr/dbplyr methods for the rest of this tutorial, but feel free to integrate this with your curiousity and/or knowledge of SQL as we go forward.
 
-### Keys
+## Joins
+"This is all good and well, but I only want data from Brazil... and there is no location information in this table! How do I connect with and filter by location?"
+
+Recall that our database is not just a bunch of tables, it is a bunch of tables *with relationships*. For example, we can see that our VES table (db_ves_adult) has a column named "survey_id". Taking a closer look at the column metadata (mdc), this table *also* has a column named "survey_id". This common column is **key** to connecting our data between tables.
+
+### Understanding Keys
+
+The concept of key columns or "keys" in database tables is used to help organize and communicate the relationships we want to establish between tables. There are several types of keys, here we will introduce 3:
+
+- **Primary Key** *(pk or pkey)* – a column (or set of columns) which is a unique identifier for each record (row) in a database table, ensuring that each record can be uniquely distinguished from all others in the table. Ideally a single column, often an ID (we typically use UUIDs in this project)
+- **Natural Key** *(nk or nkey)* – A meaningful column (or set of columns) in a table which “naturally” and uniquely constrains all other columns. Often multiple columns, used to collectively define an ID column to be used as a primary key.
+- **Foreign Key** *(fk or fkey)* – a column (or set of columns) in one table which refers to the primary key in another table, establishing an asymmetric relationship between the two tables. Again, ideally a single column, often an ID.
+
+When we pull a data table from the database, it is often not so obvious which columns are or could be key columns, and which type of key. Luckily, we have of column metadata to help us keep track of this! Check out the "key_type" and "natural_key" columns for the survey table:
 
 ```{r}
-# eventually these should go in the ribbitr R package
+ves_metadata = mdc %>%
+  select(table_name,
+         column_name,
+         key_type,
+         natural_key) %>%
+  filter(table_name == "ves")
 
-pkey = function(table_str, metadata_columns=metadata_columns) {
-  metadata_columns %>%
-    filter(table_name == table_str,
-           key_type == "PK") %>%
-    pull(column_name)
-}
-
-fkey = function(table_str, metadata_columns=metadata_columns) {
-  metadata_columns %>%
-    filter(table_name == table_str,
-           key_type == "FK") %>%
-    pull(column_name)
-}
-
-nkey = function(table_str, metadata_columns=metadata_columns) {
-  metadata_columns %>%
-    filter(table_name == table_str,
-           natural_key) %>%
-    pull(column_name)
-}
+view(ves_metadata)
 ```
 
-This is all good and well, but I only want data from Brazil... and there is no location information in this table!
+We can see here that "ves_id" is the primary key (ie. unique, non-null row identifier) for the ves table ("ves_id" is also the only natural key for this table). We also see that column "survey_id" is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there not a better way?
 
-Reviewing the column metadata, it seems like the table we need to incorporate to filter to data only from Brazil is called "location".
+```{r}
+## ribbitrrr key functions
+
+# primary key for ves table
+tbl_pkey("ves", mdc)
+
+# natural key for ves table
+tbl_nkey("ves", mdc)
+
+# foreign key for ves table
+tbl_fkey("ves", mdc)
+
+# all unique key columns for ves table
+tbl_keys("ves", mdc)
+
+```
+
+Notice that we passed the column metadata to these functions, to help us automate this otherwise tedious task.
+
+### Joining manually by keys
+
+We can use these key columns, and what we know about the structure of our database, to join related tables. For example:
+
+```{r}
+# lazy table of ves
+db_ves = tbl(dbcon, Id("survey_data", "ves"))
+
+# lazy table of survey
+db_survey = tbl(dbcon, Id("survey_data", "survey"))
+
+db_ves_survey = db_ves %>%
+  left_join(db_survey, by="survey_id")
+
+colnames(db_ves_survey)
+```
+We see that the columns of dv_ves_survey correspond to the union of those from both the ves and survey table. More importantly, the rows are lined up using "survey_id" as the key "join by" column.
+
+In order to join the VES data with location, we will have to do several, recursive joins to connect the tables of... *(consults schema diagram)*... survey, visit, site, region, and location! Is there not a better way?
+
+## Links, Chains, Automated Joins
+We developed some functions to help us avoid the tedium of consulting the database schema diagram or column metadata. The workflow for linking tables one at a time works like this:
+
+```{r}
+# create a link object for table ves: "which tables are 1 step away"
+link_ves = tbl_link("ves", mdc)
+
+# join tables in link object
+db_ves_survey = tbl_join(dbcon, link_ves, columns = "all")
+
+```
+
+Let's check the columns:
+
+```{r}
+colnames(db_ves_survey)
+```
+Great, similar results to our previous manual join, but do I need to do this recursively to get to the location table? Is there not a better way?
+
+The workflow for linking tables recursively works like this:
+
+```{r}
+# create a chain (or recusive link) object for table ves: "which tables are any number of steps away"
+chain_ves = tbl_chain("ves", mdc)
+
+# join tables in link object
+db_ves_survey = tbl_join(dbcon, chain_ves, columns = "all")
+```
+
+Let's check the columns:
+
+```{r}
+colnames(db_ves_survey)
+```
+Hooray! Also yikes, that's a lot of columns! I am starting to see why we store all these in seperate tables!
+
+Let's use the chain workflow to join only the data we want, to filter to Brazil data.
+
+```{r}
+# lazy table, select, filter
+db_ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
+  select(species_ves,
+         count_ves,
+         life_stage,
+         sex,
+         survey_id) %>%
+  filter(life_stage == "adult")
+
+# create chain object
+chain_ves = tbl_chain("ves", mdc)
+
+# join recursively, specifying desired columns, filter, collect
+db_ves_adult_final = tbl_join(dbcon, chain_ves, tbl = db_ves_adult, columns = c("location")) %>%
+  filter(location == "brazil")
+
+data_ves_adult_final = db_ves_adult_final %>%
+  collect()
+
+```
+
+A few differences here:
+- We provided our pre-selected and filtered dv_ves_adult table to the join function with *tbl = db_ves_adult*, rather than having it pull all the data.
+- We specified any additional columns to include with *columns = c("location")*, in addition to any key columns (included by default). The result is much less columns, only those we want.
+
+## Also try:
+- Run ?tbl_chain and ?tbl_join to Learn more about other possible parameters to pass to these functions
+- Check out the SQL code for your last query with:
+
+```{r}
+sql_render(db_ves_adult_final)
+```

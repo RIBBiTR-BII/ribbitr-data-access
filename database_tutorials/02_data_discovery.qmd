@@ -2,6 +2,7 @@
 title: "RIBBiTR Database Data Discovery"
 author: "Cob Staines"
 date: today
+toc: true
 format:
   html: 
     code-line-numbers: false
@@ -19,6 +20,7 @@ format:
 ::: {.panel-tabset}
 
 # R Data Discovery
+Let's set up our environment to get ready to explore the database.
 
 ## Load packages
 
