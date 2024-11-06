@@ -55,11 +55,11 @@ mdt = tbl(dbcon, Id("public", "all_tables")) %>%
 
 Before we take a look at the metadata you just pulled, let's understand the command we just ran.
 
-- dplyr::tbl() - This function is used to create a "lazy" table from a data source. To specify the source, we provide the database connection "dbcon", as well as an pointer or "address" for the table of interest using the Id() function. A "lazy" table means that the data only pulled when explicitly asked for. See collect() below.
-- dbplyr::Id() - This function is a pointer to pass hierarchical table identifiers (you can think of this as an address for a given table). In this case we use it to generate an pointer for the table "all_tables" in schema "public".
-- dplyr::collect() - the tbl() function generates a "lazy" table, which is basically a shopping list for the data you want to pull. In order to actually pull the data from the server to your local machine (ie. "do the shopping") we need to pipe in the collect() function.
+- `dplyr::tbl()` - This function is used to create a "lazy" table from a data source. To specify the source, we provide the database connection `dbcon`, as well as an pointer or "address" for the table of interest using the `Id()` function. A "lazy" table means that the data only pulled when explicitly asked for. See `collect()` below.
+- `dbplyr::Id()` - This function is a pointer to pass hierarchical table identifiers (you can think of this as an address for a given table). In this case we use it to generate an pointer for the table "all_tables" in schema "public".
+- `dplyr::collect()` - the `tbl()` function generates a "lazy" table, which is basically a shopping list for the data you want to pull. In order to actually pull the data from the server to your local machine (ie. "do the shopping") we need to pipe in the `collect()` function.
 
-**Also try:** Run the code above without the collect() function, to see what a lazy table looks like.
+**Also try:** Run the code above without `collect()`, to see what a lazy table looks like.
 
 Now let's take a look at the table metadata to explore what schemas and tables exist.
 ```{r}
@@ -76,7 +76,7 @@ mdc = tbl(dbcon, Id("public", "all_columns")) %>%
   collect()
 ```
 
-Notice we used the dplyr::filter() command on the lazy table *before* running collect(). This effectively revised the shopping list before going to the store, rather than bringing home the entire store and then filtering for what you want in your kitchen. Much less (computationally) expensive!
+Notice we used the `dplyr::filter()` command on the lazy table *before* running `collect()`. This effectively revised the shopping list before going to the store, rather than bringing home the entire store and then filtering for what you want in your kitchen. Much less (computationally) expensive!
 
 Let's check out the column metadata, and see what you can learn.
 

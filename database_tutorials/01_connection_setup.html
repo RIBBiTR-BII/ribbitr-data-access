@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-11-05">
+<meta name="dcterms.date" content="2024-11-06">
 
 <title>RIBBiTR Database Connection Setup</title>
 <style>
@@ -106,7 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 5, 2024</p>
+      <p class="date">November 6, 2024</p>
     </div>
   </div>
   
@@ -122,10 +122,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Motivation</h1>
 <ul>
 <li>Connect to the RIBBiTR (or another remote) database with ease and repeatability</li>
-<li>Manage login credentials for ease and security, so they won’t be lost or shared with your code.</li>
+<li>Manage login credentials for ease and security, so they won’t be lost or shared with your code</li>
 </ul>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">R Database Connection</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Python Database Connection</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">R Database Connection</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Python Database Connection</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">DBeaver Database Connection</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing R/RStudio. If you aren’t yet familiar with R/Rstudio, check out this quick <a href="https://docs.posit.co/ide/user/ide/get-started/">Getting Started tutorial by POSIT</a>.</p>
@@ -133,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="store-access-your-database-connection-parameters">Store &amp; access your database connection parameters</h2>
 <section id="access-your-local-.renviron-file" class="level3">
 <h3 class="anchored" data-anchor-id="access-your-local-.renviron-file">Access your local .Renviron file</h3>
-<p>Your .Renviron file a local file where you can save and reference your login credentials for easy use within R and RStudio, without risking losing them or potentially sharing them on accident when you share your code. A simple way to access your .Renviron file is with the function usethis::edit_r_environ()</p>
+<p>Your .Renviron file a local file where you can save and reference your login credentials for easy use within R and RStudio, without risking losing them or potentially sharing them on accident when you share your code. A simple way to access your .Renviron file is with the function <code>usethis::edit_r_environ()</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"usethis"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -160,20 +160,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a new R project (or .qmd, .Rmd, .R etc.) file where you can follow the tutorial and establish the database connection.</p>
 <section id="load-packages" class="level3">
 <h3 class="anchored" data-anchor-id="load-packages">Load packages</h3>
-<p>“librarian” is a package and library management package in R which makes it easier to install, load, update and unload packages to meet dynamic environment needs. There are other ways to download, load, and maintain packages in R (e.g.&nbsp;“install.packages()” and “library()”, but we recommend librarian for its simplicity and portability.</p>
+<p>“librarian” is a package and library management package in R which makes it easier to install, load, update and unload packages to meet dynamic environment needs. There are other ways to download, load, and maintain packages in R (e.g.&nbsp;<code>install.packages()</code> and <code>library()</code>, but we recommend librarian for its simplicity and portability.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install and load "librarian" R package</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"librarian"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>librarian downloads and loads packages using the “librarian::shelf” function. Below are the minimal recommended packages to establish a connection to the RIBBiTR database.</p>
+<p>librarian downloads and loads packages using the <code>librarian::shelf</code> function. Below are the minimal recommended packages to establish a connection to the RIBBiTR database.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for establishing RIBBiTR DB connection</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, RPostgres, DBI, RIBBiTR<span class="sc">-</span>BII<span class="sc">/</span>ribbitrrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR<span class="sc">-</span>BII<span class="sc">/</span>ribbitrrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="connect" class="level3">
 <h3 class="anchored" data-anchor-id="connect">Connect</h3>
-<p>Now, using the ribbitrrr:hopToDB() function, let’s establish a connection!</p>
+<p>Now, using the <code>ribbitrrr:hopToDB()</code> function, let’s establish a connection!</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">=</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -181,7 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Connecting to database... Success!</code></pre>
 </div>
 </div>
-<p>hopToDB() returns a database connection object (“dbcon”). Keep track of this, you will call it to explore and pull data later.</p>
+<p><code>hopToDB()</code> returns a database connection object (<code>dbcon</code>). Keep track of this, you will call it to explore and pull data later.</p>
 </section>
 </section>
 <section id="begin-using-your-connection" class="level2">
@@ -207,8 +207,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="also-try" class="level2">
 <h2 class="anchored" data-anchor-id="also-try">Also try</h2>
 <ul>
-<li>For those managing multiple database connections, the hopToDB() function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute “ribbitr” in the example above with your own keyword!</li>
-<li>Your login credentials can also be accessed explicitly anytime using Sys.getenv(“ribbitr.dbname”), etc. In most cases the HopToDB() function is all you need, however.</li>
+<li>For those managing multiple database connections, the <code>hopToDB()</code> function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute “ribbitr” in the .Renviron example above with your own keywords to juggle multiple logins.</li>
+<li>Your login credentials can also be accessed explicitly anytime using <code>Sys.getenv("ribbitr.dbname")</code>, etc. In most cases the <code>hopToDB()</code> function is all you will need, however.</li>
 </ul>
 </section>
 </div>
@@ -218,8 +218,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="store-access-your-database-connection-parameters-1">Store &amp; access your database connection parameters</h2>
 <section id="create-a-dbconfig-file" class="level3">
 <h3 class="anchored" data-anchor-id="create-a-dbconfig-file">Create a dbconfig file</h3>
-<p>We recommend you create a local database config (dbconfig.py) file where you can save and reference your login credentials for easy use in python, without risking losing them or potentially sharing them on accident when you share your code.</p>
-<p>Create a file nammed “dbconfig.py” in your project working directory (or another preferred location, see “Also try” below). Copy the following to dbconfig.py:</p>
+<p>We recommend you create a local database config (<code>dbconfig.py</code>) file where you can save and reference your login credentials for easy use in python, without risking losing them or potentially sharing them on accident when you share your code.</p>
+<p>Create a file nammed <code>dbconfig.py</code> in your project working directory (or another preferred location, see “Also try” below). Copy the following to <code>dbconfig.py</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dbconfig.py</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -231,8 +231,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"password"</span>:<span class="st">"[YOUR-PASSWORD-HERE]"</span>,</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Save dbconfig.py.</p>
-<p>Be sure to add dbconfig.py to your local .gitignore file if you are using git/github, so you don’t accidentally publish you login credentials!</p>
+<p>Save <code>dbconfig.py</code>.</p>
+<p>Be sure to add <code>dbconfig.py</code> to your local <code>.gitignore</code> file if you are using git/github, so you don’t accidentally publish you login credentials!</p>
 </section>
 </section>
 <section id="establish-database-connection-1" class="level2">
@@ -240,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a new .py (or .qmd, .ipynb, etc.) file where you can follow the tutorial and establish the database connection.</p>
 <section id="import-packages" class="level3">
 <h3 class="anchored" data-anchor-id="import-packages">Import packages</h3>
-<p>This method requires installing the <a href="https://ibis-project.org/backends/postgresql">ibis.postgres</a> package to your working environment, in addition to pandas. We also import the dbconfig.py file to access your login credentials.</p>
+<p>This method requires installing the <a href="https://ibis-project.org/backends/postgresql">ibis.postgres</a> package to your working environment, in addition to pandas. We also import the <code>dbconfig.py</code> file to access your login credentials.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -249,12 +249,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="connect-1" class="level3">
 <h3 class="anchored" data-anchor-id="connect-1">Connect</h3>
-<p>Now, using the ibis.postgres.connect() function, let’s establish a connection!</p>
+<p>Now, using the <code>ibis.postgres.connect()</code> function, let’s establish a connection!</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>ibis.postgres.connect() returns a database connection object (“dbcon”). Keep track of this, you will call it to explore and pull data later.</p>
+<p><code>ibis.postgres.connect()</code> returns a database connection object (<code>dbcon</code>). Keep track of this, you will call it to explore and pull data later.</p>
 </section>
 </section>
 <section id="begin-using-your-connection-1" class="level2">
@@ -276,8 +276,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="also-try-1" class="level2">
 <h2 class="anchored" data-anchor-id="also-try-1">Also try</h2>
 <ul>
-<li>For those managing multiple database connections, this method allows you to store and fetch various sets of login credentials with a single keyword. Just substitute “ribbitr” in the dbconfig.py file with your own keywords and call them as needed!</li>
-<li>If you will be connecting to the database from different python projects, you may want to save your dbconfig.py file to a more general location. In this case, include the following lines in each of your project files:</li>
+<li>For those managing multiple database connections, this method allows you to store and fetch various sets of login credentials with a single keyword. Just substitute “ribbitr” in the <code>dbconfig.py</code> file with your own keywords and call them as needed!</li>
+<li>If you will be connecting to the database from different python projects, you may want to save your <code>dbconfig.py</code> file to a more general location. In this case, include the following lines in each of your project files:</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
@@ -285,6 +285,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+
 </div>
 </div>
 </div>
