@@ -435,12 +435,12 @@ Joining with country ... done.</code></pre>
 <pre><code># A tibble: 6 × 19
   species_capture   body_temp_c life_stage sex   capture_animal_state bd_swab_id
   &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;                &lt;chr&gt;     
-1 lithobates_warsz…        18.6 juvenile   unkn… alive                150607_c01
-2 lithobates_warsz…        NA   juvenile   unkn… alive                150607_c02
-3 lithobates_warsz…        21.8 juvenile   unkn… alive                150607_j02
-4 lithobates_warsz…        21.6 juvenile   unkn… alive                150607_j03
-5 lithobates_warsz…        20   adult      fema… alive                150607_j04
-6 lithobates_warsz…        20   adult      male  alive                150607_j05
+1 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_04 
+2 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_05 
+3 colostethus_pana…        NA   adult      unkn… alive                150610_01 
+4 rhaebo_haematiti…        26.7 adult      unkn… alive                150612_01 
+5 rhaebo_haematiti…        25.7 juvenile   unkn… alive                150612_02 
+6 rhaebo_haematiti…        26.6 adult      unkn… alive                150612_03 
 # ℹ 13 more variables: survey_id &lt;chr&gt;, detection_type &lt;chr&gt;, visit_id &lt;chr&gt;,
 #   date &lt;date&gt;, survey_time &lt;chr&gt;, site_id &lt;chr&gt;, site &lt;chr&gt;, region_id &lt;chr&gt;,
 #   region &lt;chr&gt;, country_id &lt;chr&gt;, country_name &lt;chr&gt;, detected &lt;dbl&gt;,
@@ -628,21 +628,21 @@ Joining with country ... done.</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Index(['species_capture', 'body_temp_c', 'life_stage', 'sex',
        'capture_animal_state', 'bd_swab_id', 'survey_id', 'bd_swab_id_right',
-       'detection_type', 'survey_id_right', 'visit_id', 'site_id',
-       'survey_time', 'date', 'visit_id_right', 'site_id_right', 'region_id',
-       'site', 'region_id_right', 'country_id', 'region', 'country_name',
+       'survey_id_right', 'detection_type', 'visit_id', 'date', 'survey_time',
+       'site_id', 'visit_id_right', 'site_id_right', 'region_id', 'site',
+       'region', 'region_id_right', 'country_id', 'country_name',
        'country_id_right', 'detected', 'average_target_quant'],
       dtype='object')</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># preview data</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>data_capture_bd_query.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          species_capture  body_temp_c  ... detected average_target_quant
-0     rhaebo_haematiticus          NaN  ...      0.0                  0.0
-1     rhaebo_haematiticus          NaN  ...      0.0                  0.0
-2  colostethus_panamensis          NaN  ...      1.0               1441.8
-3     rhaebo_haematiticus         26.7  ...      0.0                  0.0
-4     rhaebo_haematiticus         25.7  ...      0.0                  0.0
+<pre><code>             species_capture  body_temp_c  ... detected average_target_quant
+0  lithobates_warszewitschii         18.6  ...      1.0              1007.69
+1  lithobates_warszewitschii          NaN  ...      1.0               257.43
+2  lithobates_warszewitschii         21.8  ...      1.0                56.15
+3  lithobates_warszewitschii         21.6  ...      0.0                 0.00
+4  lithobates_warszewitschii         20.0  ...      0.0                 0.00
 
 [5 rows x 25 columns]</code></pre>
 </div>
