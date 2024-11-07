@@ -513,7 +513,7 @@
     "href": "presentations/db_basics_presentation.html#ribbitr-objectives",
     "title": "RIBBiTR Database Basics",
     "section": "RIBBiTR Objectives",
-    "text": "RIBBiTR Objectives\n\nResearch goals\n\ncore questions (Q1-Q4) span\n\ntime scales\nspacial scales\nand therefore biological levels\n\n\n\n\nCommunity goals\n\nteam science, collaborative research\n\nno one person understands it all"
+    "text": "RIBBiTR Objectives\nResearch goals\n\ncore questions (Q1-Q4) span\n\ntime scales\nspacial scales\nand therefore biological levels\n\n\nCommunity goals\n\nteam science, collaborative research\n\nno one person understands it all"
   },
   {
     "objectID": "presentations/db_basics_presentation.html#ribbitr-data-sharing-plan",
@@ -541,14 +541,14 @@
     "href": "presentations/db_basics_presentation.html#how-it-works-kinda",
     "title": "RIBBiTR Database Basics",
     "section": "How it works (kinda)",
-    "text": "How it works (kinda)\n\nConnecting humans to data\n(diagram of human, computer, platform {r, pytho, DBeaver}, SQL pipeline, data tables)"
+    "text": "How it works (kinda)\nConnecting humans to data\n(diagram of human, computer, platform {r, pytho, DBeaver}, SQL pipeline, data tables)"
   },
   {
     "objectID": "presentations/db_basics_presentation.html#results-from-survey",
     "href": "presentations/db_basics_presentation.html#results-from-survey",
     "title": "RIBBiTR Database Basics",
     "section": "Results from survey",
-    "text": "Results from survey\n\nData of interest\n(results)\n\n\nPlatforms of choice\n(results)\n\n\nData emotions\n(results)"
+    "text": "Results from survey\nData of interest\n(results)\nPlatforms of choice\n(results)\nData emotions\n(results)"
   },
   {
     "objectID": "presentations/db_basics_presentation.html#closing-the-loop",
@@ -563,5 +563,12 @@
     "title": "RIBBiTR Database Basics",
     "section": "Let’s practice!",
     "text": "Let’s practice!"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#basic-motivations-and-mechanisms-behind-the-server",
+    "href": "presentations/db_basics_presentation.html#basic-motivations-and-mechanisms-behind-the-server",
+    "title": "RIBBiTR Database Basics",
+    "section": "Basic motivations and mechanisms behind the server",
+    "text": "Basic motivations and mechanisms behind the server"
   }
 ]

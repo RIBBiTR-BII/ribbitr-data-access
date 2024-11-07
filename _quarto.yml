@@ -24,7 +24,7 @@ website:
       - section: "Presentations"
         contents: 
           - text: "Database Basics"
-            href: db_basics_presentation.qmd
+            href: ./presentation/db_basics_presentation.qmd
             
 
 format:
