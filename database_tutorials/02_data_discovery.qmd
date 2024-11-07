@@ -13,6 +13,12 @@ format:
       - left=30mm
 ---
 
+```{r setup, include=FALSE}
+library(reticulate)
+use_python("/home/cob/miniconda3/envs/ribbitr/bin/python")
+
+```
+
 # Motivation
 - Explore what data are currently available on the database
 - Identify structure of data of interest to inform access
@@ -38,7 +44,7 @@ dbcon = hopToDB("ribbitr")
 
 ## Load database metadata
 ### Data structure: Schemas, tables, columns and rows
-The ribbitr database is organized into "schemas" (think of these as folders), which can contain any number of tables. Each table consists of columns ("variables") and rows ("entries").
+The RIBBiTR database is organized into "schemas" (think of these as folders), which can contain any number of tables. Each table consists of columns ("variables") and rows ("entries").
 
 ### Metadata: Data about data
 We keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let's learn what tables are present in the data by loading the table metadata.
@@ -55,7 +61,7 @@ mdt = tbl(dbcon, Id("public", "all_tables")) %>%
 
 Before we take a look at the metadata you just pulled, let's understand the command we just ran.
 
-- `dplyr::tbl()` - This function is used to create a "lazy" table from a data source. To specify the source, we provide the database connection `dbcon`, as well as an pointer or "address" for the table of interest using the `Id()` function. A "lazy" table means that the data only pulled when explicitly asked for. See `collect()` below.
+- `dplyr::tbl()` - This function is used to create a "lazy" table from a data source. To specify the source, we provide the database connection `dbcon`, as well as a pointer or "address" for the table of interest using the `Id()` function. A "lazy" table means that the data only pulled when explicitly asked for. See `collect()` below.
 - `dbplyr::Id()` - This function is a pointer to pass hierarchical table identifiers (you can think of this as an address for a given table). In this case we use it to generate an pointer for the table "all_tables" in schema "public".
 - `dplyr::collect()` - the `tbl()` function generates a "lazy" table, which is basically a shopping list for the data you want to pull. In order to actually pull the data from the server to your local machine (ie. "do the shopping") we need to pipe in the `collect()` function.
 
@@ -67,7 +73,7 @@ view(mdt)
 ```
 
 ### Column metadata
-Suppose our interest is in the survey_data schema. Let's take a closer look at the tables here.
+Suppose our interest is in the `survey_data` schema. Let's take a closer look at the tables here by collecting metadata on table columns in this schema.
 
 ```{r}
 # load table "all_columns" from schema "public"
@@ -90,6 +96,7 @@ colnames(mdc)
 Curious about what a certain metadata column means? There's metadata for that (metametadata?)!
 
 ```{r}
+# vew metadata on metadata columns
 view(mdc %>% filter(table_name == "metadata_columns"))
 
 ```
@@ -134,7 +141,7 @@ db_ves %>%
 How many rows after filtering for unknown species:
 
 ```{r}
-# count rows by life stage
+# count rows with known species
 db_ves %>%
   filter(!is.na(species_ves),
          species_ves != "unknown_species") %>%
@@ -158,6 +165,151 @@ db_ves %>%
 ## Also try
 
 # Python Data Discovery
+Let's set up our environment to get ready to explore the database.
+
+## Load packages
+
+```{python, message=FALSE}
+# minimal packages for Python DB data discovery
+import ibis
+from ibis import _
+import pandas as pd
+import dbconfig
+
+```
+
+## Establish database connection
+
+```{python}
+# Establish database connection
+dbcon = ibis.postgres.connect(**dbconfig.ribbitr)
+```
+
+## Load database metadata
+### Data structure: Schemas, tables, columns and rows
+The RIBBiTR database is organized into "schemas" (think of these as folders), which can contain any number of tables. Each table consists of columns ("variables") and rows ("entries").
+
+### Metadata: Data about data
+We keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let's learn what tables are present in the data by loading the table metadata.
+
+### Table Metadata
+
+```{python}
+# load table "all_tables" from schema "public"
+mdt = dbcon.table(database = "public", name = "all_tables").to_pandas()
+```
+
+#### Some basic database commands
+
+Before we take a look at the metadata you just pulled, let's understand the command we just ran.
+
+- `ibis.table()` - This function is used to create a "lazy" table from a data source. To specify the source, we modify the database connection `dbcon`. We specify the schema for the table as `public` (note ibis calls this "database"), as well as the table name `all_tables`. A "lazy" table means that the data only pulled when explicitly asked for. See `execute()` below.
+- `ibis.to_pandas()` - the `table()` function generates a "lazy" table, which is basically a shopping list for the data you want to pull. In order to actually pull the data from the server to your local machine (ie. "do the shopping") we need to collect the lazy table by chaining the `to_pandas()` function.
+
+**Also try:** Run the code above without `to_pandas()`, to see what an uncollected lazy table looks like.
+
+Now let's take a look at the table metadata to explore what schemas and tables exist.
+```{python}
+mdt
+```
+
+### Column metadata
+Suppose our interest is in the `survey_data` schema. Let's take a closer look at the tables here by collecting metadata on table columns in this schema.
+
+```{python}
+# load table "all_columns" from schema "public"
+mdc = (
+  dbcon.table(database="public", name="all_columns")
+  .filter(_.table_schema == 'survey_data')
+  .to_pandas()
+)
+```
+
+Notice we used the `ibis.filter()` command on the lazy table *before* calling `to_pandas()`. This effectively revised the shopping list before going to the store, rather than bringing home the entire store and then filtering for what you want in your kitchen. Much less (computationally) expensive!
+
+Let's check out the column metadata, and see what you can learn.
+
+```{python}
+# view dataframe
+mdc
+
+# list the columns in our column-metadata table
+mdc.columns
+```
+
+Curious about what a certain metadata column means? There's metadata for that (metametadata?)!
+
+```{python}
+# view metadata on metadata columns
+metameta = mdc[mdc['table_name'] == 'metadata_columns']
+metameta
+```
+
+A few columns to point out:
+
+- definition
+- units
+- data_type
+- natural key
+
+(more on keys later)
+
+## Our first(?) data table
+Ok, let's try to apply some of what we have learned by pulling directly from a data table. We can begin by taking a look at the visual encounter surveys (VES).
+```{python}
+# create lazy table for ves (visual encounter survey) table
+db_ves = dbcon.table(database="survey_data", name="ves")
+
+```
+Do these functions look familiar? Turns out, we were pulling data all along! Of course, this is a lazy table (ie. shopping list) so it doesn't look like data yet. Let's see what we can learn from it before going to the store to collect the data.
+
+What columns the table contains:
+
+```{python}
+# return columns of lazy table
+db_ves.columns
+
+```
+
+How many total rows a table contains:
+
+```{python}
+# count rows
+(db_ves
+ .count()
+ .execute())
+
+```
+*The ibis.execute() function executes a query and returns the result, regardless of the format. This is synonymous with the to_pandas() function which returns query results as a pandas dataframe where possible.*
+
+How many rows after filtering for unknown species:
+
+```{python}
+# count rows with known species
+filtered_rows = (
+  db_ves
+  .filter(_.species_ves.notnull() & (_.species_ves != 'unknown_species'))
+  .count()
+  .execute())
+
+filtered_rows
+
+```
+
+How many rows corresponding to a each life stage:
+
+```{python}
+# count rows by life stage
+life_stage_counts = (
+    db_ves.group_by('life_stage')
+    .aggregate(row_count=_.count())
+    .order_by(_.row_count.desc())
+    .to_pandas()
+)
+
+life_stage_counts
+
+```
 
 # DBeaver Data Discovery
 

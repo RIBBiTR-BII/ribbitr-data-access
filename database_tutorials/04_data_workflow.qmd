@@ -13,6 +13,12 @@ format:
       - left=30mm
 ---
 
+```{r setup, include=FALSE}
+library(reticulate)
+use_python("/home/cob/miniconda3/envs/ribbitr/bin/python")
+
+```
+
 # Motivation
 - Familiarize ourselves with more data manipulation tools
 - Run through a complete workflow including: database connection, data discovery, data pulling, and data manipulation
