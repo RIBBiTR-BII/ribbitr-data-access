@@ -21,6 +21,11 @@ website:
             href: schema_diagram_survey_data.png
           - text: "Database Changelog"
             href: db_changelog.md
+      - section: "Presentations"
+        contents: 
+          - text: "Database Basics"
+            href: db_basics_presentation.qmd
+            
 
 format:
   html:

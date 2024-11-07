@@ -507,5 +507,61 @@
     "title": "RIBBiTR Database Basics",
     "section": "Basic motivations and mechanisms behind the server",
     "text": "Basic motivations and mechanisms behind the server"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#ribbitr-objectives",
+    "href": "presentations/db_basics_presentation.html#ribbitr-objectives",
+    "title": "RIBBiTR Database Basics",
+    "section": "RIBBiTR Objectives",
+    "text": "RIBBiTR Objectives\n\nResearch goals\n\ncore questions (Q1-Q4) span\n\ntime scales\nspacial scales\nand therefore biological levels\n\n\n\n\nCommunity goals\n\nteam science, collaborative research\n\nno one person understands it all"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#ribbitr-data-sharing-plan",
+    "href": "presentations/db_basics_presentation.html#ribbitr-data-sharing-plan",
+    "title": "RIBBiTR Database Basics",
+    "section": "RIBBiTR Data Sharing Plan",
+    "text": "RIBBiTR Data Sharing Plan\nObjective: To facilitate a deeper collective understanding of amphibian resilience to Bd\nData sharing logistics: Open data with RIBBiTR, empowered use with permission from data source"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#ideal-solution",
+    "href": "presentations/db_basics_presentation.html#ideal-solution",
+    "title": "RIBBiTR Database Basics",
+    "section": "Ideal solution",
+    "text": "Ideal solution\nData sharing which is:\n\nEmpowering in exploring and testing our understanding of amphibian resilience to Bd\nRobust (avoiding multiple competing versions, decaying integrity)\nAccessible for people with different trainings and backgrounds\nDifficult to misuse"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#the-database-one-solution",
+    "href": "presentations/db_basics_presentation.html#the-database-one-solution",
+    "title": "RIBBiTR Database Basics",
+    "section": "The database (one solution)",
+    "text": "The database (one solution)\n(how it address the above goals)"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#how-it-works-kinda",
+    "href": "presentations/db_basics_presentation.html#how-it-works-kinda",
+    "title": "RIBBiTR Database Basics",
+    "section": "How it works (kinda)",
+    "text": "How it works (kinda)\n\nConnecting humans to data\n(diagram of human, computer, platform {r, pytho, DBeaver}, SQL pipeline, data tables)"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#results-from-survey",
+    "href": "presentations/db_basics_presentation.html#results-from-survey",
+    "title": "RIBBiTR Database Basics",
+    "section": "Results from survey",
+    "text": "Results from survey\n\nData of interest\n(results)\n\n\nPlatforms of choice\n(results)\n\n\nData emotions\n(results)"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#closing-the-loop",
+    "href": "presentations/db_basics_presentation.html#closing-the-loop",
+    "title": "RIBBiTR Database Basics",
+    "section": "Closing the loop",
+    "text": "Closing the loop\n\nProject goals: Data as connection & understanding (not data for data sake)\nCommunity goals: Data as participatory (communicating ad collaborating to lower barriers to access)"
+  },
+  {
+    "objectID": "presentations/db_basics_presentation.html#lets-practice",
+    "href": "presentations/db_basics_presentation.html#lets-practice",
+    "title": "RIBBiTR Database Basics",
+    "section": "Let’s practice!",
+    "text": "Let’s practice!"
   }
 ]
