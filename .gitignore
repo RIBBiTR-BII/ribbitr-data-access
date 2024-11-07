@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 dbconfig.py
+
+/.quarto/
+/.tutorial_series/dbconfig.py
