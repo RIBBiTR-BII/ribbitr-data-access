@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Cob Staines">
 
-<title>RIBBiTR Database Access Center – RIBBiTR Data Access Center</title>
+<title>ribbitr_db Changelog – RIBBiTR Data Access Center</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,9 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      RIBBiTR Data Access Center
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./schema_diagram_survey_data.png">Database updates</a></li><li class="breadcrumb-item"><a href="./db_changelog.html">Database Changelog</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -159,7 +158,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./db_changelog.html" class="sidebar-item-text sidebar-link">
+  <a href="./db_changelog.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
@@ -170,21 +169,63 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#change-log-for-ribbitr_db" id="toc-change-log-for-ribbitr_db" class="nav-link active" data-scroll-target="#change-log-for-ribbitr_db">Change Log for RIBBiTR_DB</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">2024-10-31</a>
+  <ul class="collapse">
+  <li><a href="#changed" id="toc-changed" class="nav-link" data-scroll-target="#changed">Changed</a></li>
+  </ul></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2024-10-18</a>
+  <ul class="collapse">
+  <li><a href="#server-maintenance" id="toc-server-maintenance" class="nav-link" data-scroll-target="#server-maintenance">Server maintenance</a></li>
+  </ul></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">2024-10-17</a>
+  <ul class="collapse">
+  <li><a href="#changed-1" id="toc-changed-1" class="nav-link" data-scroll-target="#changed-1">Changed</a></li>
+  </ul></li>
+  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3">2024-10-11</a>
+  <ul class="collapse">
+  <li><a href="#added" id="toc-added" class="nav-link" data-scroll-target="#added">Added</a></li>
+  </ul></li>
+  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4">2024-10-09</a>
+  <ul class="collapse">
+  <li><a href="#server-maintenance-1" id="toc-server-maintenance-1" class="nav-link" data-scroll-target="#server-maintenance-1">Server maintenance</a></li>
+  </ul></li>
+  <li><a href="#section-5" id="toc-section-5" class="nav-link" data-scroll-target="#section-5">2024-10-08</a>
+  <ul class="collapse">
+  <li><a href="#added-1" id="toc-added-1" class="nav-link" data-scroll-target="#added-1">Added</a></li>
+  </ul></li>
+  <li><a href="#section-6" id="toc-section-6" class="nav-link" data-scroll-target="#section-6">2024-10-01</a>
+  <ul class="collapse">
+  <li><a href="#server-maintenance-2" id="toc-server-maintenance-2" class="nav-link" data-scroll-target="#server-maintenance-2">Server maintenance</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./schema_diagram_survey_data.png">Database updates</a></li><li class="breadcrumb-item"><a href="./db_changelog.html">Database Changelog</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">RIBBiTR Database Access Center</h1>
+<h1 class="title">ribbitr_db Changelog</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cob Staines </p>
+          </div>
+  </div>
     
   
     
@@ -195,11 +236,115 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This is a repository for organizing and hosting data access resources within the <a href="https://ribbitr.com/">RIBBiTR</a> project. As an interdisciplinary and cross-scale research project, RIBBiTR’s goals require open collaboration and communication within the team.</p>
-<p>Take a look at the resources provided to the left.</p>
-<p>Facilitating the effective communication of data within the team is part of this effort, though is no replacement for interpersonal communication. Confused by the data? See something odd? Don’t hesitate reach out to the <a href="mailto:cobstainesconsulting@gmail.com">RIBBiTR data manager</a>, to talk it through, to help us to improve our communiation and collaboration within the team.</p>
+<section id="change-log-for-ribbitr_db" class="level1">
+<h1>Change Log for RIBBiTR_DB</h1>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section">2024-10-31</h2>
+<section id="changed" class="level3">
+<h3 class="anchored" data-anchor-id="changed">Changed</h3>
+<ul>
+<li>Dropped visits with NULL date</li>
+<li>Created not null constraint on
+<ul>
+<li>visit.date</li>
+<li>visit.site_id</li>
+<li>site.site</li>
+<li>location.location</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1">2024-10-18</h2>
+<section id="server-maintenance" class="level3">
+<h3 class="anchored" data-anchor-id="server-maintenance">Server maintenance</h3>
+<ul>
+<li>Upgraded postgreSQL engine from version 13.15 to 16.3</li>
+</ul>
+</section>
+</section>
+<section id="section-2" class="level2">
+<h2 class="anchored" data-anchor-id="section-2">2024-10-17</h2>
+<section id="changed-1" class="level3">
+<h3 class="anchored" data-anchor-id="changed-1">Changed</h3>
+<ul>
+<li>Renamed possibly ambiguous columns in multiple tables in survey_data schema
+<ul>
+<li>survey.observers -&gt; survey.observers_survey</li>
+<li>survey.comments -&gt; survey.comments_survey</li>
+<li>aural.observer -&gt; aural.observer_aural</li>
+<li>aural.count -&gt; aural.count_aural</li>
+<li>aural.comments -&gt; aural.comments_aural</li>
+<li>capture.observer -&gt; capture.observer_capture</li>
+<li>capture.comments -&gt; capture.comments_capture</li>
+<li>ves.observer -&gt; ves.observer_ves</li>
+<li>ves.count -&gt; ves.count_ves</li>
+<li>ves.comments -&gt; ves.comments_ves</li>
+<li>visit.comments -&gt; visit.comments_visit</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="section-3" class="level2">
+<h2 class="anchored" data-anchor-id="section-3">2024-10-11</h2>
+<section id="added" class="level3">
+<h3 class="anchored" data-anchor-id="added">Added</h3>
+<ul>
+<li>Unique constraints for natural keys on survey_data schema for the following columns:
+<ul>
+<li>location table: location</li>
+<li>region table: region</li>
+<li>site table: site</li>
+<li>survey table: visit_id, detection_type</li>
+<li>visit table: site_id, date, survey_time</li>
+</ul></li>
+<li>public schema views of all database metadata:
+<ul>
+<li>public.all_tables</li>
+<li>public.all_columns</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="section-4" class="level2">
+<h2 class="anchored" data-anchor-id="section-4">2024-10-09</h2>
+<section id="server-maintenance-1" class="level3">
+<h3 class="anchored" data-anchor-id="server-maintenance-1">Server maintenance</h3>
+<ul>
+<li>Upgraded postgreSQL engine from version 13.9 to 13.15</li>
+<li>Updated certificate authority to rds-ca-rsa2048-g1. If connecting to server using SSL, <a href="https://truststore.pki.rds.amazonaws.com/us-west-1/us-west-1-bundle.pem">download certificate bundle here</a></li>
+<li>Set “track_commit_timestamp = on” for easier troubleshooting or and rollbacks</li>
+<li>Created public schema</li>
+<li>Enabled extensions postgis and uuid-ossp on public schema</li>
+</ul>
+</section>
+</section>
+<section id="section-5" class="level2">
+<h2 class="anchored" data-anchor-id="section-5">2024-10-08</h2>
+<section id="added-1" class="level3">
+<h3 class="anchored" data-anchor-id="added-1">Added</h3>
+<ul>
+<li>changelog to track and share database changes</li>
+<li>metadata tables: Metadata to help with documentation, communication of table and column purposes, and automation of data management. Each schema in RIBBiTR_DB now has two metadata tables:
+<ul>
+<li>metadata_tables: provides lookup details on each table in the schema. All columns are derived from postgres information_schema.</li>
+<li>metadata_columns: provides lookup details on each column in each table in the schema. Some columns are derived from postgres information_schema, others are defined manually (see metadata_columns to see which specific metadata columns are user-defined).</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="section-6" class="level2">
+<h2 class="anchored" data-anchor-id="section-6">2024-10-01</h2>
+<section id="server-maintenance-2" class="level3">
+<h3 class="anchored" data-anchor-id="server-maintenance-2">Server maintenance</h3>
+<ul>
+<li>Set “log_statement = mod” to log all database modifications for accountability and troubleshooting</li>
+</ul>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

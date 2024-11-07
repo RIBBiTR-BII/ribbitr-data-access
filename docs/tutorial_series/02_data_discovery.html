@@ -9,7 +9,7 @@
 <meta name="author" content="Cob Staines">
 <meta name="dcterms.date" content="2024-11-07">
 
-<title>RIBBiTR Database Data Discovery – qmd_website</title>
+<title>2. Data Discovery – RIBBiTR Data Access Center</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,22 +59,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -104,7 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar docked">
@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="./02_data_discovery.html">RIBBiTR Database Data Discovery</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/02_data_discovery.html">2. Data Discovery</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -131,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">qmd_website</a> 
+      <a href="../">RIBBiTR Data Access Center</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -143,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./index.html" class="sidebar-item-text sidebar-link">
+            <a href="../tutorial_series/00_tutorial_series.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">RIBBiTR Database Tutorial Series</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -152,26 +152,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01_connection_setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RIBBiTR Database Connection Setup</span></a>
+  <a href="../tutorial_series/01_connection_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Connection Setup</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02_data_discovery.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">RIBBiTR Database Data Discovery</span></a>
+  <a href="../tutorial_series/02_data_discovery.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">2. Data Discovery</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03_data_pulling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RIBBiTR Data Pulling</span></a>
+  <a href="../tutorial_series/03_data_pulling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Data Pulling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04_data_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RIBBiTR Data Pulling</span></a>
+  <a href="../tutorial_series/04_data_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Data Workflow</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Database updates</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Schema Diagram: survey_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../db_changelog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
       </ul>
@@ -193,9 +216,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="./02_data_discovery.html">RIBBiTR Database Data Discovery</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/02_data_discovery.html">2. Data Discovery</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">RIBBiTR Database Data Discovery</h1>
+<h1 class="title">2. Data Discovery</h1>
 </div>
 
 
@@ -231,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Identify structure of data of interest to inform access</li>
 </ul>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R Data Discovery</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python Data Discovery</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">DBeaver Data Discovery</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R Data Discovery</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python Data Discovery</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Let’s set up our environment to get ready to explore the database.</p>
@@ -482,18 +505,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view dataframe</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    table_schema table_name  ... pg_description key_type
-0    survey_data     region  ...           None       FK
-1    survey_data       site  ...           None     None
-2    survey_data       site  ...           None     None
-3    survey_data       site  ...           None     None
-4    survey_data    capture  ...           None     None
-..           ...        ...  ...            ...      ...
-335  survey_data        ves  ...           None     None
-336  survey_data        ves  ...           None     None
-337  survey_data        ves  ...           None     None
-338  survey_data        ves  ...           None     None
-339  survey_data        ves  ...           None       FK
+<pre><code>    table_schema        table_name  ... pg_description key_type
+0    survey_data              site  ...           None     None
+1    survey_data              site  ...           None     None
+2    survey_data              site  ...           None     None
+3    survey_data           capture  ...           None     None
+4    survey_data  metadata_columns  ...           None       PK
+..           ...               ...  ...            ...      ...
+335  survey_data               ves  ...           None     None
+336  survey_data               ves  ...           None     None
+337  survey_data               ves  ...           None     None
+338  survey_data               ves  ...           None     None
+339  survey_data               ves  ...           None       FK
 
 [340 rows x 19 columns]</code></pre>
 </div>
@@ -515,15 +538,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(metameta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    table_schema        table_name  ... pg_description key_type
-5    survey_data  metadata_columns  ...           None       PK
+4    survey_data  metadata_columns  ...           None       PK
+5    survey_data  metadata_columns  ...           None     None
 6    survey_data  metadata_columns  ...           None     None
+7    survey_data  metadata_columns  ...           None     None
 8    survey_data  metadata_columns  ...           None     None
 9    survey_data  metadata_columns  ...           None     None
 10   survey_data  metadata_columns  ...           None     None
 11   survey_data  metadata_columns  ...           None     None
 12   survey_data  metadata_columns  ...           None     None
-13   survey_data  metadata_columns  ...           None     None
-14   survey_data  metadata_columns  ...           None     None
 99   survey_data  metadata_columns  ...           None     None
 254  survey_data  metadata_columns  ...           None     None
 255  survey_data  metadata_columns  ...           None       PK
@@ -614,12 +637,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-
 </div>
 </div>
-</div>
+<div style="text-align: center;">
 <p><a href="01_connection_setup.html">Previous Tutorial: Connection Setup</a> | <a href="03_data_pulling.html">Next Tutorial: Data Pulling</a></p>
+</div>
 
 
 </section>

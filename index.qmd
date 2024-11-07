@@ -1,9 +1,65 @@
 ---
-title: "RIBBiTR Database Access Center"
+title: "RIBBiTR Database Basics"
+format: revealjs
+editor: source
 ---
 
-This is a repository for organizing and hosting data access resources within the [RIBBiTR](https://ribbitr.com/) project. As an interdisciplinary and cross-scale research project, RIBBiTR's goals require open collaboration and communication within the team.
+## Basic motivations and mechanisms behind the server
 
-Take a look at the resources provided to the left.
+## RIBBiTR Objectives
 
-Facilitating the effective communication of data within the team is part of this effort, though is no replacement for interpersonal communication. Confused by the data? See something odd? Don't hesitate reach out to the [RIBBiTR data manager](mailto:cobstainesconsulting@gmail.com), to talk it through, to help us to improve our communiation and collaboration within the team.
+### Research goals
+
+- core questions (Q1-Q4) span
+  - time scales
+  - spacial scales
+  - and therefore biological levels
+  
+### Community goals
+
+- team science, collaborative research
+  - no one person understands it all
+
+## RIBBiTR Data Sharing Plan
+
+Objective: To facilitate a deeper collective understanding of amphibian resilience to Bd
+
+Data sharing logistics: Open data with RIBBiTR, empowered use with permission from data source
+
+
+## Ideal solution
+
+Data sharing which is:
+
+- Empowering in exploring and testing our understanding of amphibian resilience to Bd
+- Robust (avoiding multiple competing versions, decaying integrity)
+- Accessible for people with different trainings and backgrounds
+- Difficult to misuse
+
+## The database (one solution)
+
+(how it address the above goals)
+
+## How it works (kinda)
+
+### Connecting humans to data
+
+(diagram of human, computer, platform {r, pytho, DBeaver}, SQL pipeline, data tables)
+
+## Results from survey
+
+### Data of interest
+(results)
+
+### Platforms of choice
+(results)
+
+### Data emotions
+(results)
+
+## Closing the loop
+
+- Project goals: Data as connection & understanding (not data for data sake)
+- Community goals: Data as participatory (communicating ad collaborating to lower barriers to access)
+
+## Let's practice!

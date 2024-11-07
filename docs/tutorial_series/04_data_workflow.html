@@ -9,7 +9,7 @@
 <meta name="author" content="Cob Staines">
 <meta name="dcterms.date" content="2024-11-07">
 
-<title>RIBBiTR Data Pulling – qmd_website</title>
+<title>4. Data Workflow – RIBBiTR Data Access Center</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,22 +59,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -104,7 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar docked">
@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="./04_data_workflow.html">RIBBiTR Data Pulling</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/04_data_workflow.html">4. Data Workflow</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -131,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">qmd_website</a> 
+      <a href="../">RIBBiTR Data Access Center</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -143,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./index.html" class="sidebar-item-text sidebar-link">
+            <a href="../tutorial_series/00_tutorial_series.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">RIBBiTR Database Tutorial Series</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -152,26 +152,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01_connection_setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RIBBiTR Database Connection Setup</span></a>
+  <a href="../tutorial_series/01_connection_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Connection Setup</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02_data_discovery.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RIBBiTR Database Data Discovery</span></a>
+  <a href="../tutorial_series/02_data_discovery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Data Discovery</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03_data_pulling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RIBBiTR Data Pulling</span></a>
+  <a href="../tutorial_series/03_data_pulling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Data Pulling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04_data_workflow.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">RIBBiTR Data Pulling</span></a>
+  <a href="../tutorial_series/04_data_workflow.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">4. Data Workflow</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Database updates</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Schema Diagram: survey_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../db_changelog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
       </ul>
@@ -193,9 +216,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="./04_data_workflow.html">RIBBiTR Data Pulling</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/04_data_workflow.html">4. Data Workflow</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">RIBBiTR Data Pulling</h1>
+<h1 class="title">4. Data Workflow</h1>
 </div>
 
 
@@ -276,8 +299,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         survey_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="join-with-support-tables-filter-to-location" class="level4">
-<h4 class="anchored" data-anchor-id="join-with-support-tables-filter-to-location">Join with support tables, filter to location</h4>
+<section id="join-with-support-tables-filter-by-date" class="level4">
+<h4 class="anchored" data-anchor-id="join-with-support-tables-filter-by-date">Join with support tables, filter by date</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create chain object</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>chain_capture <span class="ot">=</span> <span class="fu">tbl_chain</span>(<span class="st">"capture"</span>, mdc)</span>
@@ -291,7 +314,7 @@ Joining with survey ... done.
 Joining with visit ... done.
 Joining with site ... done.
 Joining with region ... done.
-Joining with location ... done.</code></pre>
+Joining with country ... done.</code></pre>
 </div>
 </div>
 </section>
@@ -404,7 +427,7 @@ Joining with location ... done.</code></pre>
  [7] "survey_id"            "detection_type"       "visit_id"            
 [10] "date"                 "survey_time"          "site_id"             
 [13] "site"                 "region_id"            "region"              
-[16] "location_id"          "location"             "detected"            
+[16] "country_id"           "country_name"         "detected"            
 [19] "average_target_quant"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_capture_bd_query)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -412,15 +435,15 @@ Joining with location ... done.</code></pre>
 <pre><code># A tibble: 6 × 19
   species_capture   body_temp_c life_stage sex   capture_animal_state bd_swab_id
   &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;                &lt;chr&gt;     
-1 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_04 
-2 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_05 
-3 colostethus_pana…        NA   adult      unkn… alive                150610_01 
-4 rhaebo_haematiti…        26.7 adult      unkn… alive                150612_01 
-5 rhaebo_haematiti…        25.7 juvenile   unkn… alive                150612_02 
-6 rhaebo_haematiti…        26.6 adult      unkn… alive                150612_03 
+1 lithobates_warsz…        18.6 juvenile   unkn… alive                150607_c01
+2 lithobates_warsz…        NA   juvenile   unkn… alive                150607_c02
+3 lithobates_warsz…        21.8 juvenile   unkn… alive                150607_j02
+4 lithobates_warsz…        21.6 juvenile   unkn… alive                150607_j03
+5 lithobates_warsz…        20   adult      fema… alive                150607_j04
+6 lithobates_warsz…        20   adult      male  alive                150607_j05
 # ℹ 13 more variables: survey_id &lt;chr&gt;, detection_type &lt;chr&gt;, visit_id &lt;chr&gt;,
 #   date &lt;date&gt;, survey_time &lt;chr&gt;, site_id &lt;chr&gt;, site &lt;chr&gt;, region_id &lt;chr&gt;,
-#   region &lt;chr&gt;, location_id &lt;chr&gt;, location &lt;chr&gt;, detected &lt;dbl&gt;,
+#   region &lt;chr&gt;, country_id &lt;chr&gt;, country_name &lt;chr&gt;, detected &lt;dbl&gt;,
 #   average_target_quant &lt;dbl&gt;</code></pre>
 </div>
 </div>
@@ -494,7 +517,7 @@ Joining with survey ... done.
 Joining with visit ... done.
 Joining with site ... done.
 Joining with region ... done.
-Joining with location ... done.</code></pre>
+Joining with country ... done.</code></pre>
 </div>
 </div>
 </section>
@@ -605,21 +628,21 @@ Joining with location ... done.</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Index(['species_capture', 'body_temp_c', 'life_stage', 'sex',
        'capture_animal_state', 'bd_swab_id', 'survey_id', 'bd_swab_id_right',
-       'detection_type', 'visit_id', 'survey_id_right', 'visit_id_right',
-       'survey_time', 'site_id', 'date', 'site', 'region_id', 'site_id_right',
-       'location_id', 'region_id_right', 'region', 'location',
-       'location_id_right', 'detected', 'average_target_quant'],
+       'detection_type', 'survey_id_right', 'visit_id', 'site_id',
+       'survey_time', 'date', 'visit_id_right', 'site_id_right', 'region_id',
+       'site', 'region_id_right', 'country_id', 'region', 'country_name',
+       'country_id_right', 'detected', 'average_target_quant'],
       dtype='object')</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># preview data</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>data_capture_bd_query.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             species_capture  body_temp_c  ... detected average_target_quant
-0  lithobates_warszewitschii         18.6  ...      1.0              1007.69
-1        rhaebo_haematiticus          NaN  ...      0.0                 0.00
-2        rhaebo_haematiticus          NaN  ...      0.0                 0.00
-3     colostethus_panamensis          NaN  ...      1.0              1441.80
-4        rhaebo_haematiticus         26.7  ...      0.0                 0.00
+<pre><code>          species_capture  body_temp_c  ... detected average_target_quant
+0     rhaebo_haematiticus          NaN  ...      0.0                  0.0
+1     rhaebo_haematiticus          NaN  ...      0.0                  0.0
+2  colostethus_panamensis          NaN  ...      1.0               1441.8
+3     rhaebo_haematiticus         26.7  ...      0.0                  0.0
+4     rhaebo_haematiticus         25.7  ...      0.0                  0.0
 
 [5 rows x 25 columns]</code></pre>
 </div>
@@ -630,7 +653,9 @@ Joining with location ... done.</code></pre>
 </div>
 </div>
 </div>
+<div style="text-align: center;">
 <p><a href="03_data_pulling.html">Previous Tutorial: Data Pulling</a></p>
+</div>
 
 
 </section>
