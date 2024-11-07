@@ -23,8 +23,6 @@ librarian::shelf(reticulate)
 use_condaenv("ribbitr")
 ```
 
-[01_connection_setup.qmd](01_connection_setup.qmd)
-
 # Motivation
 
 -   Connect to the RIBBiTR (or another remote) database with ease and repeatability
