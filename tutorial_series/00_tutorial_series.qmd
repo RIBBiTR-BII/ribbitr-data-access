@@ -1,0 +1,18 @@
+---
+title: "RIBBiTR Database Tutorial Series"
+toc: true
+format:
+  html: 
+    code-line-numbers: false
+  pdf:
+    code-line-numbers: false
+    geometry: 
+      - top=30mm
+      - left=30mm
+      
+---
+
+# Welcome!
+This is a tutorial series for the RIBBiTR Database. Working through the tutorials on the left, you can work through examples of how to connect to the database, explore what data is there and unerstand it's structure, efficiently download the data of interest, and pass it to your workflows. This series includes examples in R and Python.
+
+Begin with [1. Connection Setup](01_connection_setup.html).
