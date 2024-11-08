@@ -23,8 +23,8 @@ website:
             href: db_changelog.md
       - section: "Presentations"
         contents: 
-          - text: "Database Basics"
-            href: ./presentation/db_context_presentation.html
+          - text: "Database in Context"
+            href: ./presentations/db_context_presentation.html
             
 
 format:

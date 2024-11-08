@@ -210,8 +210,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href=".././presentation/db_context_presentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Database Basics</span></a>
+  <a href=".././presentations/db_context_presentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database in Context</span></a>
   </div>
 </li>
       </ul>
@@ -453,12 +453,12 @@ Joining with country ... done.</code></pre>
 <pre><code># A tibble: 6 × 19
   species_capture   body_temp_c life_stage sex   capture_animal_state bd_swab_id
   &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;                &lt;chr&gt;     
-1 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_04 
-2 lithobates_warsz…        18.6 juvenile   unkn… alive                150607_c01
-3 lithobates_warsz…        NA   juvenile   unkn… alive                150607_c02
-4 lithobates_warsz…        21.8 juvenile   unkn… alive                150607_j02
-5 lithobates_warsz…        21.6 juvenile   unkn… alive                150607_j03
-6 lithobates_warsz…        20   adult      fema… alive                150607_j04
+1 lithobates_warsz…        18.6 juvenile   unkn… alive                150607_c01
+2 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_04 
+3 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_05 
+4 colostethus_pana…        NA   adult      unkn… alive                150610_01 
+5 rhaebo_haematiti…        26.7 adult      unkn… alive                150612_01 
+6 rhaebo_haematiti…        25.7 juvenile   unkn… alive                150612_02 
 # ℹ 13 more variables: survey_id &lt;chr&gt;, detection_type &lt;chr&gt;, visit_id &lt;chr&gt;,
 #   date &lt;date&gt;, survey_time &lt;chr&gt;, site_id &lt;chr&gt;, site &lt;chr&gt;, region_id &lt;chr&gt;,
 #   region &lt;chr&gt;, country_id &lt;chr&gt;, country_name &lt;chr&gt;, detected &lt;dbl&gt;,
@@ -646,10 +646,10 @@ Joining with country ... done.</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Index(['species_capture', 'body_temp_c', 'life_stage', 'sex',
        'capture_animal_state', 'bd_swab_id', 'survey_id', 'bd_swab_id_right',
-       'visit_id', 'survey_id_right', 'detection_type', 'survey_time',
-       'visit_id_right', 'date', 'site_id', 'region_id', 'site',
-       'site_id_right', 'region_id_right', 'region', 'country_id',
-       'country_name', 'country_id_right', 'detected', 'average_target_quant'],
+       'survey_id_right', 'visit_id', 'detection_type', 'visit_id_right',
+       'site_id', 'date', 'survey_time', 'region_id', 'site_id_right', 'site',
+       'country_id', 'region_id_right', 'region', 'country_name',
+       'country_id_right', 'detected', 'average_target_quant'],
       dtype='object')</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># preview data</span></span>
