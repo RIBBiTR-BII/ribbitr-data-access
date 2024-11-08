@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "RIBBiTR Database Access Center",
+    "title": "RIBBiTR Database Access Resources",
     "section": "",
-    "text": "This is a repository for organizing and hosting data access resources within the RIBBiTR project. As an interdisciplinary and cross-scale research project, RIBBiTR’s goals require open collaboration and communication within the team.\nTake a look at the resources provided in the menu for this page.\nFacilitating the effective communication of data within the team is part of this effort, though is no replacement for interpersonal communication. Confused by the data? See something odd? Please reach out! You can help to enhance the communication and collaboration within our team. Contact the RIBBiTR data manager to talk it through."
+    "text": "This is a repository for organizing and hosting data access resources within the RIBBiTR project. RIBBiTR is dedicated to advancing an understanding of resilience by developing, applying, and sharing a novel framework for the study of resilience. As an interdisciplinary and cross-scale research project, RIBBiTR’s goals require open collaboration and communication within the team."
   },
   {
     "objectID": "db_changelog.html",
@@ -490,9 +490,9 @@
   {
     "objectID": "index.html#closing-the-loop",
     "href": "index.html#closing-the-loop",
-    "title": "RIBBiTR Database Basics",
+    "title": "RIBBiTR Database Access Resources",
     "section": "Closing the loop",
-    "text": "Closing the loop\n\nProject goals: Data as connection & understanding (not data for data sake)\nCommunity goals: Data as participatory (communicating ad collaborating to lower barriers to access)"
+    "text": "Closing the loop\nData access is an important component of our collaborative effort within RIBBiTR, but it does not exist in a vacuum. Sharing of data is enhanced when coupled with other forms of high-context communication, such as interpersonal dialogue, collaborative writing and messaging, code sharing, and more. Confused by the data? See something odd? Encounter a barrier? Increase the context in our communication by reaching out within the team for a conversation!\nAny questions? Contact the RIBBiTR data manager."
   },
   {
     "objectID": "index.html#lets-practice",
@@ -897,5 +897,12 @@
     "title": "RIBBiTR Database: Collaboration and Context",
     "section": "Let’s practice together!",
     "text": "Let’s practice together!"
+  },
+  {
+    "objectID": "index.html#getting-started",
+    "href": "index.html#getting-started",
+    "title": "RIBBiTR Database Access Resources",
+    "section": "Getting started",
+    "text": "Getting started\nTo begin, take a look at the resources provided in the menu to the left!"
   }
 ]
