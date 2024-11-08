@@ -260,6 +260,12 @@ A few differences here:
 - We provided our pre-selected and filtered dv_ves_adult table to the join function with `tbl = db_ves_adult`, rather than having it pull all the data.
 - We specified any additional columns to include with `columns = c("country_name")`, in addition to any key columns (included by default). The result is much less columns, only those we want.
 
+## Disconnect
+
+```{r}
+dbDisconnect(dbcon)
+```
+
 ## Also try:
 - Run `?tbl_chain` and `?tbl_join` to Learn more about other possible parameters to pass to these functions
 - Check out the SQL code for your last query with:
@@ -267,6 +273,7 @@ A few differences here:
 ```{r, eval=FALSE}
 sql_render(db_ves_adult_final)
 ```
+
 # Python Data Pulling
 Let's set up our environment to get ready to pull data.
 
@@ -504,6 +511,12 @@ A few differences here:
 
 - We provided our pre-selected and filtered `dv_ves_adult` table to the join function with `tbl = db_ves_adult`, rather than having it pull all the data.
 - We specified any additional columns to include with `columns = c("country_name)`, in addition to any key columns (included by default). The result is much less columns, only those we want.
+
+## Disconnect
+```{python}
+# close connection
+dbcon.disconnect()
+```
 
 ## Also try:
 - Check out the SQL code for your last query with:

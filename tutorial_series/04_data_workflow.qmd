@@ -149,6 +149,12 @@ head(data_capture_bd_query)
 
 These data are ready to be analyzed and visualized!
 
+## Disconnect
+
+```{r}
+dbDisconnect(dbcon)
+```
+
 # Python Data Workflow
 Let's run through a realistic data scenario from the beginning.
 
@@ -295,6 +301,12 @@ data_capture_bd_query.head()
 ```
 
 These data are ready to be analyzed and visualized!
+
+## Disconnect
+```{python}
+# close connection
+dbcon.disconnect()
+```
 
 :::
 <div style="text-align: center;">

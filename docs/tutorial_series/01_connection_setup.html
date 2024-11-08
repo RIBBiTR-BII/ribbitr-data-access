@@ -272,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Manage login credentials for ease and security, so they won’t be lost or shared with your code</li>
 </ul>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R Database Connection</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python Database Connection</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">DBeaver</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing R/RStudio. If you aren’t yet familiar with R/Rstudio, check out this quick <a href="https://docs.posit.co/ide/user/ide/get-started/">Getting Started tutorial by POSIT</a>.</p>
@@ -367,6 +367,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="disconnect" class="level2">
+<h2 class="anchored" data-anchor-id="disconnect">Disconnect</h2>
+<p>It is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># disconnect from database</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="also-try" class="level2">
 <h2 class="anchored" data-anchor-id="also-try">Also try</h2>
 <ul>
@@ -384,15 +392,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We recommend you create a local database config (<code>dbconfig.py</code>) file where you can save and reference your login credentials for easy use in python, without risking losing them or potentially sharing them on accident when you share your code.</p>
 <p>Create a file nammed <code>dbconfig.py</code> in your project working directory (or another preferred location, see “Also try” below). Copy the following to <code>dbconfig.py</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dbconfig.py</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ribbitr <span class="op">=</span> {</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"database"</span>:<span class="st">"ribbitr"</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"host"</span>:<span class="st">"ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"port"</span>:<span class="st">"5432"</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"user"</span>:<span class="st">"[YOUR-USERNAME-HERE]"</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"password"</span>:<span class="st">"[YOUR-PASSWORD-HERE]"</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dbconfig.py</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ribbitr <span class="op">=</span> {</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"database"</span>:<span class="st">"ribbitr"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"host"</span>:<span class="st">"ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"port"</span>:<span class="st">"5432"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"user"</span>:<span class="st">"[YOUR-USERNAME-HERE]"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"password"</span>:<span class="st">"[YOUR-PASSWORD-HERE]"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Save <code>dbconfig.py</code>.</p>
 <p>Be sure to add <code>dbconfig.py</code> to your local <code>.gitignore</code> file if you are using git/github, so you don’t accidentally publish you login credentials!</p>
@@ -405,17 +413,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="import-packages">Import packages</h3>
 <p>This method requires installing the <a href="https://ibis-project.org/backends/postgresql">ibis.postgres</a> package to your working environment, in addition to pandas. We also import the <code>dbconfig.py</code> file to access your login credentials.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig  <span class="co"># import connection credentials</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig  <span class="co"># import connection credentials</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="connect-1" class="level3">
 <h3 class="anchored" data-anchor-id="connect-1">Connect</h3>
 <p>Now, using the <code>ibis.postgres.connect()</code> function, let’s establish a connection!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>ibis.postgres.connect()</code> returns a database connection object (<code>dbcon</code>). Keep track of this, you will call it to explore and pull data later.</p>
 </section>
@@ -424,8 +432,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="begin-using-your-connection-1">Begin using your connection</h2>
 <p>Try out your connection by loading table metadata from the database</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>mdt.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mdt.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  table_schema          table_name  column_count table_description
 0     bay_area      amphib_dissect            41              None
@@ -436,6 +444,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="disconnect-1" class="level2">
+<h2 class="anchored" data-anchor-id="disconnect-1">Disconnect</h2>
+<p>It is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># close the connection</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="also-try-1" class="level2">
 <h2 class="anchored" data-anchor-id="also-try-1">Also try</h2>
 <ul>
@@ -443,10 +459,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>If you will be connecting to the database from different python projects, you may want to save your <code>dbconfig.py</code> file to a more general location. In this case, include the following lines in each of your project files:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">"/path/to/dbconfig/dir/"</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">"/path/to/dbconfig/dir/"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing DBeaver. DBeaver is a free, universal database tool which provides a great visual platform and robust backend for interacting with databases. <a href="https://dbeaver.io/">Download DBeaver</a> and install to get started with the tutorial.</p>
+<section id="set-up-and-test-your-connection." class="level2">
+<h2 class="anchored" data-anchor-id="set-up-and-test-your-connection.">Set up and test your connection.</h2>
+<p>Open DBeaver.</p>
+<p><img src="images/DBeaver_connection_setup_01.png" class="img-fluid" alt="Right-click in the Database Navigator” panel and select Create -> Connection"> <img src="images/DBeaver_connection_setup_02.png" class="img-fluid" alt="Enter your database credentials as shown above, substituting your user and password."> Click <code>Test Connection</code> in the bottom left to make sure your credentials work. Then click <code>OK</code>.</p>
+<p>That’s it, you are ready to start using your connection!</p>
+</section>
+<section id="disconnect-2" class="level2">
+<h2 class="anchored" data-anchor-id="disconnect-2">Disconnect</h2>
+<p>When you are done, click the red <code>Disconnect</code> button in top left corner to terminate your connection.</p>
+<p>It is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.</p>
 </section>
 </div>
 </div>

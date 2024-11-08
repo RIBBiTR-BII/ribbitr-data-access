@@ -31,7 +31,7 @@ use_condaenv("ribbitr")
 -   Manage login credentials for ease and security, so they won't be lost or shared with your code
 
 ::: panel-tabset
-# R Database Connection
+# R
 
 Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing R/RStudio. If you aren't yet familiar with R/Rstudio, check out this quick [Getting Started tutorial by POSIT](https://docs.posit.co/ide/user/ide/get-started/).
 
@@ -115,12 +115,20 @@ mdt = tbl(dbcon, Id("public", "all_tables")) %>%
 head(mdt)
 ```
 
+## Disconnect
+It is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.
+
+```{r}
+# disconnect from database
+dbDisconnect(dbcon)
+```
+
 ## Also try
 
 -   For those managing multiple database connections, the `hopToDB()` function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute "ribbitr" in the .Renviron example above with your own keywords to juggle multiple logins.
 -   Your login credentials can also be accessed explicitly anytime using `Sys.getenv("ribbitr.dbname")`, etc. In most cases the `hopToDB()` function is all you will need, however.
 
-# Python Database Connection
+# Python
 
 Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing Python. If you aren't yet familiar with Python, check out this quick [Getting Started tutorial by DATAQUEST](https://www.dataquest.io/blog/jupyter-notebook-tutorial/).
 
@@ -184,6 +192,14 @@ mdt = dbcon.table(database = "public", name = "all_tables").to_pandas()
 mdt.head()
 ```
 
+## Disconnect
+It is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.
+
+```{python}
+# close the connection
+dbcon.disconnect()
+```
+
 ## Also try
 
 -   For those managing multiple database connections, this method allows you to store and fetch various sets of login credentials with a single keyword. Just substitute "ribbitr" in the `dbconfig.py` file with your own keywords and call them as needed!
@@ -194,6 +210,23 @@ import sys
 sys.path.append("/path/to/dbconfig/dir/")
 import dbconfig
 ```
+
+# DBeaver
+Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing DBeaver. DBeaver is a free, universal database tool which provides a great visual platform and robust backend for interacting with databases. [Download DBeaver](https://dbeaver.io/) and install to get started with the tutorial.
+
+## Set up and test your connection.
+Open DBeaver.
+
+![Right-click in the Database Navigator" panel and select `Create` -> `Connection`](images/DBeaver_connection_setup_01.png)
+![Enter your database credentials as shown above, substituting your user and password.](images/DBeaver_connection_setup_02.png)
+Click `Test Connection` in the bottom left to make sure your credentials work. Then click `OK`.
+
+That's it, you are ready to start using your connection!
+
+## Disconnect
+When you are done, click the red `Disconnect` button in top left corner to terminate your connection. 
+
+It is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.
 
 :::
 <div style="text-align: center;">

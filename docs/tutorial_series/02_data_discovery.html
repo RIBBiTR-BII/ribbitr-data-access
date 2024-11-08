@@ -272,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Identify structure of data of interest to inform access</li>
 </ul>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R Data Discovery</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python Data Discovery</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">DBeaver</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Let’s set up our environment to get ready to explore the database.</p>
@@ -437,8 +437,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="also-try" class="level2">
-<h2 class="anchored" data-anchor-id="also-try">Also try</h2>
+<section id="disconnect" class="level2">
+<h2 class="anchored" data-anchor-id="disconnect">Disconnect</h2>
+<p>Reinforcing best practice by disconnecting from the server.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
@@ -446,18 +450,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="load-packages-1" class="level2">
 <h2 class="anchored" data-anchor-id="load-packages-1">Load packages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for Python DB data discovery</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ibis <span class="im">import</span> _</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for Python DB data discovery</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ibis <span class="im">import</span> _</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="establish-database-connection-1" class="level2">
 <h2 class="anchored" data-anchor-id="establish-database-connection-1">Establish database connection</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Establish database connection</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Establish database connection</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-database-metadata-1" class="level2">
@@ -473,8 +477,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="table-metadata-1" class="level3">
 <h3 class="anchored" data-anchor-id="table-metadata-1">Table Metadata</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_tables" from schema "public"</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_tables" from schema "public"</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="some-basic-database-commands-1" class="level4">
 <h4 class="anchored" data-anchor-id="some-basic-database-commands-1">Some basic database commands</h4>
@@ -486,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Also try:</strong> Run the code above without <code>to_pandas()</code>, to see what an uncollected lazy table looks like.</p>
 <p>Now let’s take a look at the table metadata to explore what schemas and tables exist.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mdt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mdt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   table_schema          table_name  column_count table_description
 0      bay_area      amphib_dissect            41              None
@@ -510,18 +514,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="column-metadata-1">Column metadata</h3>
 <p>Suppose our interest is in the <code>survey_data</code> schema. Let’s take a closer look at the tables here by collecting metadata on table columns in this schema.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_columns" from schema "public"</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>mdc <span class="op">=</span> (</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"public"</span>, name<span class="op">=</span><span class="st">"all_columns"</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.table_schema <span class="op">==</span> <span class="st">'survey_data'</span>)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_columns" from schema "public"</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>mdc <span class="op">=</span> (</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"public"</span>, name<span class="op">=</span><span class="st">"all_columns"</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.table_schema <span class="op">==</span> <span class="st">'survey_data'</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice we used the <code>ibis.filter()</code> command on the lazy table <em>before</em> calling <code>to_pandas()</code>. This effectively revised the shopping list before going to the store, rather than bringing home the entire store and then filtering for what you want in your kitchen. Much less (computationally) expensive!</p>
 <p>Let’s check out the column metadata, and see what you can learn.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view dataframe</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view dataframe</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    table_schema        table_name  ... pg_description key_type
 0    survey_data              site  ...           None     None
@@ -538,8 +542,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 [340 rows x 19 columns]</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list the columns in our column-metadata table</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>mdc.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list the columns in our column-metadata table</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>mdc.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Index(['table_schema', 'table_name', 'column_name', 'definition', 'units',
        'accuracy', 'scale', 'format', 'natural_key', 'reviewed', 'data_type',
@@ -551,9 +555,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Curious about what a certain metadata column means? There’s metadata for that (metametadata?)!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view metadata on metadata columns</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>metameta <span class="op">=</span> mdc[mdc[<span class="st">'table_name'</span>] <span class="op">==</span> <span class="st">'metadata_columns'</span>]</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(metameta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view metadata on metadata columns</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>metameta <span class="op">=</span> mdc[mdc[<span class="st">'table_name'</span>] <span class="op">==</span> <span class="st">'metadata_columns'</span>]</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(metameta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    table_schema        table_name  ... pg_description key_type
 4    survey_data  metadata_columns  ...           None       PK
@@ -593,24 +597,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="our-first-data-table-1">Our first(?) data table</h2>
 <p>Ok, let’s try to apply some of what we have learned by pulling directly from a data table. We can begin by taking a look at the visual encounter surveys (VES).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create lazy table for ves (visual encounter survey) table</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create lazy table for ves (visual encounter survey) table</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Do these functions look familiar? Turns out, we were pulling data all along! Of course, this is a lazy table (ie. shopping list) so it doesn’t look like data yet. Let’s see what we can learn from it before going to the store to collect the data.</p>
 <p>What columns the table contains:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return columns of lazy table</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>db_ves.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return columns of lazy table</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>db_ves.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id']</code></pre>
 </div>
 </div>
 <p>How many total rows a table contains:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>(db_ves</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a> .count()</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a> .execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>(db_ves</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a> .count()</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a> .execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>28390</code></pre>
 </div>
@@ -618,29 +622,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>The ibis.execute() function executes a query and returns the result, regardless of the format. This is synonymous with the to_pandas() function which returns query results as a pandas dataframe where possible.</em></p>
 <p>How many rows after filtering for unknown species:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows with known species</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>filtered_row_count <span class="op">=</span> (</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  db_ves</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.species_ves.notnull() <span class="op">&amp;</span> (_.species_ves <span class="op">!=</span> <span class="st">'unknown_species'</span>))</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  .count()</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  .execute())</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows with known species</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>filtered_row_count <span class="op">=</span> (</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  db_ves</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.species_ves.notnull() <span class="op">&amp;</span> (_.species_ves <span class="op">!=</span> <span class="st">'unknown_species'</span>))</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  .count()</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  .execute())</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>28232</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows by life stage</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>life_stage_counts <span class="op">=</span> (</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    db_ves.group_by(<span class="st">'life_stage'</span>)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    .aggregate(row_count<span class="op">=</span>_.count())</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    .order_by(_.row_count.desc())</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows by life stage</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>life_stage_counts <span class="op">=</span> (</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    db_ves.group_by(<span class="st">'life_stage'</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    .aggregate(row_count<span class="op">=</span>_.count())</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    .order_by(_.row_count.desc())</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  life_stage  row_count
 0    tadpole      10276
@@ -653,6 +657,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 7  metamorph          1</code></pre>
 </div>
 </div>
+</section>
+<section id="disconnect-1" class="level2">
+<h2 class="anchored" data-anchor-id="disconnect-1">Disconnect</h2>
+<p>Reinforcing best practice by disconnecting from the server.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># close connection</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Double-click on the <code>ribbitr</code> connection in the “Database Navigator” panel to begin your connection. Once connected you should be able to navigae a dropdown menu to explore the connection.</p>
+<section id="load-database-metadata-2" class="level2">
+<h2 class="anchored" data-anchor-id="load-database-metadata-2">Load database metadata</h2>
+<section id="data-structure-schemas-tables-columns-and-rows-2" class="level3">
+<h3 class="anchored" data-anchor-id="data-structure-schemas-tables-columns-and-rows-2">Data structure: Schemas, tables, columns and rows</h3>
+<p>The RIBBiTR database is organized into “schemas” (think of these as folders), which can contain any number of tables. Each table consists of columns (“variables”) and rows (“entries”). You can explore this structure through the dropdown menu in the “Database Navigator” panel on the left.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/DBeaver_data_discovery_01.png" class="img-fluid figure-img"></p>
+<figcaption>Navigate to <code>Databases</code> -&gt; <code>ribbitr</code> -&gt; <code>Schemas</code></figcaption>
+</figure>
+</div>
+</section>
+<section id="metadata-data-about-data-2" class="level3">
+<h3 class="anchored" data-anchor-id="metadata-data-about-data-2">Metadata: Data about data</h3>
+<p>We keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let’s learn what tables are present in the data by loading the table metadata.</p>
+</section>
+<section id="table-metadata-2" class="level3">
+<h3 class="anchored" data-anchor-id="table-metadata-2">Table Metadata</h3>
+<p><img src="images/DBeaver_data_discovery_02.png" class="img-fluid" alt="Navigate to Databases -> ribbitr -> Schemas -> public -> Views -> all_tables (double-click). Select the Data tab."> See what you can learn about the tables in the database form the table metadata.</p>
+</section>
+<section id="column-metadata-2" class="level3">
+<h3 class="anchored" data-anchor-id="column-metadata-2">Column metadata</h3>
+<p>Suppose our interest is in the <code>survey_data</code> schema. Let’s take a closer look at the tables here by collecting metadata on table columns in this schema.</p>
+<p><img src="images/DBeaver_data_discovery_03.png" class="img-fluid" alt="Navigate to Databases -> ribbitr -> Schemas -> public -> Views -> all_columns (double-click). Select the Data tab."> Click on the dropdown arrow next to <code>table_schema</code>, click on <code>Order by table_schema ASC</code>. Repeat for the <code>table_name</code> and <code>column_name</code> columns.</p>
+<p>Scroll down until you see rows with <code>table_schema</code> = <code>survey_data</code>. Explore a table of interest t see what you can learn.</p>
+<p>Curious about what a certain metadata column means? There’s metadata for that (metametadata?)! Scroll down to <code>table_name</code> = <code>metadata_columns</code> to learn what the different columns in the current table mean.</p>
+<p>A few columns to point out:</p>
+<ul>
+<li>definition</li>
+<li>units</li>
+<li>data_type</li>
+<li>natural key</li>
+</ul>
+<p>(more on keys later)</p>
+</section>
+</section>
+<section id="schema-sructure" class="level2">
+<h2 class="anchored" data-anchor-id="schema-sructure">Schema sructure</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/DBeaver_data_discovery_04.png" class="img-fluid figure-img"></p>
+<figcaption>Navigate to <code>Databases</code> -&gt; <code>ribbitr</code> -&gt; <code>Schemas</code> -&gt; <code>survey_data</code>. Right-click and select <code>View Schema</code>. Select the <code>ER Diagram</code> tab.</figcaption>
+</figure>
+</div>
+<p>This shows a diagram of the different tables within the <code>surevy_data</code> schema, as well as their columns and any relationships between tables. This is a useful visual reference for later, when we begin joining tables.</p>
+</section>
+<section id="our-first-data-table-2" class="level2">
+<h2 class="anchored" data-anchor-id="our-first-data-table-2">Our first data table</h2>
+<p>To begin looking at data, let’s navigate to the visual encounter surveys (VES).</p>
+<p><img src="images/DBeaver_data_discovery_05.png" class="img-fluid" alt="Navigate to Databases -> ribbitr -> Schemas -> survey_data -> Tables -> ves (double-click). Select the Data tab."> This is your first look at field data within the database! From here you can explore organizing the data by columns, as well as exporting the table to a .csv.</p>
 </section>
 </div>
 </div>

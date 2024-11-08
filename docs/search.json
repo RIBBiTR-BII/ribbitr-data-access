@@ -143,7 +143,7 @@
     "href": "tutorial_series/04_data_workflow.html#data-discovery-and-pulling-1",
     "title": "4. Data Workflow",
     "section": "Data discovery and pulling",
-    "text": "Data discovery and pulling\nSuppose we are interested in capture and Bd swab data. Specifically, we want to compare Bd qPCR results for juvenile-to-adult individuals, captured in 2015 or later, across species and sites.\nLooking at the table metadata, the two observation tables with most of the data of interest are called “capture” and “bd_qpcr_results”.\n\nPull capture table\n\n# capture table, select, filter\ndb_capture = (\n  dbcon.table(database=\"survey_data\", name=\"capture\")\n  .select([\n    'species_capture',\n    'body_temp_c',\n    'life_stage',\n    'sex',\n    'capture_animal_state',\n    'bd_swab_id',\n    'survey_id'\n    ])\n  )\n\n\n\nJoin with support tables, filter to date\n\n# create chain object\nchain_capture = db.tbl_chain(\"capture\", mdc)\n\n# join recursively, filter by date\ndb_capture_chain = (\n  db.tbl_join(dbcon, chain_capture, tbl=db_capture)\n  .filter(_.date &gt;= '2015-01-01')\n  )\n\nJoining with bd_swab_lookup ... done.\nJoining with survey ... done.\nJoining with visit ... done.\nJoining with site ... done.\nJoining with region ... done.\nJoining with country ... done.\n\n\n\n\nJoin with Bd table\n\n# bd qpcr results lazy table\ndb_bd_results = (\n  dbcon.table(database=\"survey_data\", name=\"bd_qpcr_results\")\n  .select([\n    'bd_swab_id',\n    'detected',\n    'average_target_quant'\n  ])\n  )\n\n# join capture and bd tables\ndb_capture_bd = (\n  db_capture_chain\n  .inner_join(db_bd_results, db_capture_chain.bd_swab_id == db_bd_results.bd_swab_id)\n  )\n\n\n\nExplore # of samples by life stage, then filter\n\n# count by life stage\nlife_stage_counts = (\n  db_capture_bd\n  .group_by('life_stage')\n  .aggregate(row_count=_.count())\n  .order_by(_.row_count.desc())\n  .to_pandas()\n  )\n\nprint(life_stage_counts)\n\n                 life_stage  row_count\n0                     adult      22746\n1                      None       4515\n2                  juvenile       3937\n3                   tadpole       1666\n4                  subadult        984\n5            aquatic_larvae        573\n6                 metamorph        428\n7                     larva        417\n8                   unknown        367\n9   terrestrial_development        330\n10                   larvae        218\n11                  eggmass          7\n12                  Unknown          2\n\n\n# filter to desired life stages\ndb_capture_bd_life = (\n  db_capture_bd\n  .filter(_.life_stage.isin(['juvenile','subadult', 'adult']) & _.life_stage.notnull())\n  )\n\n\n\nExplore # of samples by species, then filter\n\n# count by species\nspp_summary = (\n  db_capture_bd_life\n  .group_by('species_capture')\n  .aggregate(sample_count=_.count())\n  .order_by(_.sample_count.desc())\n  .to_pandas()\n  )\nprint(spp_summary)\n\n                  species_capture  sample_count\n0                    rana_muscosa         13328\n1                  rana_clamitans          2366\n2                rana_catesbeiana          1601\n3             pseudacris_crucifer          1118\n4       lithobates_sphenocephalus           965\n..                            ...           ...\n126             silverstoneia_spp             1\n127                 diasporus_spp             1\n128        craugastor_monnichorum             1\n129               acris_crepitans             1\n130  hyalinobatrachium_talamancae             1\n\n[131 rows x 2 columns]\n\n\n# generate species list\nspp_list = spp_summary[spp_summary['sample_count'] &gt;= 100]['species_capture'].tolist()\n\n# filter to species in spp_list\ndb_capture_bd_life_spp = (\n  db_capture_bd_life\n  .filter(_.species_capture.isin(spp_list) & _.species_capture.notnull())\n  )\n\n\n\nPull data\n\n# pull data\ndata_capture_bd_query = db_capture_bd_life_spp.to_pandas()\n\n# printcolumn names\ndata_capture_bd_query.columns\n\nIndex(['species_capture', 'body_temp_c', 'life_stage', 'sex',\n       'capture_animal_state', 'bd_swab_id', 'survey_id', 'bd_swab_id_right',\n       'survey_id_right', 'visit_id', 'detection_type', 'visit_id_right',\n       'site_id', 'date', 'survey_time', 'region_id', 'site_id_right', 'site',\n       'country_id', 'region_id_right', 'region', 'country_name',\n       'country_id_right', 'detected', 'average_target_quant'],\n      dtype='object')\n\n# preview data\ndata_capture_bd_query.head()\n\n             species_capture  body_temp_c  ... detected average_target_quant\n0        rhaebo_haematiticus          NaN  ...      0.0                 0.00\n1  lithobates_warszewitschii         18.6  ...      1.0              1007.69\n2  lithobates_warszewitschii          NaN  ...      1.0               257.43\n3  lithobates_warszewitschii         21.8  ...      1.0                56.15\n4  lithobates_warszewitschii         21.6  ...      0.0                 0.00\n\n[5 rows x 25 columns]\n\n\nThese data are ready to be analyzed and visualized!",
+    "text": "Data discovery and pulling\nSuppose we are interested in capture and Bd swab data. Specifically, we want to compare Bd qPCR results for juvenile-to-adult individuals, captured in 2015 or later, across species and sites.\nLooking at the table metadata, the two observation tables with most of the data of interest are called “capture” and “bd_qpcr_results”.\n\nPull capture table\n\n# capture table, select, filter\ndb_capture = (\n  dbcon.table(database=\"survey_data\", name=\"capture\")\n  .select([\n    'species_capture',\n    'body_temp_c',\n    'life_stage',\n    'sex',\n    'capture_animal_state',\n    'bd_swab_id',\n    'survey_id'\n    ])\n  )\n\n\n\nJoin with support tables, filter to date\n\n# create chain object\nchain_capture = db.tbl_chain(\"capture\", mdc)\n\n# join recursively, filter by date\ndb_capture_chain = (\n  db.tbl_join(dbcon, chain_capture, tbl=db_capture)\n  .filter(_.date &gt;= '2015-01-01')\n  )\n\nJoining with bd_swab_lookup ... done.\nJoining with survey ... done.\nJoining with visit ... done.\nJoining with site ... done.\nJoining with region ... done.\nJoining with country ... done.\n\n\n\n\nJoin with Bd table\n\n# bd qpcr results lazy table\ndb_bd_results = (\n  dbcon.table(database=\"survey_data\", name=\"bd_qpcr_results\")\n  .select([\n    'bd_swab_id',\n    'detected',\n    'average_target_quant'\n  ])\n  )\n\n# join capture and bd tables\ndb_capture_bd = (\n  db_capture_chain\n  .inner_join(db_bd_results, db_capture_chain.bd_swab_id == db_bd_results.bd_swab_id)\n  )\n\n\n\nExplore # of samples by life stage, then filter\n\n# count by life stage\nlife_stage_counts = (\n  db_capture_bd\n  .group_by('life_stage')\n  .aggregate(row_count=_.count())\n  .order_by(_.row_count.desc())\n  .to_pandas()\n  )\n\nprint(life_stage_counts)\n\n                 life_stage  row_count\n0                     adult      22746\n1                      None       4515\n2                  juvenile       3937\n3                   tadpole       1666\n4                  subadult        984\n5            aquatic_larvae        573\n6                 metamorph        428\n7                     larva        417\n8                   unknown        367\n9   terrestrial_development        330\n10                   larvae        218\n11                  eggmass          7\n12                  Unknown          2\n\n\n# filter to desired life stages\ndb_capture_bd_life = (\n  db_capture_bd\n  .filter(_.life_stage.isin(['juvenile','subadult', 'adult']) & _.life_stage.notnull())\n  )\n\n\n\nExplore # of samples by species, then filter\n\n# count by species\nspp_summary = (\n  db_capture_bd_life\n  .group_by('species_capture')\n  .aggregate(sample_count=_.count())\n  .order_by(_.sample_count.desc())\n  .to_pandas()\n  )\nprint(spp_summary)\n\n                  species_capture  sample_count\n0                    rana_muscosa         13328\n1                  rana_clamitans          2366\n2                rana_catesbeiana          1601\n3             pseudacris_crucifer          1118\n4       lithobates_sphenocephalus           965\n..                            ...           ...\n126             silverstoneia_spp             1\n127                 diasporus_spp             1\n128        craugastor_monnichorum             1\n129               acris_crepitans             1\n130  hyalinobatrachium_talamancae             1\n\n[131 rows x 2 columns]\n\n\n# generate species list\nspp_list = spp_summary[spp_summary['sample_count'] &gt;= 100]['species_capture'].tolist()\n\n# filter to species in spp_list\ndb_capture_bd_life_spp = (\n  db_capture_bd_life\n  .filter(_.species_capture.isin(spp_list) & _.species_capture.notnull())\n  )\n\n\n\nPull data\n\n# pull data\ndata_capture_bd_query = db_capture_bd_life_spp.to_pandas()\n\n# printcolumn names\ndata_capture_bd_query.columns\n\nIndex(['species_capture', 'body_temp_c', 'life_stage', 'sex',\n       'capture_animal_state', 'bd_swab_id', 'survey_id', 'bd_swab_id_right',\n       'survey_id_right', 'visit_id', 'detection_type', 'visit_id_right',\n       'survey_time', 'date', 'site_id', 'site', 'region_id', 'site_id_right',\n       'region_id_right', 'region', 'country_id', 'country_id_right',\n       'country_name', 'detected', 'average_target_quant'],\n      dtype='object')\n\n# preview data\ndata_capture_bd_query.head()\n\n             species_capture  body_temp_c  ... detected average_target_quant\n0        rhaebo_haematiticus          NaN  ...      0.0                 0.00\n1  lithobates_warszewitschii         18.6  ...      1.0              1007.69\n2  lithobates_warszewitschii          NaN  ...      1.0               257.43\n3  lithobates_warszewitschii         21.8  ...      1.0                56.15\n4  lithobates_warszewitschii         21.6  ...      0.0                 0.00\n\n[5 rows x 25 columns]\n\n\nThese data are ready to be analyzed and visualized!",
     "crumbs": [
       "RIBBiTR Database Tutorial Series",
       "4. Data Workflow"
@@ -904,5 +904,159 @@
     "title": "RIBBiTR Database Access Resources",
     "section": "Getting started",
     "text": "Getting started\nTo begin, take a look at the resources provided in the menu to the left!"
+  },
+  {
+    "objectID": "tutorial_series/01_connection_setup.html#store-access-your-database-connection-parameters-2",
+    "href": "tutorial_series/01_connection_setup.html#store-access-your-database-connection-parameters-2",
+    "title": "1. Connection Setup",
+    "section": "Store & access your database connection parameters",
+    "text": "Store & access your database connection parameters\nOpen DBeaver.\n\n\n\nRight-click in the Database Navigator” panel and select Create -&gt; Connection",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "1. Connection Setup"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/01_connection_setup.html#set-up-and-test-your-connection.",
+    "href": "tutorial_series/01_connection_setup.html#set-up-and-test-your-connection.",
+    "title": "1. Connection Setup",
+    "section": "Set up and test your connection.",
+    "text": "Set up and test your connection.\nOpen DBeaver.\n  Click Test Connection in the bottom left to make sure your credentials work. Then click OK.\nThat’s it, you are ready to start using your connection!",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "1. Connection Setup"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/02_data_discovery.html#load-database-metadata-2",
+    "href": "tutorial_series/02_data_discovery.html#load-database-metadata-2",
+    "title": "2. Data Discovery",
+    "section": "Load database metadata",
+    "text": "Load database metadata\n\nData structure: Schemas, tables, columns and rows\nThe RIBBiTR database is organized into “schemas” (think of these as folders), which can contain any number of tables. Each table consists of columns (“variables”) and rows (“entries”). You can explore this structure through the dropdown menu in the “Database Navigator” panel on the left.\n\n\n\nNavigate to Databases -&gt; ribbitr -&gt; Schemas\n\n\n\n\nMetadata: Data about data\nWe keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let’s learn what tables are present in the data by loading the table metadata.\n\n\nTable Metadata\n See what you can learn about the tables in the database form the table metadata.\n\n\nColumn metadata\nSuppose our interest is in the survey_data schema. Let’s take a closer look at the tables here by collecting metadata on table columns in this schema.\n Click on the dropdown arrow next to table_schema, click on Order by table_schema ASC. Repeat for the table_name and column_name columns.\nScroll down until you see rows with table_schema = survey_data. Explore a table of interest t see what you can learn.\nCurious about what a certain metadata column means? There’s metadata for that (metametadata?)! Scroll down to table_name = metadata_columns to learn what the different columns in the current table mean.\nA few columns to point out:\n\ndefinition\nunits\ndata_type\nnatural key\n\n(more on keys later)",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "2. Data Discovery"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/02_data_discovery.html#schema-sructure",
+    "href": "tutorial_series/02_data_discovery.html#schema-sructure",
+    "title": "2. Data Discovery",
+    "section": "Schema sructure",
+    "text": "Schema sructure\n\n\n\nNavigate to Databases -&gt; ribbitr -&gt; Schemas -&gt; survey_data. Right-click and select View Schema. Select the ER Diagram tab.\n\n\nThis shows a diagram of the different tables within the surevy_data schema, as well as their columns and any relationships between tables. This is a useful visual reference for later, when we begin joining tables.",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "2. Data Discovery"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/02_data_discovery.html#our-first-data-table-2",
+    "href": "tutorial_series/02_data_discovery.html#our-first-data-table-2",
+    "title": "2. Data Discovery",
+    "section": "Our first data table",
+    "text": "Our first data table\nTo begin looking at data, let’s navigate to the visual encounter surveys (VES).\n This is your first look at field data within the database! From here you can explore organizing the data by columns, as well as exporting the table to a .csv.",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "2. Data Discovery"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/03_data_pulling.html#disconnect",
+    "href": "tutorial_series/03_data_pulling.html#disconnect",
+    "title": "3. Data Pulling",
+    "section": "Disconnect",
+    "text": "Disconnect\n\ndbDisconnect(dbcon)",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "3. Data Pulling"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/03_data_pulling.html#disconnect-1",
+    "href": "tutorial_series/03_data_pulling.html#disconnect-1",
+    "title": "3. Data Pulling",
+    "section": "Disconnect",
+    "text": "Disconnect\n\n# close connection\ndbcon.disconnect()",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "3. Data Pulling"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/01_connection_setup.html#disconnect",
+    "href": "tutorial_series/01_connection_setup.html#disconnect",
+    "title": "1. Connection Setup",
+    "section": "Disconnect",
+    "text": "Disconnect\nIt is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.\n\n# disconnect from database\ndbDisconnect(dbcon)",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "1. Connection Setup"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/01_connection_setup.html#disconnect-1",
+    "href": "tutorial_series/01_connection_setup.html#disconnect-1",
+    "title": "1. Connection Setup",
+    "section": "Disconnect",
+    "text": "Disconnect\nIt is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.\n\n# close the connection\ndbcon.disconnect()",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "1. Connection Setup"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/01_connection_setup.html#disconnect-2",
+    "href": "tutorial_series/01_connection_setup.html#disconnect-2",
+    "title": "1. Connection Setup",
+    "section": "Disconnect",
+    "text": "Disconnect\nWhen you are done, click the red Disconnect button in top left corner to terminate your connection.\nIt is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "1. Connection Setup"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/02_data_discovery.html#disconnect",
+    "href": "tutorial_series/02_data_discovery.html#disconnect",
+    "title": "2. Data Discovery",
+    "section": "Disconnect",
+    "text": "Disconnect\nReinforcing best practice by disconnecting from the server.\n\ndbDisconnect(dbcon)",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "2. Data Discovery"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/02_data_discovery.html#disconnect-1",
+    "href": "tutorial_series/02_data_discovery.html#disconnect-1",
+    "title": "2. Data Discovery",
+    "section": "Disconnect",
+    "text": "Disconnect\nReinforcing best practice by disconnecting from the server.\n\n# close connection\ndbcon.disconnect()",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "2. Data Discovery"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/04_data_workflow.html#disconnect",
+    "href": "tutorial_series/04_data_workflow.html#disconnect",
+    "title": "4. Data Workflow",
+    "section": "Disconnect",
+    "text": "Disconnect\n\ndbDisconnect(dbcon)",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "4. Data Workflow"
+    ]
+  },
+  {
+    "objectID": "tutorial_series/04_data_workflow.html#disconnect-1",
+    "href": "tutorial_series/04_data_workflow.html#disconnect-1",
+    "title": "4. Data Workflow",
+    "section": "Disconnect",
+    "text": "Disconnect\n\n# close connection\ndbcon.disconnect()",
+    "crumbs": [
+      "RIBBiTR Database Tutorial Series",
+      "4. Data Workflow"
+    ]
   }
 ]

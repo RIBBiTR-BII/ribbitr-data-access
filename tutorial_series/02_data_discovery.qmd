@@ -27,7 +27,7 @@ use_condaenv("ribbitr")
 
 ::: {.panel-tabset}
 
-# R Data Discovery
+# R
 Let's set up our environment to get ready to explore the database.
 
 ## Load packages
@@ -164,9 +164,16 @@ db_ves %>%
   collect()
 
 ```
-## Also try
 
-# Python Data Discovery
+## Disconnect
+Reinforcing best practice by disconnecting from the server.
+
+```{r}
+dbDisconnect(dbcon)
+```
+
+
+# Python
 Let's set up our environment to get ready to explore the database.
 
 ## Load packages
@@ -312,6 +319,62 @@ life_stage_counts = (
 print(life_stage_counts)
 
 ```
+
+## Disconnect
+Reinforcing best practice by disconnecting from the server.
+
+```{python}
+# close connection
+dbcon.disconnect()
+```
+
+# DBeaver
+Double-click on the `ribbitr` connection in the "Database Navigator" panel to begin your connection. Once connected you should be able to navigae a dropdown menu to explore the connection.
+
+## Load database metadata
+### Data structure: Schemas, tables, columns and rows
+The RIBBiTR database is organized into "schemas" (think of these as folders), which can contain any number of tables. Each table consists of columns ("variables") and rows ("entries"). You can explore this structure through the dropdown menu in the "Database Navigator" panel on the left.
+
+![Navigate to `Databases` -> `ribbitr` -> `Schemas`](images/DBeaver_data_discovery_01.png)
+
+### Metadata: Data about data
+We keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let's learn what tables are present in the data by loading the table metadata.
+
+### Table Metadata
+
+![Navigate to `Databases` -> `ribbitr` -> `Schemas` -> `public` -> `Views` -> `all_tables` (double-click). Select the `Data` tab.](images/DBeaver_data_discovery_02.png)
+See what you can learn about the tables in the database form the table metadata.
+
+### Column metadata
+Suppose our interest is in the `survey_data` schema. Let's take a closer look at the tables here by collecting metadata on table columns in this schema.
+
+![Navigate to `Databases` -> `ribbitr` -> `Schemas` -> `public` -> `Views` -> `all_columns` (double-click). Select the `Data` tab.](images/DBeaver_data_discovery_03.png)
+Click on the dropdown arrow next to `table_schema`, click on `Order by table_schema ASC`. Repeat for the `table_name` and `column_name` columns.
+
+Scroll down until you see rows with `table_schema` = `survey_data`. Explore a table of interest t see what you can learn.
+
+Curious about what a certain metadata column means? There's metadata for that (metametadata?)! Scroll down to `table_name` =  `metadata_columns` to learn what the different columns in the current table mean. 
+
+A few columns to point out:
+
+- definition
+- units
+- data_type
+- natural key
+
+(more on keys later)
+
+## Schema sructure
+![Navigate to `Databases` -> `ribbitr` -> `Schemas` -> `survey_data`. Right-click and select `View Schema`. Select the `ER Diagram` tab.](images/DBeaver_data_discovery_04.png)
+
+This shows a diagram of the different tables within the `surevy_data` schema, as well as their columns and any relationships between tables. This is a useful visual reference for later, when we begin joining tables.
+
+## Our first data table
+
+To begin looking at data, let's navigate to the visual encounter surveys (VES).
+
+![Navigate to `Databases` -> `ribbitr` -> `Schemas` -> `survey_data` -> `Tables` -> `ves` (double-click). Select the `Data` tab.](images/DBeaver_data_discovery_05.png)
+This is your first look at field data within the database! From here you can explore organizing the data by columns, as well as exporting the table to a .csv.
 
 :::
 <div style="text-align: center;">
