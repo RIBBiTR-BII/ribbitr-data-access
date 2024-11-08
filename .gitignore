@@ -4,6 +4,5 @@
 .Ruserdata
 
 /.quarto/
-/__pycache___/
-/tutorial_series/__pycache__/
+__pycache___/
 /tutorial_series/dbconfig.py
