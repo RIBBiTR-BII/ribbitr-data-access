@@ -7,9 +7,9 @@ editor: source
 ## Presentation Overview
 
 - Database overview
--     Why a database?
--    What is a database?
--     How to make the most of a database?
+    - *Why a database?*
+    - *What is a database?*
+    - *How to make the most of a database?*
 - Data in our Community
 - Closing the loop
 
@@ -91,4 +91,4 @@ Want data sharing solution which are:
 ## Closing the loop
 ![Project goals, Community goals, Data goals](db_context_images/circular_connected.png){fig-alt="Database connected to apps, computer, people, and frogs / Bd, forming a circle, with connectors" fig-align="center" width="600"}
 
-## Let's practice!
+## Let's practice together!

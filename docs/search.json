@@ -728,7 +728,7 @@
     "href": "presentations/db_context_presentation.html#presentation-overview",
     "title": "RIBBiTR Database: Collaboration and Context",
     "section": "Presentation Overview",
-    "text": "Presentation Overview\n\nDatabase overview\nWhy a database?\nWhat is a database?\nHow to make the most of a database?\nData in our Community\nClosing the loop"
+    "text": "Presentation Overview\n\nDatabase overview\n\nWhy a database?\nWhat is a database?\nHow to make the most of a database?\n\nData in our Community\nClosing the loop"
   },
   {
     "objectID": "presentations/db_context_presentation.html#why-database",
@@ -890,5 +890,12 @@
     "title": "RIBBiTR Database: Collaboration and Context",
     "section": "Data in our community",
     "text": "Data in our community\n\nWhat emotions come up for you when you read the word ‘data’?"
+  },
+  {
+    "objectID": "presentations/db_context_presentation.html#lets-practice-together",
+    "href": "presentations/db_context_presentation.html#lets-practice-together",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Let’s practice together!",
+    "text": "Let’s practice together!"
   }
 ]
