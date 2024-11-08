@@ -23,6 +23,8 @@ librarian::shelf(reticulate)
 use_condaenv("ribbitr")
 ```
 
+*This tutorial is available as a [.qmd on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series).*
+
 # Motivation
 
 -   Connect to the RIBBiTR (or another remote) database with ease and repeatability
@@ -67,6 +69,16 @@ Create a new R project (or .qmd, .Rmd, .R etc.) file where you can follow the tu
 
 ### Load packages
 
+#### Rtools
+[Rtools](https://cran.rstudio.com/bin/windows/Rtools/) is required to build R packages locally, as part of this tutorial. Check to see if Rtools is installed by running:
+
+```{r}
+Sys.which("make")
+```
+
+If this returns a path to the make function (e.g. `/usr/bin/make`), Rtools is installed and you can proceed to the next step. If you return an empty string `""` you will need to [download Rtools](https://cran.rstudio.com/bin/windows/Rtools/) first.
+
+#### Librarian
 "librarian" is a package and library management package in R which makes it easier to install, load, update and unload packages to meet dynamic environment needs. There are other ways to download, load, and maintain packages in R (e.g. `install.packages()` and `library()`, but we recommend librarian for its simplicity and portability.
 
 ```{r, eval=FALSE}

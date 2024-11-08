@@ -2,7 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-dbconfig.py
 
 /.quarto/
+/.__pycache___/
+/.tutorial_series/__pycache__/
 /.tutorial_series/dbconfig.py

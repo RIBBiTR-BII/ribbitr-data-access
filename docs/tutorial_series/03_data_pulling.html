@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-11-07">
+<meta name="dcterms.date" content="2024-11-08">
 
 <title>3. Data Pulling – RIBBiTR Data Access Center</title>
 <style>
@@ -210,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href=".././presentation/db_basics_presentation.qmd" class="sidebar-item-text sidebar-link">
+  <a href=".././presentation/db_context_presentation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Database Basics</span></a>
   </div>
 </li>
@@ -252,7 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 7, 2024</p>
+      <p class="date">November 8, 2024</p>
     </div>
   </div>
   
@@ -264,6 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p><em>This tutorial is available as a <a href="https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series">.qmd on Github</a>.</em></p>
 <section id="motivation" class="level1">
 <h1>Motivation</h1>
 <ul>
@@ -426,7 +427,7 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(ves_metadata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can see here that <code>ves_id</code> is the primary key (ie. unique, non-null row identifier) for the ves table (<code>ves_id</code> is also the only natural key for this table). We also see that column <code>survey_id</code> is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there not a better way?</p>
+<p>We can see here that <code>ves_id</code> is the primary key (ie. unique, non-null row identifier) for the ves table (<code>ves_id</code> is also the only natural key for this table). We also see that column <code>survey_id</code> is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there another way?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ribbitrrr key functions</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -507,7 +508,7 @@ WHERE ("life_stage" = 'adult')</code></pre>
 </div>
 </div>
 <p>We see that the columns of <code>db_ves_survey</code> correspond to the union of those from both the ves and survey tables. More importantly, the rows are lined up using <code>survey_id</code> as the key “join by” column. You could also substitute this with <code>by = tbl_fkey("ves", mdc)</code>.</p>
-<p>In order to join the VES data with country, we will have to do several, recursive joins to connect the tables of… <em>(consults schema diagram)</em>… survey, visit, site, region, and country! Is there not a better way?</p>
+<p>In order to join the VES data with country, we will have to do several, recursive joins to connect the tables of… <em>(consults schema diagram)</em>… survey, visit, site, region, and country! Is there another way?</p>
 </section>
 </section>
 <section id="links-chains-automated-joins" class="level2">
@@ -563,7 +564,7 @@ Joining with survey ... done.</code></pre>
 [69] "visit_id"                      </code></pre>
 </div>
 </div>
-<p>Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there not a better way?</p>
+<p>Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there another way?</p>
 <p>The workflow for linking tables recursively works like this:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a chain (or recusive link) object for table ves: "which tables are any number of steps away"</span></span>
@@ -858,7 +859,7 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all unique key columns for ves table</span></span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>db.tbl_keys(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['ves_id', 'survey_id']</code></pre>
+<pre><code>['survey_id', 'ves_id']</code></pre>
 </div>
 </div>
 <p>Notice that we passed the column metadata to these functions, to help us automate this otherwise tedious task.</p>

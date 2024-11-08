@@ -19,6 +19,8 @@ librarian::shelf(reticulate)
 use_condaenv("ribbitr")
 ```
 
+*This tutorial is available as a [.qmd on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series).*
+
 # Motivation
 - Explore what data are currently available on the database
 - Identify structure of data of interest to inform access

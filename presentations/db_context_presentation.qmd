@@ -1,0 +1,104 @@
+---
+title: "RIBBiTR Database: Collaboration and Context"
+format: revealjs
+editor: source
+---
+
+## Presentation Overview
+
+- Database overview
+-     Why a database?
+-    What is a database?
+-     How to make the most of a database?
+- Data in our Community
+- Closing the loop
+
+## Why a Database?
+
+#### RIBBiTR Research Goals
+
+[RIBBiTR Project Proposal](https://drive.google.com/file/d/18WJC0Rdm-DIKS-c7TLA1N_M_NZVuigz0/view)
+
+-   **Q1:** How does the history of disturbance differ **across systems**?
+
+-   **Q2:** How have changes **at different levels** of biological organization shaped overall system responses?
+
+-   **Q3:** What are the mechanisms contributing to resilience and are they shared **across systems**?
+
+-   **Q4:** How is resilience modulated by multiple **interacting** stressors?
+
+*Spanning, time scales, spacial scales, biological levels.*
+
+## Why a Database?
+
+#### RIBBiTR Community Goals
+
+[RIBBiTR Project Proposal](https://drive.google.com/file/d/18WJC0Rdm-DIKS-c7TLA1N_M_NZVuigz0/view) & [RIBBiTR Pre-Collab Agreement](https://docs.google.com/document/d/1m1EEuUH3ioVVXtFkDaWFHITddPcmputEhZxfW_omtrI/edit?usp=sharing)
+
+-   Advance understanding of resilience by **developing**, **applying**, and **sharing** a novel framework for the study of resilience
+-   Grow our **collaborative network**
+-   Train next generation of **transdisciplinary** scientists
+-   Follow and advance **Open Science** and **Team Science**
+
+## Why a Database?
+
+### RIBBiTR Data Goals
+
+[RIBBiTR Data Plan](https://drive.google.com/file/d/1U14VbNVlMlhSyVm5ACtVpJ2UjaMupB6_/view?usp=sharing) & [RIBBiTR Pre-Collab Agreement](https://docs.google.com/document/d/1m1EEuUH3ioVVXtFkDaWFHITddPcmputEhZxfW_omtrI/edit?usp=sharing)
+
+-   **Collect/generate**, **standardize**, & **preserve** project data, including: genetic, pathogen, host, environment, acoustic, model, and curricula data
+-   **Share** RIBBiTR data openly within RIBBiTR team, publishing with **consent** and invitations to **collaborate**
+-   Analyze & interpret data collaboratively to **communicate context**
+
+## Why a Database?
+
+Want data sharing solution which are:
+
+-   **Empowering** in exploring and testing our understanding of amphibian resilience to Bd
+-   **Robust**, avoiding competing versions, decaying integrity, etc.
+-   **Accessible** for people with different trainings and ways of knowing
+
+#### Databases are one part of such a solution
+
+## What is a Database?
+
+![A relational database](db_context_images/relational_database.png){fig-alt="Data tables connected with lines" fig-align="center" width="600"}
+
+## What is a Database
+
+![A relational database in SQL](db_context_images/SQL_relational_database.png){fig-alt="Data tables connected with lines, with a cloud that says SQL" fig-align="center" width="600"}
+
+## What is a Database?
+
+![A relational database in context](db_context_images/linear.png){fig-alt="Database connected to apps, computer, people, and frogs / Bd" fig-align="center" width="600"}
+
+## Make the most of a Database
+![A relational database as part of a cycle](db_context_images/circular.png){fig-alt="Database connected to apps, computer, people, and frogs / Bd, forming a circle" fig-align="center" width="600"}
+
+## Make the most of a Database
+![A relational database as part of a complex addaptive system](db_context_images/circular_connected.png){fig-alt="Database connected to apps, computer, people, and frogs / Bd, forming a circle, with connectors" fig-align="center" width="600"}
+
+## Data in our community
+
+### Data of interest
+
+(results)
+
+## Data in our community
+
+### Platforms of choice
+
+(results)
+
+## Data in our community
+
+### Data emotions
+
+(results)
+
+## Closing the loop
+
+-   Project goals: Data as connection & understanding (not data for data sake)
+-   Community goals: Data as participatory (communicating ad collaborating to lower barriers to access)
+
+## Let's practice!

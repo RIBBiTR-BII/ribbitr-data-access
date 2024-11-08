@@ -19,6 +19,8 @@ librarian::shelf(reticulate)
 use_condaenv("ribbitr", required = TRUE)
 ```
 
+*This tutorial is available as a [.qmd on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series).*
+
 # Motivation
 - Familiarize ourselves with more data manipulation tools
 - Run through a complete workflow including: database connection, data discovery, data pulling, and data manipulation

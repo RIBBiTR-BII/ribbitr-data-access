@@ -20,6 +20,8 @@ use_condaenv("ribbitr", required = TRUE)
 
 ```
 
+*This tutorial is available as a [.qmd on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series).*
+
 # Motivation
 - Download or "pull" data from the database to our local machine
 - Pre- select and filter to data of interest
@@ -157,7 +159,7 @@ ves_metadata = mdc %>%
 view(ves_metadata)
 ```
 
-We can see here that `ves_id` is the primary key (ie. unique, non-null row identifier) for the ves table (`ves_id` is also the only natural key for this table). We also see that column `survey_id` is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there not a better way?
+We can see here that `ves_id` is the primary key (ie. unique, non-null row identifier) for the ves table (`ves_id` is also the only natural key for this table). We also see that column `survey_id` is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there another way?
 
 ```{r}
 ## ribbitrrr key functions
@@ -197,7 +199,7 @@ colnames(db_ves_survey)
 ```
 We see that the columns of `db_ves_survey` correspond to the union of those from both the ves and survey tables. More importantly, the rows are lined up using `survey_id` as the key "join by" column. You could also substitute this with `by = tbl_fkey("ves", mdc)`.
 
-In order to join the VES data with country, we will have to do several, recursive joins to connect the tables of... *(consults schema diagram)*... survey, visit, site, region, and country! Is there not a better way?
+In order to join the VES data with country, we will have to do several, recursive joins to connect the tables of... *(consults schema diagram)*... survey, visit, site, region, and country! Is there another way?
 
 ## Links, Chains, Automated Joins
 We developed some functions to help us avoid the tedium of consulting the database schema diagram or column metadata. The workflow for linking tables one at a time works like this:
@@ -212,7 +214,7 @@ db_ves_survey = tbl_join(dbcon, link_ves, columns = "all")
 # check columns
 colnames(db_ves_survey)
 ```
-Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there not a better way?
+Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there another way?
 
 The workflow for linking tables recursively works like this:
 
