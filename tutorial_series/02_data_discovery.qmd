@@ -378,5 +378,5 @@ This is your first look at field data within the database! From here you can exp
 
 :::
 <div style="text-align: center;">
-[Previous Tutorial: Connection Setup](01_connection_setup.html) | [Next Tutorial: Data Pulling](03_data_pulling.html)
+[<- 1. Connection Setup](01_connection_setup.html) | [3. Data Pulling ->](03_data_pulling.html)
 </div>

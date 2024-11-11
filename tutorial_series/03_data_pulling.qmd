@@ -527,5 +527,5 @@ db_ves_adult_final.compile()
 
 :::
 <div style="text-align: center;">
-[Previous Tutorial: Data Discovery](02_data_discovery.html) | [Next Tutorial: Data Workflow](04_data_workflow.html)
+[<- 2. Data Discovery](02_data_discovery.html) | [4. Data Workflow ->](04_data_workflow.html)
 </div>

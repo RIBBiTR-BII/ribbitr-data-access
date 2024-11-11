@@ -310,5 +310,5 @@ dbcon.disconnect()
 
 :::
 <div style="text-align: center;">
-[Previous Tutorial: Data Pulling](03_data_pulling.html)
+[<- 3. Data Pulling](03_data_pulling.html)
 </div>

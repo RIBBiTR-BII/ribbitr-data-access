@@ -13,6 +13,11 @@ format:
 ---
 
 # Welcome!
-This is a tutorial series for the RIBBiTR Database. Working through the tutorials on the left, you can work through examples of how to connect to the database, explore what data is there and unerstand it's structure, efficiently download the data of interest, and pass it to your workflows. This series includes examples in R and Python.
+This is a tutorial series for the RIBBiTR Database. Working through the tutorials on the left, you can work through examples of how to connect to the database, explore what data is there and understand it's structure, efficiently download the data of interest, and pass it to your workflows. This series includes examples in R and Python.
 
-Begin with [1. Connection Setup](01_connection_setup.html).
+Dive into the tutorial series below:
+
+1. [Connection Setup](01_connection_setup.html).
+2. [Data Discovery](02_data_discovery.html).
+3. [Data Pulling](03_data_pulling.html).
+4. [Data Workflow](04_data_workflow.html).

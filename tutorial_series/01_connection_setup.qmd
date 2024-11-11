@@ -230,5 +230,5 @@ It is good practice to close your database connection, to let the server know it
 
 :::
 <div style="text-align: center;">
-[Next Tutorial: Data Discovery](02_data_discovery.html)
+[2. Data Discovery ->](02_data_discovery.html)
 </div>

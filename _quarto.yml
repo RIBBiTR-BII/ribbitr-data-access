@@ -3,7 +3,7 @@ project:
   output-dir: ./docs
 
 website:
-  title: "RIBBiTR Data Access Center"
+  title: "RIBBiTR Data Access"
   sidebar:
     style: "docked"
     search: true

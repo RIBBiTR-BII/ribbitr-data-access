@@ -1,5 +1,5 @@
 ---
-title: "RIBBiTR Database Access Resources"
+title: "RIBBiTR Data Access Center"
 ---
 
 This is a repository for organizing and hosting data access resources within the [RIBBiTR](https://ribbitr.com/) project. RIBBiTR is dedicated to advancing an understanding of resilience by developing, applying, and sharing a novel framework for the study of resilience. As an interdisciplinary and cross-scale research project, RIBBiTR's goals require open collaboration and communication within the team.

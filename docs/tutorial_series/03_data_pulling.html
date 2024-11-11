@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-11-08">
+<meta name="dcterms.date" content="2024-11-11">
 
-<title>3. Data Pulling – RIBBiTR Data Access Center</title>
+<title>3. Data Pulling – RIBBiTR Data Access</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -131,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">RIBBiTR Data Access Center</a> 
+      <a href="../">RIBBiTR Data Access</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -252,7 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 8, 2024</p>
+      <p class="date">November 11, 2024</p>
     </div>
   </div>
   
@@ -628,7 +628,7 @@ Joining with country ... done.</code></pre>
 [85] "wilderness"                     "site_comments"                 
 [87] "region_id"                      "region"                        
 [89] "country_id"                     "location_id"                   
-[91] "country_name"                  </code></pre>
+[91] "country_name"                   "iso_country_code"              </code></pre>
 </div>
 </div>
 <p>Hooray! Also yikes, that’s a lot of columns! I am starting to see why we store all these in seperate tables!</p>
@@ -929,7 +929,7 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>db_ves_survey.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'wind_speed_m_s', 'air_temp_c', 'water_temp_c', 'p_h', 'tds_ppm', 'comments_survey', 'wind', 'sky', 'air_time', 'water_time', 'fish', 'description', 'survey_quality', 'transect', 'number_observers', 'samp_loc', 'pressure_psi', 'relative_humidty_percent', 'dissolved_o2_percent', 'salinity_ppt', 'cloud_cover_percent', 'precip', 'soil_humidity_m3m3', 'wind_speed_scale', 'precipitation_during_visit', 'precipitation_last_48_h', 'temperature_last_48_h', 'percent_cloud_cover', 'weather_condition_notes', 'pressure_psi_drop', 'relative_humidity_percent', 'relative_humidity_drop_percent', 'wind_speed_min_m_s', 'wind_speed_max_m_s', 'air_temp_c_drop', 'densiometer_d1_num_covered', 'd1_n', 'd1_s', 'd1_e', 'd1_w', 'd1_percent_cover', 'densiometer_d2_num_covered', 'd2_n', 'd2_s', 'd2_e', 'd2_w', 'd2_percent_cover', 'depth_of_water_from_d2_cm', 'percent_vegetation_cover', 'vegetation_notes', 'secchi_depth_cm', 'survey_id_right', 'visit_id', 'date', 'survey_time', 'campaign', 'visit_status', 'comments_visit', 'visit_id_right', 'site_id', 'site', 'utm_zone', 'utme', 'utmn', 'area_sqr_m', 'site_code', 'elevation_m', 'depth_m', 'topo', 'wilderness', 'site_comments', 'site_id_right', 'region_id', 'region', 'region_id_right', 'country_id', 'location_id', 'country_name', 'country_id_right']</code></pre>
+<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'wind_speed_m_s', 'air_temp_c', 'water_temp_c', 'p_h', 'tds_ppm', 'comments_survey', 'wind', 'sky', 'air_time', 'water_time', 'fish', 'description', 'survey_quality', 'transect', 'number_observers', 'samp_loc', 'pressure_psi', 'relative_humidty_percent', 'dissolved_o2_percent', 'salinity_ppt', 'cloud_cover_percent', 'precip', 'soil_humidity_m3m3', 'wind_speed_scale', 'precipitation_during_visit', 'precipitation_last_48_h', 'temperature_last_48_h', 'percent_cloud_cover', 'weather_condition_notes', 'pressure_psi_drop', 'relative_humidity_percent', 'relative_humidity_drop_percent', 'wind_speed_min_m_s', 'wind_speed_max_m_s', 'air_temp_c_drop', 'densiometer_d1_num_covered', 'd1_n', 'd1_s', 'd1_e', 'd1_w', 'd1_percent_cover', 'densiometer_d2_num_covered', 'd2_n', 'd2_s', 'd2_e', 'd2_w', 'd2_percent_cover', 'depth_of_water_from_d2_cm', 'percent_vegetation_cover', 'vegetation_notes', 'secchi_depth_cm', 'survey_id_right', 'visit_id', 'date', 'survey_time', 'campaign', 'visit_status', 'comments_visit', 'visit_id_right', 'site_id', 'site', 'utm_zone', 'utme', 'utmn', 'area_sqr_m', 'site_code', 'elevation_m', 'depth_m', 'topo', 'wilderness', 'site_comments', 'site_id_right', 'region_id', 'region', 'region_id_right', 'country_id', 'location_id', 'country_name', 'country_id_right', 'iso_country_code']</code></pre>
 </div>
 </div>
 <p>Hooray! Also yikes, that’s a lot of columns! I am starting to see why we store all these in seperate tables!</p>
@@ -993,7 +993,7 @@ Joining with country ... done.</code></pre>
 </div>
 </div>
 <div style="text-align: center;">
-<p><a href="02_data_discovery.html">Previous Tutorial: Data Discovery</a> | <a href="04_data_workflow.html">Next Tutorial: Data Workflow</a></p>
+<p><a href="02_data_discovery.html">&lt;- 2. Data Discovery</a> | <a href="04_data_workflow.html">4. Data Workflow -&gt;</a></p>
 </div>
 
 
