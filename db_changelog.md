@@ -7,6 +7,20 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2024-11-07
+
+### Changed
+
+- qpcr_bd_results -> bd_qpcr_results
+- location -> country
+  - location.location -> country.country_name
+- survey
+  - survey.percent_vegetation_cover -> survey.vegetation_cover_percent
+  - survey.percent_cloud_cover coalesced with survey.cloud_cover_percent and dropped
+  
+### Added
+- country.iso_country_code
+
 ## 2024-10-31
 
 ### Changed
