@@ -13,7 +13,7 @@ format:
       - left=30mm
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 librarian::shelf(reticulate)
 # use_python("/home/cob/miniconda3/envs/ribbitr/bin/python")
 use_condaenv("ribbitr", required = TRUE)
@@ -25,11 +25,10 @@ use_condaenv("ribbitr", required = TRUE)
 # Motivation
 - Download or "pull" data from the database to our local machine
 - Pre- select and filter to data of interest
-- Understand how different data tables relate to one another, and how to efficiently join them
 
 ::: {.panel-tabset}
 
-# R Data Pulling
+# R
 Let's set up our environment to get ready to pull data.
 
 ## Load packages
@@ -43,7 +42,7 @@ librarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
 
 ```{r}
 # establish database connection
-dbcon = hopToDB("ribbitr")
+dbcon <- hopToDB("ribbitr")
 ```
 
 ## Load metadata
@@ -51,11 +50,11 @@ We recommend always loading the column metadata (and perhaps the table metadata)
 
 ```{r}
 # load table "all_tables" from schema "public"
-mdt = tbl(dbcon, Id("public", "all_tables")) %>%
+mdt <- tbl(dbcon, Id("public", "all_tables")) %>%
   collect()
 
 # load table "all_columns" from schema "public", filtering to schema "survey_data"
-mdc = tbl(dbcon, Id("public", "all_columns")) %>%
+mdc <- tbl(dbcon, Id("public", "all_columns")) %>%
   filter(table_schema == "survey_data") %>%
   collect()
 ```
@@ -65,7 +64,7 @@ Let's construct our first data query, building from the previous tutorial.
 
 ```{r}
 # lazy table and collect
-db_ves = tbl(dbcon, Id("survey_data", "ves")) %>%
+db_ves <- tbl(dbcon, Id("survey_data", "ves")) %>%
   collect()
 ```
 
@@ -73,7 +72,7 @@ Great, that was easy! But what if we don't need all that data? Suppose we are on
 
 ```{r}
 # lazy table, select, and collect
-db_ves = tbl(dbcon, Id("survey_data", "ves")) %>%
+db_ves <- tbl(dbcon, Id("survey_data", "ves")) %>%
   select(species_ves,
          count_ves,
          life_stage,
@@ -86,7 +85,7 @@ And perhaps we are only interested in adults, in which case we can also `dplyr::
 
 ```{r}
 # lazy table select, filter, and collect all in one
-db_ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
+db_ves_adult <- tbl(dbcon, Id("survey_data", "ves")) %>%
   select(species_ves,
          count_ves,
          life_stage,
@@ -108,7 +107,7 @@ But if we want to see the SQL, we can! Let's take a closer look at the lazy tabl
 
 ```{r}
 # lazy table only (not collected)
-ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
+ves_adult <- tbl(dbcon, Id("survey_data", "ves")) %>%
   select(species_ves,
          count_ves,
          life_stage,
@@ -124,7 +123,7 @@ The `dbplyr::sql_render()` function converts our lazy table "shopping list" into
 
 ```{r}
 # execute SQL statement and return results
-db_ves_adult_sql = dbGetQuery(dbcon, ves_adult_q)
+db_ves_adult_sql <- dbGetQuery(dbcon, ves_adult_q)
 
 # preview table
 head(db_ves_adult_sql)
@@ -133,133 +132,6 @@ On close inspection we see that this is identical to the db_ves_adult_sql above.
 
 We will stick with the dplyr/dbplyr methods for the rest of this tutorial, but feel free to integrate this with your curiousity and/or knowledge of SQL as we go forward.
 
-## Joins
-"This is all good and well, but I only want data from Brazil... and there is no country information in this table! How do I connect with and filter by country?"
-
-Recall that our database is not just a bunch of tables, it is a bunch of tables *with relationships*. For example, we can see that our VES table (`db_ves_adult`) has a column named `survey_id`. Taking a closer look at the column metadata (`mdc`), the `survey` table *also* has a column named `survey_id`. This common column is **key** to connecting our data between tables.
-
-### Understanding Keys
-
-The concept of key columns or "keys" in database tables is used to help organize and communicate the relationships we want to establish between tables. There are several types of keys, here we will introduce 3:
-
-- **Primary Key** *(pk or pkey)* – a column which is a unique identifier for each record (row) in a database table, ensuring that each record can be uniquely distinguished from all others in the table. Ideally a single column, often an ID
-- **Natural Key** *(nk or nkey)* – A meaningful column (or set of columns) in a table which “naturally” and uniquely constrains all other columns. Often multiple columns, used to collectively define an ID column to be used as a primary key.
-- **Foreign Key** *(fk or fkey)* – a column in one table which refers to the primary key in another table, establishing an asymmetric relationship between the two tables.
-
-When we pull a data table from the database, it is often not so obvious which columns are or could be key columns, and which type of key. Luckily, we have of column metadata to help us keep track of this! Check out the `key_type` and `natural_key` columns for the survey table:
-
-```{r}
-ves_metadata = mdc %>%
-  select(table_name,
-         column_name,
-         key_type,
-         natural_key) %>%
-  filter(table_name == "ves")
-
-view(ves_metadata)
-```
-
-We can see here that `ves_id` is the primary key (ie. unique, non-null row identifier) for the ves table (`ves_id` is also the only natural key for this table). We also see that column `survey_id` is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there another way?
-
-```{r}
-## ribbitrrr key functions
-
-# primary key for ves table
-tbl_pkey("ves", mdc)
-
-# natural key for ves table
-tbl_nkey("ves", mdc)
-
-# foreign key for ves table
-tbl_fkey("ves", mdc)
-
-# all unique key columns for ves table
-tbl_keys("ves", mdc)
-
-```
-
-Notice that we passed the column metadata to these functions, to help us automate this otherwise tedious task.
-
-### Joining manually by keys
-
-We can use these key columns, and what we know about the structure of our database, to join related tables. For example:
-
-```{r}
-# lazy table of ves
-db_ves = tbl(dbcon, Id("survey_data", "ves"))
-
-# lazy table of survey
-db_survey = tbl(dbcon, Id("survey_data", "survey"))
-
-db_ves_survey = db_ves %>%
-  left_join(db_survey, by="survey_id")
-
-# check columns
-colnames(db_ves_survey)
-```
-We see that the columns of `db_ves_survey` correspond to the union of those from both the ves and survey tables. More importantly, the rows are lined up using `survey_id` as the key "join by" column. You could also substitute this with `by = tbl_fkey("ves", mdc)`.
-
-In order to join the VES data with country, we will have to do several, recursive joins to connect the tables of... *(consults schema diagram)*... survey, visit, site, region, and country! Is there another way?
-
-## Links, Chains, Automated Joins
-We developed some functions to help us avoid the tedium of consulting the database schema diagram or column metadata. The workflow for linking tables one at a time works like this:
-
-```{r}
-# create a link object for table ves: "which tables are 1 step away"
-link_ves = tbl_link("ves", mdc)
-
-# join tables in link object
-db_ves_survey = tbl_join(dbcon, link_ves, columns = "all")
-
-# check columns
-colnames(db_ves_survey)
-```
-Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there another way?
-
-The workflow for linking tables recursively works like this:
-
-```{r}
-# create a chain (or recusive link) object for table ves: "which tables are any number of steps away"
-chain_ves = tbl_chain("ves", mdc)
-
-# join tables in link object
-db_ves_survey = tbl_join(dbcon, chain_ves, columns = "all")
-
-# check columns
-colnames(db_ves_survey)
-```
-Hooray! Also yikes, that's a lot of columns! I am starting to see why we store all these in seperate tables!
-
-Let's use the chain workflow to join only the data we want, to filter to Brazil data.
-
-```{r}
-# lazy table, select, filter
-db_ves_adult = tbl(dbcon, Id("survey_data", "ves")) %>%
-  select(species_ves,
-         count_ves,
-         life_stage,
-         sex,
-         survey_id) %>%
-  filter(life_stage == "adult")
-
-# create chain object
-chain_ves = tbl_chain("ves", mdc)
-
-# join recursively, specifying desired columns, filter, collect
-db_ves_adult_final = tbl_join(dbcon, chain_ves, tbl = db_ves_adult, columns = c("country_name")) %>%
-  filter(country_name == "brazil")
-
-# pull selected, filtered, joined data
-data_ves_adult_final = db_ves_adult_final %>%
-  collect()
-
-```
-
-A few differences here:
-
-- We provided our pre-selected and filtered dv_ves_adult table to the join function with `tbl = db_ves_adult`, rather than having it pull all the data.
-- We specified any additional columns to include with `columns = c("country_name")`, in addition to any key columns (included by default). The result is much less columns, only those we want.
-
 ## Disconnect
 
 ```{r}
@@ -267,18 +139,16 @@ dbDisconnect(dbcon)
 ```
 
 ## Also try:
-- Run `?tbl_chain` and `?tbl_join` to Learn more about other possible parameters to pass to these functions
 - Check out the SQL code for your last query with:
 
 ```{r, eval=FALSE}
 sql_render(db_ves_adult_final)
 ```
 
-# Python Data Pulling
+# Python
 Let's set up our environment to get ready to pull data.
 
 ## Load packages
-For the second half of this tutorial, you will need to download the [db_access.py](https://github.com/RIBBiTR-BII/ribbitr-data-access/blob/main/database_tutorials/db_access.py) script and save it alongside your `dbconfig.py` file. This script will provide us with some useful functions for easily pulling data.
 
 ```{python, message=FALSE}
 # minimal packages for RIBBiTR DB data discovery
@@ -286,7 +156,6 @@ import ibis
 from ibis import _
 import pandas as pd
 import dbconfig
-import db_access as db
 ```
 
 ## Establish database connection
@@ -386,131 +255,6 @@ ves_adult.compile()
 
 ```
 The `ibis.compile()` function converts our lazy table "shopping list" into an SQL script. If we want we can revise with this script, and even send it to the database manually using dedicated python - SQL packages such as psycopg2 or SQLAlchemy.
-
-## Joins
-"This is all good and well, but I only want data from Brazil... and there is no country information in this table! How do I connect with and filter by country?"
-
-Recall that our database is not just a bunch of tables, it is a bunch of tables *with relationships*. For example, we can see that our VES table (`db_ves_adult`) has a column named `survey_id`. Taking a closer look at the column metadata (`mdc`), the `survey` table *also* has a column named `survey_id`. This common column is **key** to connecting our data between tables.
-
-### Understanding Keys
-
-The concept of key columns or "keys" in database tables is used to help organize and communicate the relationships we want to establish between tables. There are several types of keys, here we will introduce 3:
-
-- **Primary Key** *(pk or pkey)* – a column which is a unique identifier for each record (row) in a database table, ensuring that each record can be uniquely distinguished from all others in the table. Ideally a single column, often an ID
-- **Natural Key** *(nk or nkey)* – A meaningful column (or set of columns) in a table which “naturally” and uniquely constrains all other columns. Often multiple columns, used to collectively define an ID column to be used as a primary key.
-- **Foreign Key** *(fk or fkey)* – a column in one table which refers to the primary key in another table, establishing an asymmetric relationship between the two tables.
-
-When we pull a data table from the database, it is often not so obvious which columns are or could be key columns, and which type of key. Luckily, we have of column metadata to help us keep track of this! Check out the `key_type` and `natural_key` columns for the survey table:
-
-```{python}
-ves_metadata = mdc[(mdc['table_name'] == 'ves')][['table_name', 'column_name', 'key_type', 'natural_key']]
-
-print(ves_metadata)
-```
-
-We can see here that `ves_id` is the primary key (ie. unique, non-null row identifier) for the ves table (`ves_id` is also the only natural key for this table). We also see that column `survey_id` is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there not a better way?
-
-```{python}
-## data_access key functions
-
-# primary key for ves table
-db.tbl_pkey("ves", mdc)
-
-# natural key for ves table
-db.tbl_nkey("ves", mdc)
-
-# foreign key for ves table
-db.tbl_fkey("ves", mdc)
-
-# all unique key columns for ves table
-db.tbl_keys("ves", mdc)
-
-```
-
-Notice that we passed the column metadata to these functions, to help us automate this otherwise tedious task.
-
-### Joining manually by keys
-
-We can use these key columns, and what we know about the structure of our database, to join related tables. For example:
-
-```{python}
-# ves lazy table
-db_ves = dbcon.table(database="survey_data", name="ves")
-# survey lazy table
-db_survey = dbcon.table(database="survey_data", name="survey")
-# joined lazy table
-db_ves_survey = db_ves.left_join(db_survey, "survey_id")
-
-# check columns
-db_ves_survey.columns
-```
-We see that the columns of `db_ves_survey` correspond to the union of those from both the ves and survey tables. More importantly, the rows are lined up using `survey_id` as the key "join by" column. You could also substitute this with `tbl_fkey("ves", mdc)`.
-
-In order to join the VES data with country, we will have to do several, recursive joins to connect the tables of... *(consults schema diagram)*... survey, visit, site, region, and country! Is there not a better way?
-
-## Links, Chains, Automated Joins
-We developed some functions to help us avoid the tedium of consulting the database schema diagram or column metadata. The workflow for linking tables one at a time works like this:
-
-```{python}
-# create a link object for table ves: "which tables are 1 step away"
-link_ves = db.tbl_link("ves", mdc)
-
-# join tables in link object
-db_ves_survey = db.tbl_join(dbcon, link_ves, columns="all")
-
-# check columns
-db_ves_survey.columns
-```
-Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there not a better way?
-
-The workflow for linking tables recursively works like this:
-
-```{python}
-# create a chain (or recusive link) object for table ves: "which tables are any number of steps away"
-chain_ves = db.tbl_chain("ves", mdc)
-
-# join tables in link object
-db_ves_survey = db.tbl_join(dbcon, chain_ves, columns = "all")
-
-# check columns
-db_ves_survey.columns
-```
-Hooray! Also yikes, that's a lot of columns! I am starting to see why we store all these in seperate tables!
-
-Let's use the chain workflow to join only the data we want, to filter to Brazil data.
-
-```{python}
-# lazy table, select, filter
-db_ves_adult = (
-  dbcon.table(database="survey_data", name="ves")
-  .select([
-    'species_ves',
-    'count_ves',
-    'life_stage',
-    'sex',
-    'survey_id'
-    ])
-  .filter(_.life_stage == 'adult')
-  )
-
-# create chain object
-chain_ves = db.tbl_chain("ves", mdc)
-
-# join recursively, providing selected and filtered table
-db_ves_adult_final = (
-  db.tbl_join(dbcon, chain_ves, tbl=db_ves_adult)
-  .filter(_.country_name == 'brazil')
-  )
-
-# pull selected, filtered, joined data
-data_ves_adult_final = db_ves_adult_final.to_pandas()
-
-```
-
-A few differences here:
-
-- We provided our pre-selected and filtered `dv_ves_adult` table to the join function with `tbl = db_ves_adult`, rather than having it pull all the data.
-- We specified any additional columns to include with `columns = c("country_name)`, in addition to any key columns (included by default). The result is much less columns, only those we want.
 
 ## Disconnect
 ```{python}

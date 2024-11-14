@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-11-11">
+<meta name="dcterms.date" content="2024-11-14">
 
 <title>3. Data Pulling – RIBBiTR Data Access</title>
 <style>
@@ -169,11 +169,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/04_data_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Data Workflow</span></a>
-  </div>
-</li>
+ <span class="menu-text">./tutorial_series/04_data_workflow.qmd</span>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -187,13 +184,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
+  <a href=".././resources/schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Schema Diagram: survey_data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../db_changelog.html" class="sidebar-item-text sidebar-link">
+  <a href="../resources/db_changelog.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
@@ -252,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 11, 2024</p>
+      <p class="date">November 14, 2024</p>
     </div>
   </div>
   
@@ -270,10 +267,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Download or “pull” data from the database to our local machine</li>
 <li>Pre- select and filter to data of interest</li>
-<li>Understand how different data tables relate to one another, and how to efficiently join them</li>
 </ul>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R Data Pulling</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python Data Pulling</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Let’s set up our environment to get ready to pull data.</p>
@@ -288,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="establish-database-connection">Establish database connection</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">=</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">&lt;-</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Connecting to database... Success!</code></pre>
 </div>
@@ -299,11 +295,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We recommend always loading the column metadata (and perhaps the table metadata) along with any data you are pulling. Not only will this give you a quick reference to identify what the data represent, but it will also allow us to automate some data pulling processes (more on that later).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_tables" from schema "public"</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_columns" from schema "public", filtering to schema "survey_data"</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_columns"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_columns"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(table_schema <span class="sc">==</span> <span class="st">"survey_data"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -313,13 +309,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Let’s construct our first data query, building from the previous tutorial.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table and collect</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Great, that was easy! But what if we don’t need all that data? Suppose we are only interested in certain columns? We can <code>dplyr::select()</code> for specific columns to avoid pulling unnecessary data:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table, select, and collect</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species_ves,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>         count_ves,</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
@@ -330,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>And perhaps we are only interested in adults, in which case we can also <code>dplyr::filter()</code> our table to desired rows before collecting:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table select, filter, and collect all in one</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species_ves,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         count_ves,</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
@@ -361,7 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>But if we want to see the SQL, we can! Let’s take a closer look at the lazy table for our last query (dropping the <code>collect()</code> statement):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table only (not collected)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ves_adult <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ves_adult <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species_ves,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>         count_ves,</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
@@ -380,7 +376,7 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <p>The <code>dbplyr::sql_render()</code> function converts our lazy table “shopping list” into an SQL script. If we want we can interact with this script, and even send it to the database manually using <code>DBI::dbGetQuery()</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># execute SQL statement and return results</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult_sql <span class="ot">=</span> <span class="fu">dbGetQuery</span>(dbcon, ves_adult_q)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult_sql <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(dbcon, ves_adult_q)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># preview table</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(db_ves_adult_sql)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -404,282 +400,19 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <p>On close inspection we see that this is identical to the db_ves_adult_sql above. Now you have two ways to access the same data!</p>
 <p>We will stick with the dplyr/dbplyr methods for the rest of this tutorial, but feel free to integrate this with your curiousity and/or knowledge of SQL as we go forward.</p>
 </section>
-<section id="joins" class="level2">
-<h2 class="anchored" data-anchor-id="joins">Joins</h2>
-<p>“This is all good and well, but I only want data from Brazil… and there is no country information in this table! How do I connect with and filter by country?”</p>
-<p>Recall that our database is not just a bunch of tables, it is a bunch of tables <em>with relationships</em>. For example, we can see that our VES table (<code>db_ves_adult</code>) has a column named <code>survey_id</code>. Taking a closer look at the column metadata (<code>mdc</code>), the <code>survey</code> table <em>also</em> has a column named <code>survey_id</code>. This common column is <strong>key</strong> to connecting our data between tables.</p>
-<section id="understanding-keys" class="level3">
-<h3 class="anchored" data-anchor-id="understanding-keys">Understanding Keys</h3>
-<p>The concept of key columns or “keys” in database tables is used to help organize and communicate the relationships we want to establish between tables. There are several types of keys, here we will introduce 3:</p>
-<ul>
-<li><strong>Primary Key</strong> <em>(pk or pkey)</em> – a column which is a unique identifier for each record (row) in a database table, ensuring that each record can be uniquely distinguished from all others in the table. Ideally a single column, often an ID</li>
-<li><strong>Natural Key</strong> <em>(nk or nkey)</em> – A meaningful column (or set of columns) in a table which “naturally” and uniquely constrains all other columns. Often multiple columns, used to collectively define an ID column to be used as a primary key.</li>
-<li><strong>Foreign Key</strong> <em>(fk or fkey)</em> – a column in one table which refers to the primary key in another table, establishing an asymmetric relationship between the two tables.</li>
-</ul>
-<p>When we pull a data table from the database, it is often not so obvious which columns are or could be key columns, and which type of key. Luckily, we have of column metadata to help us keep track of this! Check out the <code>key_type</code> and <code>natural_key</code> columns for the survey table:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ves_metadata <span class="ot">=</span> mdc <span class="sc">%&gt;%</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(table_name,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>         column_name,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>         key_type,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>         natural_key) <span class="sc">%&gt;%</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(table_name <span class="sc">==</span> <span class="st">"ves"</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(ves_metadata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>We can see here that <code>ves_id</code> is the primary key (ie. unique, non-null row identifier) for the ves table (<code>ves_id</code> is also the only natural key for this table). We also see that column <code>survey_id</code> is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there another way?</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ribbitrrr key functions</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># primary key for ves table</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_pkey</span>(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "ves_id"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># natural key for ves table</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_nkey</span>(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "ves_id"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># foreign key for ves table</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_fkey</span>(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "survey_id"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all unique key columns for ves table</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_keys</span>(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "ves_id"    "survey_id"</code></pre>
-</div>
-</div>
-<p>Notice that we passed the column metadata to these functions, to help us automate this otherwise tedious task.</p>
-</section>
-<section id="joining-manually-by-keys" class="level3">
-<h3 class="anchored" data-anchor-id="joining-manually-by-keys">Joining manually by keys</h3>
-<p>We can use these key columns, and what we know about the structure of our database, to join related tables. For example:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table of ves</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>))</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table of survey</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>db_survey <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"survey"</span>))</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>db_ves_survey <span class="ot">=</span> db_ves <span class="sc">%&gt;%</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_survey, <span class="at">by=</span><span class="st">"survey_id"</span>)</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_ves_survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "species_ves"                    "count_ves"                     
- [3] "detection_location"             "microhab"                      
- [5] "life_stage"                     "sex"                           
- [7] "comments_ves"                   "microhab_moredetail"           
- [9] "observer_ves"                   "visual_animal_state"           
-[11] "ves_id"                         "survey_id"                     
-[13] "start_time"                     "end_time"                      
-[15] "detection_type"                 "duration_minutes"              
-[17] "observers_survey"               "wind_speed_m_s"                
-[19] "air_temp_c"                     "water_temp_c"                  
-[21] "p_h"                            "tds_ppm"                       
-[23] "comments_survey"                "wind"                          
-[25] "sky"                            "air_time"                      
-[27] "water_time"                     "fish"                          
-[29] "description"                    "survey_quality"                
-[31] "transect"                       "number_observers"              
-[33] "samp_loc"                       "pressure_psi"                  
-[35] "relative_humidty_percent"       "dissolved_o2_percent"          
-[37] "salinity_ppt"                   "cloud_cover_percent"           
-[39] "precip"                         "soil_humidity_m3m3"            
-[41] "wind_speed_scale"               "precipitation_during_visit"    
-[43] "precipitation_last_48_h"        "temperature_last_48_h"         
-[45] "percent_cloud_cover"            "weather_condition_notes"       
-[47] "pressure_psi_drop"              "relative_humidity_percent"     
-[49] "relative_humidity_drop_percent" "wind_speed_min_m_s"            
-[51] "wind_speed_max_m_s"             "air_temp_c_drop"               
-[53] "densiometer_d1_num_covered"     "d1_n"                          
-[55] "d1_s"                           "d1_e"                          
-[57] "d1_w"                           "d1_percent_cover"              
-[59] "densiometer_d2_num_covered"     "d2_n"                          
-[61] "d2_s"                           "d2_e"                          
-[63] "d2_w"                           "d2_percent_cover"              
-[65] "depth_of_water_from_d2_cm"      "percent_vegetation_cover"      
-[67] "vegetation_notes"               "secchi_depth_cm"               
-[69] "visit_id"                      </code></pre>
-</div>
-</div>
-<p>We see that the columns of <code>db_ves_survey</code> correspond to the union of those from both the ves and survey tables. More importantly, the rows are lined up using <code>survey_id</code> as the key “join by” column. You could also substitute this with <code>by = tbl_fkey("ves", mdc)</code>.</p>
-<p>In order to join the VES data with country, we will have to do several, recursive joins to connect the tables of… <em>(consults schema diagram)</em>… survey, visit, site, region, and country! Is there another way?</p>
-</section>
-</section>
-<section id="links-chains-automated-joins" class="level2">
-<h2 class="anchored" data-anchor-id="links-chains-automated-joins">Links, Chains, Automated Joins</h2>
-<p>We developed some functions to help us avoid the tedium of consulting the database schema diagram or column metadata. The workflow for linking tables one at a time works like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a link object for table ves: "which tables are 1 step away"</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>link_ves <span class="ot">=</span> <span class="fu">tbl_link</span>(<span class="st">"ves"</span>, mdc)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># join tables in link object</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>db_ves_survey <span class="ot">=</span> <span class="fu">tbl_join</span>(dbcon, link_ves, <span class="at">columns =</span> <span class="st">"all"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Pulling ves ... done.
-Joining with survey ... done.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_ves_survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "species_ves"                    "count_ves"                     
- [3] "detection_location"             "microhab"                      
- [5] "life_stage"                     "sex"                           
- [7] "comments_ves"                   "microhab_moredetail"           
- [9] "observer_ves"                   "visual_animal_state"           
-[11] "ves_id"                         "survey_id"                     
-[13] "start_time"                     "end_time"                      
-[15] "detection_type"                 "duration_minutes"              
-[17] "observers_survey"               "wind_speed_m_s"                
-[19] "air_temp_c"                     "water_temp_c"                  
-[21] "p_h"                            "tds_ppm"                       
-[23] "comments_survey"                "wind"                          
-[25] "sky"                            "air_time"                      
-[27] "water_time"                     "fish"                          
-[29] "description"                    "survey_quality"                
-[31] "transect"                       "number_observers"              
-[33] "samp_loc"                       "pressure_psi"                  
-[35] "relative_humidty_percent"       "dissolved_o2_percent"          
-[37] "salinity_ppt"                   "cloud_cover_percent"           
-[39] "precip"                         "soil_humidity_m3m3"            
-[41] "wind_speed_scale"               "precipitation_during_visit"    
-[43] "precipitation_last_48_h"        "temperature_last_48_h"         
-[45] "percent_cloud_cover"            "weather_condition_notes"       
-[47] "pressure_psi_drop"              "relative_humidity_percent"     
-[49] "relative_humidity_drop_percent" "wind_speed_min_m_s"            
-[51] "wind_speed_max_m_s"             "air_temp_c_drop"               
-[53] "densiometer_d1_num_covered"     "d1_n"                          
-[55] "d1_s"                           "d1_e"                          
-[57] "d1_w"                           "d1_percent_cover"              
-[59] "densiometer_d2_num_covered"     "d2_n"                          
-[61] "d2_s"                           "d2_e"                          
-[63] "d2_w"                           "d2_percent_cover"              
-[65] "depth_of_water_from_d2_cm"      "percent_vegetation_cover"      
-[67] "vegetation_notes"               "secchi_depth_cm"               
-[69] "visit_id"                      </code></pre>
-</div>
-</div>
-<p>Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there another way?</p>
-<p>The workflow for linking tables recursively works like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a chain (or recusive link) object for table ves: "which tables are any number of steps away"</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>chain_ves <span class="ot">=</span> <span class="fu">tbl_chain</span>(<span class="st">"ves"</span>, mdc)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># join tables in link object</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>db_ves_survey <span class="ot">=</span> <span class="fu">tbl_join</span>(dbcon, chain_ves, <span class="at">columns =</span> <span class="st">"all"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Pulling ves ... done.
-Joining with survey ... done.
-Joining with visit ... done.
-Joining with site ... done.
-Joining with region ... done.
-Joining with country ... done.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_ves_survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "species_ves"                    "count_ves"                     
- [3] "detection_location"             "microhab"                      
- [5] "life_stage"                     "sex"                           
- [7] "comments_ves"                   "microhab_moredetail"           
- [9] "observer_ves"                   "visual_animal_state"           
-[11] "ves_id"                         "survey_id"                     
-[13] "start_time"                     "end_time"                      
-[15] "detection_type"                 "duration_minutes"              
-[17] "observers_survey"               "wind_speed_m_s"                
-[19] "air_temp_c"                     "water_temp_c"                  
-[21] "p_h"                            "tds_ppm"                       
-[23] "comments_survey"                "wind"                          
-[25] "sky"                            "air_time"                      
-[27] "water_time"                     "fish"                          
-[29] "description"                    "survey_quality"                
-[31] "transect"                       "number_observers"              
-[33] "samp_loc"                       "pressure_psi"                  
-[35] "relative_humidty_percent"       "dissolved_o2_percent"          
-[37] "salinity_ppt"                   "cloud_cover_percent"           
-[39] "precip"                         "soil_humidity_m3m3"            
-[41] "wind_speed_scale"               "precipitation_during_visit"    
-[43] "precipitation_last_48_h"        "temperature_last_48_h"         
-[45] "percent_cloud_cover"            "weather_condition_notes"       
-[47] "pressure_psi_drop"              "relative_humidity_percent"     
-[49] "relative_humidity_drop_percent" "wind_speed_min_m_s"            
-[51] "wind_speed_max_m_s"             "air_temp_c_drop"               
-[53] "densiometer_d1_num_covered"     "d1_n"                          
-[55] "d1_s"                           "d1_e"                          
-[57] "d1_w"                           "d1_percent_cover"              
-[59] "densiometer_d2_num_covered"     "d2_n"                          
-[61] "d2_s"                           "d2_e"                          
-[63] "d2_w"                           "d2_percent_cover"              
-[65] "depth_of_water_from_d2_cm"      "percent_vegetation_cover"      
-[67] "vegetation_notes"               "secchi_depth_cm"               
-[69] "visit_id"                       "date"                          
-[71] "survey_time"                    "campaign"                      
-[73] "visit_status"                   "comments_visit"                
-[75] "site_id"                        "site"                          
-[77] "utm_zone"                       "utme"                          
-[79] "utmn"                           "area_sqr_m"                    
-[81] "site_code"                      "elevation_m"                   
-[83] "depth_m"                        "topo"                          
-[85] "wilderness"                     "site_comments"                 
-[87] "region_id"                      "region"                        
-[89] "country_id"                     "location_id"                   
-[91] "country_name"                   "iso_country_code"              </code></pre>
-</div>
-</div>
-<p>Hooray! Also yikes, that’s a lot of columns! I am starting to see why we store all these in seperate tables!</p>
-<p>Let’s use the chain workflow to join only the data we want, to filter to Brazil data.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table, select, filter</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species_ves,</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>         count_ves,</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>         sex,</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>         survey_id) <span class="sc">%&gt;%</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(life_stage <span class="sc">==</span> <span class="st">"adult"</span>)</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create chain object</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>chain_ves <span class="ot">=</span> <span class="fu">tbl_chain</span>(<span class="st">"ves"</span>, mdc)</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># join recursively, specifying desired columns, filter, collect</span></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>db_ves_adult_final <span class="ot">=</span> <span class="fu">tbl_join</span>(dbcon, chain_ves, <span class="at">tbl =</span> db_ves_adult, <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">"country_name"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country_name <span class="sc">==</span> <span class="st">"brazil"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Joining with survey ... done.
-Joining with visit ... done.
-Joining with site ... done.
-Joining with region ... done.
-Joining with country ... done.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull selected, filtered, joined data</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>data_ves_adult_final <span class="ot">=</span> db_ves_adult_final <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>A few differences here:</p>
-<ul>
-<li>We provided our pre-selected and filtered dv_ves_adult table to the join function with <code>tbl = db_ves_adult</code>, rather than having it pull all the data.</li>
-<li>We specified any additional columns to include with <code>columns = c("country_name")</code>, in addition to any key columns (included by default). The result is much less columns, only those we want.</li>
-</ul>
-</section>
 <section id="disconnect" class="level2">
 <h2 class="anchored" data-anchor-id="disconnect">Disconnect</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="also-try" class="level2">
 <h2 class="anchored" data-anchor-id="also-try">Also try:</h2>
 <ul>
-<li>Run <code>?tbl_chain</code> and <code>?tbl_join</code> to Learn more about other possible parameters to pass to these functions</li>
 <li>Check out the SQL code for your last query with:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sql_render</span>(db_ves_adult_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sql_render</span>(db_ves_adult_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </div>
@@ -687,45 +420,43 @@ Joining with country ... done.</code></pre>
 <p>Let’s set up our environment to get ready to pull data.</p>
 <section id="load-packages-1" class="level2">
 <h2 class="anchored" data-anchor-id="load-packages-1">Load packages</h2>
-<p>For the second half of this tutorial, you will need to download the <a href="https://github.com/RIBBiTR-BII/ribbitr-data-access/blob/main/database_tutorials/db_access.py">db_access.py</a> script and save it alongside your <code>dbconfig.py</code> file. This script will provide us with some useful functions for easily pulling data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB data discovery</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ibis <span class="im">import</span> _</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> db_access <span class="im">as</span> db</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB data discovery</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ibis <span class="im">import</span> _</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="establish-database-connection-1" class="level2">
 <h2 class="anchored" data-anchor-id="establish-database-connection-1">Establish database connection</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-metadata-1" class="level2">
 <h2 class="anchored" data-anchor-id="load-metadata-1">Load metadata</h2>
 <p>We recommend always loading the column metadata (and perhaps the table metadata) along with any data you are pulling. Not only will this give you a quick reference to identify what the data represent, but it will also allow us to automate some data pulling processes (more on that later).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_tables" from schema "public"</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_columns" from schema "public", filtering to schema "survey_data"</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>mdc <span class="op">=</span> (</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"public"</span>, name<span class="op">=</span><span class="st">"all_columns"</span>)</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.table_schema <span class="op">==</span> <span class="st">'survey_data'</span>)</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_tables" from schema "public"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_columns" from schema "public", filtering to schema "survey_data"</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>mdc <span class="op">=</span> (</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"public"</span>, name<span class="op">=</span><span class="st">"all_columns"</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.table_schema <span class="op">==</span> <span class="st">'survey_data'</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="pulling-data-1" class="level2">
 <h2 class="anchored" data-anchor-id="pulling-data-1">Pulling data</h2>
 <p>Let’s construct our first data query, building from the previous tutorial.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table and collect</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>).to_pandas()</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>db_ves.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table and collect</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>).to_pandas()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>db_ves.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Index(['species_ves', 'count_ves', 'detection_location', 'microhab',
        'life_stage', 'sex', 'comments_ves', 'microhab_moredetail',
@@ -735,42 +466,42 @@ Joining with country ... done.</code></pre>
 </div>
 <p>Great, that was easy! But what if we don’t need all that data? Suppose we are only interested in certain columns? We can <code>ibis.select()</code> for specific columns to avoid pulling unnecessary data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table, select, and collect</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>db_ves_select <span class="op">=</span> (</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  .select([</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'survey_id'</span></span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  ])</span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>db_ves_select.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table, select, and collect</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>db_ves_select <span class="op">=</span> (</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  .select([</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'survey_id'</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  ])</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>db_ves_select.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Index(['species_ves', 'count_ves', 'life_stage', 'sex', 'survey_id'], dtype='object')</code></pre>
 </div>
 </div>
 <p>And perhaps we are only interested in adults, in which case we can also <code>ibis.filter()</code> our table to desired rows before collecting:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table select, filter, and collect all in one</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult <span class="op">=</span> (</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  .select([</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'survey_id'</span></span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  ])</span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.life_stage <span class="op">==</span> <span class="st">'adult'</span>)</span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
-<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a><span class="co"># preview table</span></span>
-<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>db_ves_adult.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table select, filter, and collect all in one</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult <span class="op">=</span> (</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  .select([</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'survey_id'</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  ])</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.life_stage <span class="op">==</span> <span class="st">'adult'</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co"># preview table</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>db_ves_adult.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              species_ves  ...                             survey_id
 0  colostethus_panamensis  ...  5ef5b5ea-dc62-4428-91d4-a55ba965ed47
@@ -789,195 +520,32 @@ Joining with country ... done.</code></pre>
 <p>“Wait a minute… I thought these data were encoded in SQL? Where is the SQL?” Turns out, the package <code>ibis</code> does all the heavy lifting for us, to convert our lazy table shopping lists into SQL code which is then run on the back end without us ever having to touch it.</p>
 <p>But if we want to see the SQL, we can! Let’s take a closer look at the lazy table for our last query (dropping the <code>to_pandas()</code> statement):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table only (not collected)</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>ves_adult <span class="op">=</span> (</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  .select([</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'survey_id'</span></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  ])</span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.life_stage <span class="op">==</span> <span class="st">'adult'</span>)</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co"># render sql from lazy table</span></span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>ves_adult.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table only (not collected)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>ves_adult <span class="op">=</span> (</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  .select([</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'survey_id'</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  ])</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.life_stage <span class="op">==</span> <span class="st">'adult'</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># render sql from lazy table</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>ves_adult.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'SELECT "t0"."species_ves", "t0"."count_ves", "t0"."life_stage", "t0"."sex", "t0"."survey_id" FROM "survey_data"."ves" AS "t0" WHERE "t0"."life_stage" = \'adult\''</code></pre>
 </div>
 </div>
 <p>The <code>ibis.compile()</code> function converts our lazy table “shopping list” into an SQL script. If we want we can revise with this script, and even send it to the database manually using dedicated python - SQL packages such as psycopg2 or SQLAlchemy.</p>
 </section>
-<section id="joins-1" class="level2">
-<h2 class="anchored" data-anchor-id="joins-1">Joins</h2>
-<p>“This is all good and well, but I only want data from Brazil… and there is no country information in this table! How do I connect with and filter by country?”</p>
-<p>Recall that our database is not just a bunch of tables, it is a bunch of tables <em>with relationships</em>. For example, we can see that our VES table (<code>db_ves_adult</code>) has a column named <code>survey_id</code>. Taking a closer look at the column metadata (<code>mdc</code>), the <code>survey</code> table <em>also</em> has a column named <code>survey_id</code>. This common column is <strong>key</strong> to connecting our data between tables.</p>
-<section id="understanding-keys-1" class="level3">
-<h3 class="anchored" data-anchor-id="understanding-keys-1">Understanding Keys</h3>
-<p>The concept of key columns or “keys” in database tables is used to help organize and communicate the relationships we want to establish between tables. There are several types of keys, here we will introduce 3:</p>
-<ul>
-<li><strong>Primary Key</strong> <em>(pk or pkey)</em> – a column which is a unique identifier for each record (row) in a database table, ensuring that each record can be uniquely distinguished from all others in the table. Ideally a single column, often an ID</li>
-<li><strong>Natural Key</strong> <em>(nk or nkey)</em> – A meaningful column (or set of columns) in a table which “naturally” and uniquely constrains all other columns. Often multiple columns, used to collectively define an ID column to be used as a primary key.</li>
-<li><strong>Foreign Key</strong> <em>(fk or fkey)</em> – a column in one table which refers to the primary key in another table, establishing an asymmetric relationship between the two tables.</li>
-</ul>
-<p>When we pull a data table from the database, it is often not so obvious which columns are or could be key columns, and which type of key. Luckily, we have of column metadata to help us keep track of this! Check out the <code>key_type</code> and <code>natural_key</code> columns for the survey table:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>ves_metadata <span class="op">=</span> mdc[(mdc[<span class="st">'table_name'</span>] <span class="op">==</span> <span class="st">'ves'</span>)][[<span class="st">'table_name'</span>, <span class="st">'column_name'</span>, <span class="st">'key_type'</span>, <span class="st">'natural_key'</span>]]</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ves_metadata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    table_name          column_name key_type natural_key
-98         ves               ves_id       PK        True
-124        ves  visual_animal_state     None       False
-326        ves         comments_ves     None       False
-331        ves            count_ves     None       False
-332        ves   detection_location     None       False
-333        ves           life_stage     None       False
-334        ves             microhab     None       False
-335        ves  microhab_moredetail     None       False
-336        ves         observer_ves     None       False
-337        ves                  sex     None       False
-338        ves          species_ves     None       False
-339        ves            survey_id       FK       False</code></pre>
-</div>
-</div>
-<p>We can see here that <code>ves_id</code> is the primary key (ie. unique, non-null row identifier) for the ves table (<code>ves_id</code> is also the only natural key for this table). We also see that column <code>survey_id</code> is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there not a better way?</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">## data_access key functions</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co"># primary key for ves table</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>db.tbl_pkey(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['ves_id']</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># natural key for ves table</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>db.tbl_nkey(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['ves_id']</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># foreign key for ves table</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>db.tbl_fkey(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['survey_id']</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all unique key columns for ves table</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>db.tbl_keys(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['survey_id', 'ves_id']</code></pre>
-</div>
-</div>
-<p>Notice that we passed the column metadata to these functions, to help us automate this otherwise tedious task.</p>
-</section>
-<section id="joining-manually-by-keys-1" class="level3">
-<h3 class="anchored" data-anchor-id="joining-manually-by-keys-1">Joining manually by keys</h3>
-<p>We can use these key columns, and what we know about the structure of our database, to join related tables. For example:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ves lazy table</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co"># survey lazy table</span></span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>db_survey <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"survey"</span>)</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="co"># joined lazy table</span></span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>db_ves_survey <span class="op">=</span> db_ves.left_join(db_survey, <span class="st">"survey_id"</span>)</span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>db_ves_survey.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'wind_speed_m_s', 'air_temp_c', 'water_temp_c', 'p_h', 'tds_ppm', 'comments_survey', 'wind', 'sky', 'air_time', 'water_time', 'fish', 'description', 'survey_quality', 'transect', 'number_observers', 'samp_loc', 'pressure_psi', 'relative_humidty_percent', 'dissolved_o2_percent', 'salinity_ppt', 'cloud_cover_percent', 'precip', 'soil_humidity_m3m3', 'wind_speed_scale', 'precipitation_during_visit', 'precipitation_last_48_h', 'temperature_last_48_h', 'percent_cloud_cover', 'weather_condition_notes', 'pressure_psi_drop', 'relative_humidity_percent', 'relative_humidity_drop_percent', 'wind_speed_min_m_s', 'wind_speed_max_m_s', 'air_temp_c_drop', 'densiometer_d1_num_covered', 'd1_n', 'd1_s', 'd1_e', 'd1_w', 'd1_percent_cover', 'densiometer_d2_num_covered', 'd2_n', 'd2_s', 'd2_e', 'd2_w', 'd2_percent_cover', 'depth_of_water_from_d2_cm', 'percent_vegetation_cover', 'vegetation_notes', 'secchi_depth_cm', 'survey_id_right', 'visit_id']</code></pre>
-</div>
-</div>
-<p>We see that the columns of <code>db_ves_survey</code> correspond to the union of those from both the ves and survey tables. More importantly, the rows are lined up using <code>survey_id</code> as the key “join by” column. You could also substitute this with <code>tbl_fkey("ves", mdc)</code>.</p>
-<p>In order to join the VES data with country, we will have to do several, recursive joins to connect the tables of… <em>(consults schema diagram)</em>… survey, visit, site, region, and country! Is there not a better way?</p>
-</section>
-</section>
-<section id="links-chains-automated-joins-1" class="level2">
-<h2 class="anchored" data-anchor-id="links-chains-automated-joins-1">Links, Chains, Automated Joins</h2>
-<p>We developed some functions to help us avoid the tedium of consulting the database schema diagram or column metadata. The workflow for linking tables one at a time works like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a link object for table ves: "which tables are 1 step away"</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>link_ves <span class="op">=</span> db.tbl_link(<span class="st">"ves"</span>, mdc)</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># join tables in link object</span></span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>db_ves_survey <span class="op">=</span> db.tbl_join(dbcon, link_ves, columns<span class="op">=</span><span class="st">"all"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Pulling ves ... done.
-Joining with survey ... done.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>db_ves_survey.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'wind_speed_m_s', 'air_temp_c', 'water_temp_c', 'p_h', 'tds_ppm', 'comments_survey', 'wind', 'sky', 'air_time', 'water_time', 'fish', 'description', 'survey_quality', 'transect', 'number_observers', 'samp_loc', 'pressure_psi', 'relative_humidty_percent', 'dissolved_o2_percent', 'salinity_ppt', 'cloud_cover_percent', 'precip', 'soil_humidity_m3m3', 'wind_speed_scale', 'precipitation_during_visit', 'precipitation_last_48_h', 'temperature_last_48_h', 'percent_cloud_cover', 'weather_condition_notes', 'pressure_psi_drop', 'relative_humidity_percent', 'relative_humidity_drop_percent', 'wind_speed_min_m_s', 'wind_speed_max_m_s', 'air_temp_c_drop', 'densiometer_d1_num_covered', 'd1_n', 'd1_s', 'd1_e', 'd1_w', 'd1_percent_cover', 'densiometer_d2_num_covered', 'd2_n', 'd2_s', 'd2_e', 'd2_w', 'd2_percent_cover', 'depth_of_water_from_d2_cm', 'percent_vegetation_cover', 'vegetation_notes', 'secchi_depth_cm', 'survey_id_right', 'visit_id']</code></pre>
-</div>
-</div>
-<p>Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there not a better way?</p>
-<p>The workflow for linking tables recursively works like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a chain (or recusive link) object for table ves: "which tables are any number of steps away"</span></span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>chain_ves <span class="op">=</span> db.tbl_chain(<span class="st">"ves"</span>, mdc)</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="co"># join tables in link object</span></span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>db_ves_survey <span class="op">=</span> db.tbl_join(dbcon, chain_ves, columns <span class="op">=</span> <span class="st">"all"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Pulling ves ... done.
-Joining with survey ... done.
-Joining with visit ... done.
-Joining with site ... done.
-Joining with region ... done.
-Joining with country ... done.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>db_ves_survey.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'wind_speed_m_s', 'air_temp_c', 'water_temp_c', 'p_h', 'tds_ppm', 'comments_survey', 'wind', 'sky', 'air_time', 'water_time', 'fish', 'description', 'survey_quality', 'transect', 'number_observers', 'samp_loc', 'pressure_psi', 'relative_humidty_percent', 'dissolved_o2_percent', 'salinity_ppt', 'cloud_cover_percent', 'precip', 'soil_humidity_m3m3', 'wind_speed_scale', 'precipitation_during_visit', 'precipitation_last_48_h', 'temperature_last_48_h', 'percent_cloud_cover', 'weather_condition_notes', 'pressure_psi_drop', 'relative_humidity_percent', 'relative_humidity_drop_percent', 'wind_speed_min_m_s', 'wind_speed_max_m_s', 'air_temp_c_drop', 'densiometer_d1_num_covered', 'd1_n', 'd1_s', 'd1_e', 'd1_w', 'd1_percent_cover', 'densiometer_d2_num_covered', 'd2_n', 'd2_s', 'd2_e', 'd2_w', 'd2_percent_cover', 'depth_of_water_from_d2_cm', 'percent_vegetation_cover', 'vegetation_notes', 'secchi_depth_cm', 'survey_id_right', 'visit_id', 'date', 'survey_time', 'campaign', 'visit_status', 'comments_visit', 'visit_id_right', 'site_id', 'site', 'utm_zone', 'utme', 'utmn', 'area_sqr_m', 'site_code', 'elevation_m', 'depth_m', 'topo', 'wilderness', 'site_comments', 'site_id_right', 'region_id', 'region', 'region_id_right', 'country_id', 'location_id', 'country_name', 'country_id_right', 'iso_country_code']</code></pre>
-</div>
-</div>
-<p>Hooray! Also yikes, that’s a lot of columns! I am starting to see why we store all these in seperate tables!</p>
-<p>Let’s use the chain workflow to join only the data we want, to filter to Brazil data.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table, select, filter</span></span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult <span class="op">=</span> (</span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  .select([</span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
-<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
-<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
-<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>
-<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'survey_id'</span></span>
-<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.life_stage <span class="op">==</span> <span class="st">'adult'</span>)</span>
-<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-14"><a href="#cb68-14" aria-hidden="true" tabindex="-1"></a><span class="co"># create chain object</span></span>
-<span id="cb68-15"><a href="#cb68-15" aria-hidden="true" tabindex="-1"></a>chain_ves <span class="op">=</span> db.tbl_chain(<span class="st">"ves"</span>, mdc)</span>
-<span id="cb68-16"><a href="#cb68-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-17"><a href="#cb68-17" aria-hidden="true" tabindex="-1"></a><span class="co"># join recursively, providing selected and filtered table</span></span>
-<span id="cb68-18"><a href="#cb68-18" aria-hidden="true" tabindex="-1"></a>db_ves_adult_final <span class="op">=</span> (</span>
-<span id="cb68-19"><a href="#cb68-19" aria-hidden="true" tabindex="-1"></a>  db.tbl_join(dbcon, chain_ves, tbl<span class="op">=</span>db_ves_adult)</span>
-<span id="cb68-20"><a href="#cb68-20" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.country_name <span class="op">==</span> <span class="st">'brazil'</span>)</span>
-<span id="cb68-21"><a href="#cb68-21" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Joining with survey ... done.
-Joining with visit ... done.
-Joining with site ... done.
-Joining with region ... done.
-Joining with country ... done.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pull selected, filtered, joined data</span></span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>data_ves_adult_final <span class="op">=</span> db_ves_adult_final.to_pandas()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>A few differences here:</p>
-<ul>
-<li>We provided our pre-selected and filtered <code>dv_ves_adult</code> table to the join function with <code>tbl = db_ves_adult</code>, rather than having it pull all the data.</li>
-<li>We specified any additional columns to include with <code>columns = c("country_name)</code>, in addition to any key columns (included by default). The result is much less columns, only those we want.</li>
-</ul>
-</section>
 <section id="disconnect-1" class="level2">
 <h2 class="anchored" data-anchor-id="disconnect-1">Disconnect</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># close connection</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># close connection</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="also-try-1" class="level2">
@@ -986,7 +554,7 @@ Joining with country ... done.</code></pre>
 <li>Check out the SQL code for your last query with:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>db_ves_adult_final.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>db_ves_adult_final.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </div>

@@ -13,7 +13,7 @@ format:
       - left=30mm
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 librarian::shelf(reticulate)
 # use_python("/home/cob/miniconda3/envs/ribbitr/bin/python")
 use_condaenv("ribbitr", required = TRUE)
@@ -27,26 +27,25 @@ use_condaenv("ribbitr", required = TRUE)
 
 ::: {.panel-tabset}
 
-# R Data Workflow
+# R
 Let's run through a realistic data scenario from the beginning.
 
 ## Setup
 
-These setup steps will all be familiar to you by now.
 ```{r, message=FALSE}
 # minimal packages for RIBBiTR DB data discovery
 librarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
 
 # establish database connection
-dbcon = hopToDB("ribbitr")
+dbcon <- hopToDB("ribbitr")
 
 # load table metadata
-mdt = tbl(dbcon, Id("public", "all_tables")) %>%
+mdt <- tbl(dbcon, Id("public", "all_tables")) %>%
   filter(table_schema == "survey_data") %>%
   collect()
 
 # load column metadata
-mdc = tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
+mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
   filter(table_schema == "survey_data") %>%
   collect()
 ```
@@ -57,42 +56,67 @@ Suppose we are interested in capture and Bd swab data. Specifically, we want to 
 
 Looking at the table metadata, the two observation tables with most of the data of interest are called "capture" and "bd_qpcr_results".
 
-#### Pull capture table
+#### Join with support tables, filter by date
 
 ```{r}
-# capture table, select, filter
-db_capture = tbl(dbcon, Id("survey_data", "capture")) %>%
+
+# pointers for all tables
+db_capture <- tbl(dbcon, Id("survey_data", "capture"))
+db_survey <- tbl(dbcon, Id("survey_data", "survey"))
+db_visit <- tbl(dbcon, Id("survey_data", "visit"))
+db_site <- tbl(dbcon, Id("survey_data", "site"))
+db_region <- tbl(dbcon, Id("survey_data", "region"))
+db_country <- tbl(dbcon, Id("survey_data", "country"))
+
+# join recursively
+db_capture_sup <- db_capture %>%
+  left_join(db_survey, by = "survey_id") %>%
+  left_join(db_visit, by = "visit_id") %>%
+  left_join(db_site, by = "site_id") %>%
+  left_join(db_region, by = "region_id") %>%
+  left_join(db_country, by = "country_id")
+
+```
+
+Or alternatively:
+
+```{r}
+
+# create chain object
+chain_capture <- tbl_chain("capture", mdc)
+
+# join recursively, filter by date
+db_capture_sup <- tbl_left_join(dbcon, chain_capture)
+
+```
+
+#### Select columns of interest, filter to date
+
+```{r}
+# capture table, select
+db_capture <- db_capture_sup %>%
   select(species_capture,
          body_temp_c,
          life_stage,
          sex,
          capture_animal_state,
          bd_swab_id,
-         survey_id)
-
-```
-
-#### Join with support tables, filter by date
-
-```{r}
-
-# create chain object
-chain_capture = tbl_chain("capture", mdc)
-
-# join recursively, filter by date
-db_capture_chain = tbl_join(dbcon, chain_capture, tbl = db_capture) %>%
+         survey_id,
+         site,
+         date,
+         country_name) %>%
   filter(date >= "2015-01-01")
-
 ```
 
 #### Join with Bd table
 ```{r}
-db_bd_results = tbl(dbcon, Id("survey_data", "bd_qpcr_results")) %>%
+db_bd_results <- tbl(dbcon, Id("survey_data", "bd_qpcr_results")) %>%
   select(bd_swab_id,
          detected,
          average_target_quant)
 
-db_capture_bd = db_capture_chain %>%
+# inner join to keep only captures with corresponding bd qpcr results
+db_capture_bd <- db_capture %>%
   inner_join(db_bd_results, by="bd_swab_id")
 ```
 
@@ -106,7 +130,7 @@ db_capture_bd %>%
   arrange(desc(row_count)) %>%
   collect()
 
-db_capture_bd_life = db_capture_bd %>%
+db_capture_bd_life <- db_capture_bd %>%
   filter(life_stage %in% c("juvenile",
                            "subadult",
                            "adult"),
@@ -118,18 +142,18 @@ db_capture_bd_life = db_capture_bd %>%
 
 ```{r}
 
-(spp_summary = db_capture_bd_life%>%
+(spp_summary <- db_capture_bd_life%>%
   select(species_capture) %>%
   group_by(species_capture) %>%
   summarise(sample_count = n()) %>%
   arrange(desc(sample_count)) %>%
   collect())
 
-(spp_list = spp_summary %>%
+(spp_list <- spp_summary %>%
   filter(sample_count >= 100) %>%
   pull(species_capture))
 
-db_capture_bd_life_spp = db_capture_bd_life %>%
+db_capture_bd_life_spp <- db_capture_bd_life %>%
   filter(species_capture %in% spp_list,
          !is.na(species_capture))
 
@@ -138,7 +162,7 @@ db_capture_bd_life_spp = db_capture_bd_life %>%
 
 ```{r}
 
-data_capture_bd_query = db_capture_bd_life_spp %>%
+data_capture_bd_query <- db_capture_bd_life_spp %>%
   collect()
 
 colnames(data_capture_bd_query)
@@ -155,12 +179,11 @@ These data are ready to be analyzed and visualized!
 dbDisconnect(dbcon)
 ```
 
-# Python Data Workflow
+# Python
 Let's run through a realistic data scenario from the beginning.
 
 ## Setup
 
-These setup steps will all be familiar to you by now.
 ```{python, message=FALSE}
 # minimal packages for RIBBiTR DB Workflow
 import ibis
@@ -189,12 +212,46 @@ Suppose we are interested in capture and Bd swab data. Specifically, we want to 
 
 Looking at the table metadata, the two observation tables with most of the data of interest are called "capture" and "bd_qpcr_results".
 
-#### Pull capture table
+#### Join with support tables, filter to date
+
+```{python}
+# Ponters for all tables
+db_capture = dbcon.table('capture', database='survey_data')
+db_survey = dbcon.table('survey', database='survey_data')
+db_visit = dbcon.table('visit', database='survey_data')
+db_site = dbcon.table('site', database='survey_data')
+db_region = dbcon.table('region', database='survey_data')
+db_country = dbcon.table('country', database='survey_data')
+
+# Recursive joins
+db_capture_sup = (
+    db_capture
+    .join(db_survey, db_capture.survey_id == db_survey.survey_id)
+    .join(db_visit, db_survey.visit_id == db_visit.visit_id)
+    .join(db_site, db_visit.site_id == db_site.site_id)
+    .join(db_region, db_site.region_id == db_region.region_id)
+    .join(db_country, db_region.country_id == db_country.country_id)
+)
+
+```
+
+Or alternatively:
+```{python}
+
+# create chain object
+chain_capture = db.tbl_chain("capture", mdc)
+
+# join recursively, filter by date
+db_capture_sub = db.tbl_join(dbcon, chain_capture, tbl=db_capture, join="left")
+
+```
+
+#### Select columns of interest, filter to date
 
 ```{python}
 # capture table, select, filter
 db_capture = (
-  dbcon.table(database="survey_data", name="capture")
+  db_capture_sub
   .select([
     'species_capture',
     'body_temp_c',
@@ -202,26 +259,16 @@ db_capture = (
     'sex',
     'capture_animal_state',
     'bd_swab_id',
-    'survey_id'
+    'survey_id',
+    'site',
+    'date',
+    'country_name',
     ])
+    .filter(_.date >= '2015-01-01')
   )
 
 ```
 
-#### Join with support tables, filter to date
-
-```{python}
-
-# create chain object
-chain_capture = db.tbl_chain("capture", mdc)
-
-# join recursively, filter by date
-db_capture_chain = (
-  db.tbl_join(dbcon, chain_capture, tbl=db_capture)
-  .filter(_.date >= '2015-01-01')
-  )
-
-```
 
 #### Join with Bd table
 ```{python}
@@ -235,10 +282,10 @@ db_bd_results = (
   ])
   )
 
-# join capture and bd tables
+# inner join to keep only captures with corresponding bd qpcr results
 db_capture_bd = (
-  db_capture_chain
-  .inner_join(db_bd_results, db_capture_chain.bd_swab_id == db_bd_results.bd_swab_id)
+  db_capture
+  .inner_join(db_bd_results, db_capture.bd_swab_id == db_bd_results.bd_swab_id)
   )
 
 ```

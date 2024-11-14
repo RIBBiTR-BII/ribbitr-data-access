@@ -7,6 +7,12 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2024-11-13
+
+### Changed
+
+- survey.start_time established as natural key (along with survey.visit_id and survey.detection_type)
+
 ## 2024-11-07
 
 ### Changed

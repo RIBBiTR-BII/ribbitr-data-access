@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-11-11">
+<meta name="dcterms.date" content="2024-11-14">
 
 <title>2. Data Discovery – RIBBiTR Data Access</title>
 <style>
@@ -169,11 +169,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/04_data_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Data Workflow</span></a>
-  </div>
-</li>
+ <span class="menu-text">./tutorial_series/04_data_workflow.qmd</span>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -187,13 +184,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
+  <a href=".././resources/schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Schema Diagram: survey_data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../db_changelog.html" class="sidebar-item-text sidebar-link">
+  <a href="../resources/db_changelog.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
@@ -252,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 11, 2024</p>
+      <p class="date">November 14, 2024</p>
     </div>
   </div>
   
@@ -287,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="establish-database-connection">Establish database connection</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">=</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">&lt;-</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Connecting to database... Success!</code></pre>
 </div>
@@ -307,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="table-metadata">Table Metadata</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_tables" from schema "public"</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="some-basic-database-commands" class="level4">
@@ -330,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Suppose our interest is in the <code>survey_data</code> schema. Let’s take a closer look at the tables here by collecting metadata on table columns in this schema.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table "all_columns" from schema "public"</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_columns"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_columns"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(table_schema <span class="sc">==</span> <span class="st">"survey_data"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -346,12 +343,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  [3] "column_name"              "definition"              
  [5] "units"                    "accuracy"                
  [7] "scale"                    "format"                  
- [9] "natural_key"              "reviewed"                
-[11] "data_type"                "character_maximum_length"
-[13] "numeric_precision"        "datetime_precision"      
-[15] "is_nullable"              "column_default"          
-[17] "ordinal_position"         "pg_description"          
-[19] "key_type"                </code></pre>
+ [9] "reviewed"                 "natural_key"             
+[11] "primary_key"              "foreign_key"             
+[13] "unique"                   "is_nullable"             
+[15] "data_type"                "character_maximum_length"
+[17] "numeric_precision"        "datetime_precision"      
+[19] "column_default"           "ordinal_position"        
+[21] "pg_description"           "key_type"                </code></pre>
 </div>
 </div>
 <p>Curious about what a certain metadata column means? There’s metadata for that (metametadata?)!</p>
@@ -374,7 +372,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Ok, let’s try to apply some of what we have learned by pulling directly from a data table. We can begin by taking a look at the visual encounter surveys (VES).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create lazy table for ves (visual encounter survey) table</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Do these functions look familiar? Turns out, we were pulling data all along! Of course, this is a lazy table (ie. shopping list) so it doesn’t look like data yet. Let’s see what we can learn from it before going to the store to collect the data.</p>
 <p>What columns the table contains:</p>
@@ -499,13 +497,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 3      bay_area                site            25              None
 4      bay_area        wetland_info            25              None
 ..          ...                 ...           ...               ...
-58     kira_pep              survey            17              None
-59     kira_pep                 ves             9              None
-60     kira_pep             capture            24              None
-61     kira_pep     metadata_tables             4              None
-62     kira_pep    metadata_columns            19              None
+59  survey_data      bd_swab_lookup             1              None
+60  survey_data    metadata_columns            22              None
+61  survey_data              region             4              None
+62  survey_data              survey            57              None
+63  survey_data             country             3              None
 
-[63 rows x 4 columns]</code></pre>
+[64 rows x 4 columns]</code></pre>
 </div>
 </div>
 </section>
@@ -534,22 +532,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 3    survey_data           capture  ...           None     None
 4    survey_data  metadata_columns  ...           None       PK
 ..           ...               ...  ...            ...      ...
-335  survey_data               ves  ...           None     None
-336  survey_data               ves  ...           None     None
-337  survey_data               ves  ...           None     None
-338  survey_data               ves  ...           None     None
-339  survey_data               ves  ...           None       FK
+343  survey_data          location  ...           None     None
+344  survey_data  metadata_columns  ...           None     None
+345  survey_data  metadata_columns  ...           None     None
+346  survey_data  metadata_columns  ...           None     None
+347  survey_data            region  ...           None     None
 
-[340 rows x 19 columns]</code></pre>
+[348 rows x 22 columns]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list the columns in our column-metadata table</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>mdc.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Index(['table_schema', 'table_name', 'column_name', 'definition', 'units',
-       'accuracy', 'scale', 'format', 'natural_key', 'reviewed', 'data_type',
+       'accuracy', 'scale', 'format', 'reviewed', 'natural_key', 'primary_key',
+       'foreign_key', 'unique', 'is_nullable', 'data_type',
        'character_maximum_length', 'numeric_precision', 'datetime_precision',
-       'is_nullable', 'column_default', 'ordinal_position', 'pg_description',
-       'key_type'],
+       'column_default', 'ordinal_position', 'pg_description', 'key_type'],
       dtype='object')</code></pre>
 </div>
 </div>
@@ -564,23 +562,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 5    survey_data  metadata_columns  ...           None     None
 6    survey_data  metadata_columns  ...           None     None
 7    survey_data  metadata_columns  ...           None     None
-8    survey_data  metadata_columns  ...           None     None
-9    survey_data  metadata_columns  ...           None     None
-10   survey_data  metadata_columns  ...           None     None
-11   survey_data  metadata_columns  ...           None     None
-12   survey_data  metadata_columns  ...           None     None
-99   survey_data  metadata_columns  ...           None     None
-254  survey_data  metadata_columns  ...           None     None
-255  survey_data  metadata_columns  ...           None       PK
-256  survey_data  metadata_columns  ...           None     None
-257  survey_data  metadata_columns  ...           None     None
-258  survey_data  metadata_columns  ...           None       PK
-259  survey_data  metadata_columns  ...           None     None
-260  survey_data  metadata_columns  ...           None     None
-261  survey_data  metadata_columns  ...           None     None
-263  survey_data  metadata_columns  ...           None     None
+94   survey_data  metadata_columns  ...           None     None
+249  survey_data  metadata_columns  ...           None       PK
+250  survey_data  metadata_columns  ...           None       PK
+251  survey_data  metadata_columns  ...           None     None
+328  survey_data  metadata_columns  ...           None     None
+329  survey_data  metadata_columns  ...           None     None
+330  survey_data  metadata_columns  ...           None     None
+331  survey_data  metadata_columns  ...           None     None
+332  survey_data  metadata_columns  ...           None     None
+333  survey_data  metadata_columns  ...           None     None
+334  survey_data  metadata_columns  ...           None     None
+335  survey_data  metadata_columns  ...           None     None
+336  survey_data  metadata_columns  ...           None     None
+337  survey_data  metadata_columns  ...           None     None
+338  survey_data  metadata_columns  ...           None     None
+344  survey_data  metadata_columns  ...           None     None
+345  survey_data  metadata_columns  ...           None     None
+346  survey_data  metadata_columns  ...           None     None
 
-[19 rows x 19 columns]</code></pre>
+[22 rows x 22 columns]</code></pre>
 </div>
 </div>
 <p>A few columns to point out:</p>

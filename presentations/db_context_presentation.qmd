@@ -42,7 +42,7 @@ editor: source
 
 ## Why a Database?
 
-### RIBBiTR Data Goals
+#### RIBBiTR Data Goals
 
 [RIBBiTR Data Plan](https://drive.google.com/file/d/1U14VbNVlMlhSyVm5ACtVpJ2UjaMupB6_/view?usp=sharing) & [RIBBiTR Pre-Collab Agreement](https://docs.google.com/document/d/1m1EEuUH3ioVVXtFkDaWFHITddPcmputEhZxfW_omtrI/edit?usp=sharing)
 

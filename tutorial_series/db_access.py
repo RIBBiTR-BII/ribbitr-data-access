@@ -1,7 +1,7 @@
+import pandas as pd
 import ibis
 from ibis.backends import postgres
-import pandas as pd
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 
 def check_ambig_table_name(tbl_name: str, mdc: pd.DataFrame) -> None:
@@ -102,8 +102,8 @@ def tbl_chain(tbl_name: str, metadata_columns: pd.DataFrame, until: List[str] = 
 
 
 def tbl_join(dbcon: postgres.Backend, link: Dict[str, Any], tbl: ibis.expr.types.relations.Table = None, 
-             join: str = "left", by: str = "pkey", columns: List[str] = None) -> ibis.expr.types.relations.Table:
-    select_columns = columns != "all"
+             join: str = "left", by: str = "pkey", columns: Union[List[str], str] = None) -> ibis.expr.types.relations.Table:
+    select_columns = columns != "all" and columns is not None
 
     if tbl is None:
         print(f"Pulling {link['root']['table']} ... ", end="")
@@ -112,6 +112,7 @@ def tbl_join(dbcon: postgres.Backend, link: Dict[str, Any], tbl: ibis.expr.types
         if select_columns:
             columns_to_select = list(set(link['root']['pkey'] + link['root']['nkey'] + link['root']['fkey'] + (columns or [])))
             tbl = tbl.select(columns_to_select)
+        # If columns is "all", we don't need to select specific columns
 
         print("done.")
 
@@ -121,19 +122,26 @@ def tbl_join(dbcon: postgres.Backend, link: Dict[str, Any], tbl: ibis.expr.types
         if select_columns:
             columns_to_select = list(set([pp['pkey']] + pp['nkey'] + pp['fkey'] + (columns or [])))
             tbl_next = tbl_next.select(columns_to_select)
+        # If columns is "all", we don't need to select specific columns
 
         print(f"Joining with {pp['table']} ... ", end="")
 
+        join_condition = tbl[pp[by]] == tbl_next[pp[by]]
+
         if join == "left":
-            tbl = tbl.left_join(tbl_next, tbl[pp[by]] == tbl_next[pp[by]])
+            tbl = tbl.left_join(tbl_next, join_condition)
         elif join == "full":
-            tbl = tbl.outer_join(tbl_next, tbl[pp[by]] == tbl_next[pp[by]])
+            tbl = tbl.outer_join(tbl_next, join_condition)
         elif join == "inner":
-            tbl = tbl.inner_join(tbl_next, tbl[pp[by]] == tbl_next[pp[by]])
+            tbl = tbl.inner_join(tbl_next, join_condition)
         elif join == "right":
-            tbl = tbl.right_join(tbl_next, tbl[pp[by]] == tbl_next[pp[by]])
+            tbl = tbl.right_join(tbl_next, join_condition)
         else:
             raise ValueError(f"{join} is not a valid join type... YET. Should it be included?")
+
+        # If columns is "all", select all columns after the join
+        if columns == "all":
+            tbl = tbl.select('*')
 
         print("done.")
 

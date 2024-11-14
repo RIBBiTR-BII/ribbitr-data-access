@@ -18,9 +18,9 @@ website:
       - section: "Database updates"
         contents: 
           - text: "Schema Diagram: survey_data"
-            href: schema_diagram_survey_data.png
+            href: ./resources/schema_diagram_survey_data.png
           - text: "Database Changelog"
-            href: db_changelog.md
+            href: ./resources/db_changelog.md
       - section: "Presentations"
         contents: 
           - text: "Database in Context"

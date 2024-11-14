@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-11-11">
+<meta name="dcterms.date" content="2024-11-14">
 
 <title>1. Connection Setup – RIBBiTR Data Access</title>
 <style>
@@ -169,11 +169,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/04_data_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Data Workflow</span></a>
-  </div>
-</li>
+ <span class="menu-text">./tutorial_series/04_data_workflow.qmd</span>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -187,13 +184,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
+  <a href=".././resources/schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Schema Diagram: survey_data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../db_changelog.html" class="sidebar-item-text sidebar-link">
+  <a href="../resources/db_changelog.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
@@ -252,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 11, 2024</p>
+      <p class="date">November 14, 2024</p>
     </div>
   </div>
   
@@ -293,11 +290,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Copy the following database connection parameters to your .Renviron file, substituting your login credentials (user &amp; password).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RIBBiTR DB credentials</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ribbitr.dbname <span class="ot">=</span> <span class="st">"ribbitr"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ribbitr.host <span class="ot">=</span> <span class="st">"ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ribbitr.port <span class="ot">=</span> <span class="st">"5432"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ribbitr.user <span class="ot">=</span> <span class="st">"[YOUR-USERNAME-HERE]"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ribbitr.password <span class="ot">=</span> <span class="st">"[YOUR-PASSWORD-HERE]"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ribbitr.dbname <span class="ot">&lt;-</span> <span class="st">"ribbitr"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ribbitr.host <span class="ot">&lt;-</span> <span class="st">"ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ribbitr.port <span class="ot">&lt;-</span> <span class="st">"5432"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ribbitr.user <span class="ot">&lt;-</span> <span class="st">"[YOUR-USERNAME-HERE]"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ribbitr.password <span class="ot">&lt;-</span> <span class="st">"[YOUR-PASSWORD-HERE]"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Save and close .Renviron, and restart RStudio.</p>
 </section>
@@ -339,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now, using the <code>ribbitrrr:hopToDB()</code> function, let’s establish a connection!</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">=</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">&lt;-</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Connecting to database... Success!</code></pre>
 </div>
@@ -351,7 +348,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="begin-using-your-connection">Begin using your connection!</h2>
 <p>Try out your connection by loading table metadata from the database</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mdt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

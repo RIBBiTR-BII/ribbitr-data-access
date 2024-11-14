@@ -13,7 +13,7 @@ format:
       - left=30mm
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 librarian::shelf(reticulate)
 # use_python("/home/cob/miniconda3/envs/ribbitr/bin/python")
 use_condaenv("ribbitr")
@@ -41,7 +41,7 @@ librarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
 
 ```{r}
 # establish database connection
-dbcon = hopToDB("ribbitr")
+dbcon <- hopToDB("ribbitr")
 ```
 
 ## Load database metadata
@@ -55,7 +55,7 @@ We keep track of information regarding what tables, and columns exist in the dat
 
 ```{r}
 # load table "all_tables" from schema "public"
-mdt = tbl(dbcon, Id("public", "all_tables")) %>%
+mdt <- tbl(dbcon, Id("public", "all_tables")) %>%
   collect()
 ```
 
@@ -79,7 +79,7 @@ Suppose our interest is in the `survey_data` schema. Let's take a closer look at
 
 ```{r}
 # load table "all_columns" from schema "public"
-mdc = tbl(dbcon, Id("public", "all_columns")) %>%
+mdc <- tbl(dbcon, Id("public", "all_columns")) %>%
   filter(table_schema == "survey_data") %>%
   collect()
 ```
@@ -116,7 +116,7 @@ A few columns to point out:
 Ok, let's try to apply some of what we have learned by pulling directly from a data table. We can begin by taking a look at the visual encounter surveys (VES).
 ```{r}
 # create lazy table for ves (visual encounter survey) table
-db_ves = tbl(dbcon, Id("survey_data", "ves"))
+db_ves <- tbl(dbcon, Id("survey_data", "ves"))
 
 ```
 Do these functions look familiar? Turns out, we were pulling data all along! Of course, this is a lazy table (ie. shopping list) so it doesn't look like data yet. Let's see what we can learn from it before going to the store to collect the data.
