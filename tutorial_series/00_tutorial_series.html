@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.5.57" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
 
 <title>RIBBiTR Database Tutorial Series – RIBBiTR Data Access</title>
@@ -22,23 +24,7 @@ ul.task-list li input[type="checkbox"] {
 }
 </style>
 
-
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<!-- htmldependencies:E3FAD763 -->
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -68,20 +54,25 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../styles.css" />
 </head>
 
-<body class="nav-sidebar docked">
+<body>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn"
+      data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <h1 class="quarto-secondary-nav-title no-breadcrumbs"></h1>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" role="link"
+        aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+        onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -95,7 +86,9 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">RIBBiTR Data Access</a> 
+      <a href="/">
+      RIBBiTR Data Access
+      </a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -107,7 +100,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../tutorial_series/00_tutorial_series.html" class="sidebar-item-text sidebar-link active">
+            <a href="/tutorial_series/00_tutorial_series.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">RIBBiTR Database Tutorial Series</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -116,31 +109,31 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/01_connection_setup.html" class="sidebar-item-text sidebar-link">
+  <a href="/tutorial_series/01_connection_setup.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">1. Connection Setup</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/02_data_discovery.html" class="sidebar-item-text sidebar-link">
+  <a href="/tutorial_series/02_data_discovery.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2. Data Discovery</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/03_data_pulling.html" class="sidebar-item-text sidebar-link">
+  <a href="/tutorial_series/03_data_pulling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">3. Data Pulling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/04_table_joins.html" class="sidebar-item-text sidebar-link">
+  <a href="/tutorial_series/04_table_joins.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">4. Table Joins</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/05_data_workflow.html" class="sidebar-item-text sidebar-link">
+  <a href="/tutorial_series/05_data_workflow.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">5. Data Workflow</span></a>
   </div>
 </li>
@@ -148,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2"  role="navigation" aria-expanded="true">
  <span class="menu-text">Database updates</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -157,13 +150,13 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href=".././resources/schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
+  <a href="/./resources/schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Schema Diagram: survey_data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../resources/db_changelog.html" class="sidebar-item-text sidebar-link">
+  <a href="/resources/db_changelog.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
@@ -171,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3"  role="navigation" aria-expanded="true">
  <span class="menu-text">Presentations</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -180,7 +173,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href=".././presentations/db_context_presentation.html" class="sidebar-item-text sidebar-link">
+  <a href="/./presentations/db_context_presentation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Database in Context</span></a>
   </div>
 </li>
@@ -189,16 +182,10 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" ></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome!</a></li>
-  </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="00_tutorial_series.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+        <div id="quarto-toc-target"></div>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -221,7 +208,13 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#welcome" id="toc-welcome">Welcome!</a></li>
+  </ul>
+</nav>
 <section id="welcome" class="level1">
 <h1>Welcome!</h1>
 <p>This is a tutorial series for the RIBBiTR Database. Working through the tutorials on the left, you can work through examples of how to connect to the database, explore what data is there and understand it’s structure, efficiently download the data of interest, and pass it to your workflows. This series includes examples in R and Python.</p>
@@ -233,12 +226,16 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="04_table_joins.html">Table Joins</a>.</li>
 <li><a href="05_data_workflow.html">Data Workflow</a>.</li>
 </ol>
-
-
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar-title">RIBBiTR Data Access</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-navbar-title">RIBBiTR Data Access</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-next">1. Connection Setup</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:quarto-sidebar-section-1">RIBBiTR Database Tutorial Series</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:/tutorial_series/01_connection_setup.html1.-Connection-Setup">1. Connection Setup</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:/tutorial_series/02_data_discovery.html2.-Data-Discovery">2. Data Discovery</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:/tutorial_series/03_data_pulling.html3.-Data-Pulling">3. Data Pulling</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:/tutorial_series/04_table_joins.html4.-Table-Joins">4. Table Joins</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:/tutorial_series/05_data_workflow.html5.-Data-Workflow">5. Data Workflow</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:quarto-sidebar-section-2">Database updates</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:/./resources/schema_diagram_survey_data.pngSchema-Diagram:-survey_data">Schema Diagram: survey_data</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:/resources/db_changelog.htmlDatabase-Changelog">Database Changelog</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:quarto-sidebar-section-3">Presentations</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar:/./presentations/db_context_presentation.htmlDatabase-in-Context">Database in Context</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-breadcrumbs-RIBBiTR-Database-Tutorial-Series">RIBBiTR Database Tutorial Series</span></p>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-metatitle">RIBBiTR Database Tutorial Series – RIBBiTR Data Access</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-twittercardtitle">RIBBiTR Database Tutorial Series – RIBBiTR Data Access</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-ogcardtitle">RIBBiTR Database Tutorial Series – RIBBiTR Data Access</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-metasitename">RIBBiTR Data Access</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-twittercarddesc"></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-ogcardddesc"></span></p>
+</div>
 </section>
 
 </main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+<script id = "quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -660,7 +657,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 </div> <!-- /content -->
 
+</body>
 
-
-
-</body></html>
+</html>

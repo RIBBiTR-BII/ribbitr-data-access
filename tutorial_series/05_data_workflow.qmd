@@ -1,5 +1,5 @@
 ---
-title: "4. Data Workflow"
+title: "5. Data Workflow"
 author: "Cob Staines"
 date: today
 toc: true
@@ -357,5 +357,5 @@ dbcon.disconnect()
 
 :::
 <div style="text-align: center;">
-[<- 3. Data Pulling](03_data_pulling.html)
+[<- 4. Table Joins](04_table_joins.html)
 </div>

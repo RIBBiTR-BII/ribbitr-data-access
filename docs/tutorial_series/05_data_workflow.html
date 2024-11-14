@@ -9,7 +9,7 @@
 <meta name="author" content="Cob Staines">
 <meta name="dcterms.date" content="2024-11-14">
 
-<title>4. Data Workflow – RIBBiTR Data Access</title>
+<title>5. Data Workflow – RIBBiTR Data Access</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -116,9 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      RIBBiTR Data Access
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/05_data_workflow.html">5. Data Workflow</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -171,8 +169,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
           <li class="sidebar-item">
- <span class="menu-text">./tutorial_series/04_data_workflow.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/04_table_joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Table Joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/05_data_workflow.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">5. Data Workflow</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -232,9 +239,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/05_data_workflow.html">5. Data Workflow</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">4. Data Workflow</h1>
+<h1 class="title">5. Data Workflow</h1>
 </div>
 
 
@@ -471,11 +478,11 @@ Joining with country ... done.</code></pre>
   species_capture   body_temp_c life_stage sex   capture_animal_state bd_swab_id
   &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;                &lt;chr&gt;     
 1 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_04 
-2 rhaebo_haematiti…        NA   juvenile   unkn… alive                150608_05 
-3 colostethus_pana…        NA   adult      unkn… alive                150610_01 
-4 rhaebo_haematiti…        26.7 adult      unkn… alive                150612_01 
-5 rhaebo_haematiti…        25.7 juvenile   unkn… alive                150612_02 
-6 rhaebo_haematiti…        26.6 adult      unkn… alive                150612_03 
+2 lithobates_warsz…        18.6 juvenile   unkn… alive                150607_c01
+3 lithobates_warsz…        NA   juvenile   unkn… alive                150607_c02
+4 lithobates_warsz…        21.8 juvenile   unkn… alive                150607_j02
+5 lithobates_warsz…        21.6 juvenile   unkn… alive                150607_j03
+6 lithobates_warsz…        20   adult      fema… alive                150607_j04
 # ℹ 6 more variables: survey_id &lt;chr&gt;, site &lt;chr&gt;, date &lt;date&gt;,
 #   country_name &lt;chr&gt;, detected &lt;dbl&gt;, average_target_quant &lt;dbl&gt;</code></pre>
 </div>
@@ -692,12 +699,12 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># preview data</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>data_capture_bd_query.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             species_capture  body_temp_c  ... detected average_target_quant
-0        rhaebo_haematiticus          NaN  ...      0.0                 0.00
-1  lithobates_warszewitschii         18.6  ...      1.0              1007.69
-2  lithobates_warszewitschii          NaN  ...      1.0               257.43
-3  lithobates_warszewitschii         21.8  ...      1.0                56.15
-4  lithobates_warszewitschii         21.6  ...      0.0                 0.00
+<pre><code>          species_capture  body_temp_c  ... detected average_target_quant
+0     rhaebo_haematiticus          NaN  ...      0.0                  0.0
+1     rhaebo_haematiticus          NaN  ...      0.0                  0.0
+2  colostethus_panamensis          NaN  ...      1.0               1441.8
+3     rhaebo_haematiticus         26.7  ...      0.0                  0.0
+4     rhaebo_haematiticus         25.7  ...      0.0                  0.0
 
 [5 rows x 12 columns]</code></pre>
 </div>
@@ -716,7 +723,7 @@ Joining with country ... done.</code></pre>
 </div>
 </div>
 <div style="text-align: center;">
-<p><a href="03_data_pulling.html">&lt;- 3. Data Pulling</a></p>
+<p><a href="04_table_joins.html">&lt;- 4. Table Joins</a></p>
 </div>
 
 

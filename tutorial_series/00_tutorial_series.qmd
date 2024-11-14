@@ -20,4 +20,5 @@ Dive into the tutorial series below:
 1. [Connection Setup](01_connection_setup.html).
 2. [Data Discovery](02_data_discovery.html).
 3. [Data Pulling](03_data_pulling.html).
-4. [Data Workflow](04_data_workflow.html).
+4. [Table Joins](04_table_joins.html).
+5. [Data Workflow](05_data_workflow.html).
