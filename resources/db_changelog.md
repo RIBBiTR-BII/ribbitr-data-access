@@ -7,6 +7,19 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2024-11-15
+
+### Added
+
+- Pennsylvania survey data through 2024
+
+### Changed
+
+- visit.time_of_day <- visit.survey_time
+  - to clarify as descriptor of visit, not of survey
+- recalculated survey.duration_minutes, flipping survey.start_time and survey.end_time when duration exceeded 18 hours
+
+
 ## 2024-11-13
 
 ### Changed
@@ -17,12 +30,12 @@ editor: source
 
 ### Changed
 
-- qpcr_bd_results -> bd_qpcr_results
-- location -> country
-  - location.location -> country.country_name
+- bd_qpcr_results <- qpcr_bd_results 
+- country <- location
+  - country.country_name <- location.location
 - survey
-  - survey.percent_vegetation_cover -> survey.vegetation_cover_percent
-  - survey.percent_cloud_cover coalesced with survey.cloud_cover_percent and dropped
+  - survey.vegetation_cover_percent <- survey.percent_vegetation_cover
+  - survey.percent_cloud_cover coalesced with survey.cloud_cover_percent, former dropped
   
 ### Added
 - country.iso_country_code
@@ -49,17 +62,17 @@ editor: source
 ### Changed
 
 -   Renamed possibly ambiguous columns in multiple tables in survey_data schema
-    -   survey.observers -> survey.observers_survey
-    -   survey.comments -> survey.comments_survey
-    -   aural.observer -> aural.observer_aural
-    -   aural.count -> aural.count_aural
-    -   aural.comments -> aural.comments_aural
-    -   capture.observer -> capture.observer_capture
-    -   capture.comments -> capture.comments_capture
-    -   ves.observer -> ves.observer_ves
-    -   ves.count -> ves.count_ves
-    -   ves.comments -> ves.comments_ves
-    -   visit.comments -> visit.comments_visit
+    -   survey.observers_survey <- survey.observers
+    -   survey.comments_survey s<- urvey.comments
+    -   aural.observer_aural <- aural.observer
+    -   aural.count_aural <- aural.count
+    -   aural.comments_aural <- aural.comments
+    -   capture.observer_capture <- capture.observer
+    -   capture.comments_capture <- capture.comments
+    -   ves.observer_ves <- ves.observer
+    -   ves.count_ves <- ves.count
+    -   ves.comments_ves <- ves.comments
+    -   visit.comments_visit <- visit.comments
 
 ## 2024-10-11
 
