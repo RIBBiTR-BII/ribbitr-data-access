@@ -7,17 +7,28 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
-## 2024-11-15
+## 2024-11-19
 
 ### Added
 
 - Pennsylvania survey data through 2024
+- cmr table
+  - cmr.species_cmr
+  - cmr.site_id_tagged
+  - cmr.date_tagged
+  - cmr.id_type
+- region table
+  - region.time_zone
 
 ### Changed
 
 - visit.time_of_day <- visit.survey_time
   - to clarify as descriptor of visit, not of survey
 - recalculated survey.duration_minutes, flipping survey.start_time and survey.end_time when duration exceeded 18 hours
+- capture.cmr_id <- capture.capture_mark_recapture
+- cmr table
+  - cmr.cmr_id <- cmr.capture_mark_recapture
+  - cmr.local_cmr_id <- cmr.cmr_id
 
 
 ## 2024-11-13
@@ -36,6 +47,8 @@ editor: source
 - survey
   - survey.vegetation_cover_percent <- survey.percent_vegetation_cover
   - survey.percent_cloud_cover coalesced with survey.cloud_cover_percent, former dropped
+  - survey.relative_humidty_percent coalesced with survey.relative_humidity_percent, former dropped
+  - survey.relative_humidity_drop_percent dropped
   
 ### Added
 - country.iso_country_code
