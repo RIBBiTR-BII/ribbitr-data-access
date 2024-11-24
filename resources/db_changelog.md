@@ -7,62 +7,111 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2024-11-25
+
+-   created environmental table
+    -   moved environmental survey data from survey table to environmental table. This includes the following columns:
+        -   "wind_speed_m_s",
+        -   "air_temp_c",
+        -   "water_temp_c",
+        -   "p_h",
+        -   "tds_ppm",
+        -   "wind",
+        -   "sky",
+        -   "air_time",
+        -   "water_time",
+        -   "samp_loc",
+        -   "pressure_psi",
+        -   "dissolved_o2_percent",
+        -   "salinity_ppt",
+        -   "cloud_cover_percent",
+        -   "precip",
+        -   "soil_humidity_m3m3",
+        -   "wind_speed_scale",
+        -   "precipitation_during_visit",
+        -   "precipitation_last_48_h",
+        -   "temperature_last_48_h",
+        -   "weather_condition_notes",
+        -   "pressure_psi_drop",
+        -   "relative_humidity_percent",
+        -   "wind_speed_min_m_s",
+        -   "wind_speed_max_m_s",
+        -   "air_temp_c_drop",
+        -   "densiometer_d1_num_covered",
+        -   "d1_n",
+        -   "d1_s",
+        -   "d1_e",
+        -   "d1_w",
+        -   "d1_percent_cover",
+        -   "densiometer_d2_num_covered",
+        -   "d2_n",
+        -   "d2_s",
+        -   "d2_e",
+        -   "d2_w",
+        -   "d2_percent_cover",
+        -   "depth_of_water_from_d2_cm",
+        -   "vegetation_cover_percent",
+        -   "vegetation_notes",
+        -   "secchi_depth_cm",
+        -   "conductivity_us_cm",
+        -   "fish"
+
 ## 2024-11-19
 
 ### Added
 
-- Pennsylvania survey data through 2024
-- cmr table
-  - cmr.species_cmr
-  - cmr.site_id_tagged
-  - cmr.date_tagged
-  - cmr.id_type
-- region table
-  - region.time_zone
+-   Pennsylvania survey data through 2024
+-   cmr table
+    -   cmr.species_cmr
+    -   cmr.site_id_tagged
+    -   cmr.date_tagged
+    -   cmr.id_type
+-   region table
+    -   region.time_zone
 
 ### Changed
 
-- visit.time_of_day <- visit.survey_time
-  - to clarify as descriptor of visit, not of survey
-- recalculated survey.duration_minutes, flipping survey.start_time and survey.end_time when duration exceeded 18 hours
-- capture.cmr_id <- capture.capture_mark_recapture
-- cmr table
-  - cmr.cmr_id <- cmr.capture_mark_recapture
-  - cmr.local_cmr_id <- cmr.cmr_id
-
+-   visit.time_of_day \<- visit.survey_time
+    -   to clarify as descriptor of visit, not of survey
+-   recalculated survey.duration_minutes, flipping survey.start_time and survey.end_time when duration exceeded 18 hours
+-   capture.cmr_id \<- capture.capture_mark_recapture
+-   cmr table
+    -   cmr.cmr_id \<- cmr.capture_mark_recapture
+    -   cmr.local_cmr_id \<- cmr.cmr_id
 
 ## 2024-11-13
 
 ### Changed
 
-- survey.start_time established as natural key (along with survey.visit_id and survey.detection_type)
+-   survey.start_time established as natural key (along with survey.visit_id and survey.detection_type)
 
 ## 2024-11-07
 
 ### Changed
 
-- bd_qpcr_results <- qpcr_bd_results 
-- country <- location
-  - country.country_name <- location.location
-- survey
-  - survey.vegetation_cover_percent <- survey.percent_vegetation_cover
-  - survey.percent_cloud_cover coalesced with survey.cloud_cover_percent, former dropped
-  - survey.relative_humidty_percent coalesced with survey.relative_humidity_percent, former dropped
-  - survey.relative_humidity_drop_percent dropped
-  
+-   bd_qpcr_results \<- qpcr_bd_results
+-   country \<- location
+    -   country.country_name \<- location.location
+-   survey
+    -   survey.vegetation_cover_percent \<- survey.percent_vegetation_cover
+    -   survey.percent_cloud_cover coalesced with survey.cloud_cover_percent, former dropped
+    -   survey.relative_humidty_percent coalesced with survey.relative_humidity_percent, former dropped
+    -   survey.relative_humidity_drop_percent dropped
+
 ### Added
-- country.iso_country_code
+
+-   country.iso_country_code
 
 ## 2024-10-31
 
 ### Changed
 
-- Dropped visits with NULL date
-- Created not null constraint on
-    - visit.date
-    - visit.site_id
-    - site.site
-    - location.location
+-   Dropped visits with NULL date
+-   Created not null constraint on
+    -   visit.date
+    -   visit.site_id
+    -   site.site
+    -   location.location
 
 ## 2024-10-18
 
@@ -75,17 +124,17 @@ editor: source
 ### Changed
 
 -   Renamed possibly ambiguous columns in multiple tables in survey_data schema
-    -   survey.observers_survey <- survey.observers
-    -   survey.comments_survey s<- urvey.comments
-    -   aural.observer_aural <- aural.observer
-    -   aural.count_aural <- aural.count
-    -   aural.comments_aural <- aural.comments
-    -   capture.observer_capture <- capture.observer
-    -   capture.comments_capture <- capture.comments
-    -   ves.observer_ves <- ves.observer
-    -   ves.count_ves <- ves.count
-    -   ves.comments_ves <- ves.comments
-    -   visit.comments_visit <- visit.comments
+    -   survey.observers_survey \<- survey.observers
+    -   survey.comments_survey s\<- urvey.comments
+    -   aural.observer_aural \<- aural.observer
+    -   aural.count_aural \<- aural.count
+    -   aural.comments_aural \<- aural.comments
+    -   capture.observer_capture \<- capture.observer
+    -   capture.comments_capture \<- capture.comments
+    -   ves.observer_ves \<- ves.observer
+    -   ves.count_ves \<- ves.count
+    -   ves.comments_ves \<- ves.comments
+    -   visit.comments_visit \<- visit.comments
 
 ## 2024-10-11
 
