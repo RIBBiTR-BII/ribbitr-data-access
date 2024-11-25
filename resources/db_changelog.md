@@ -60,8 +60,8 @@ editor: source
 
 ### Added
 
--   Pennsylvania survey data through 2024
--   cmr table
+-   Pennsylvania survey data through October 2024
+-   cmr table columns added
     -   cmr.species_cmr
     -   cmr.site_id_tagged
     -   cmr.date_tagged
