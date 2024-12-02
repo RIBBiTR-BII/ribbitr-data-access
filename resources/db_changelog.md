@@ -7,6 +7,12 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2024-12-02
+
+### Added
+
+-   Panama survey data through October 2024
+
 ## 2024-11-25
 
 -   created environmental table
