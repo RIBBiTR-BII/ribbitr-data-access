@@ -7,6 +7,45 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2024-12-13
+
+### Added
+
+-   bd_qpcr results table updated with qPCR results through 2023
+-   created sample table
+    - capture_id
+    - sample_id
+    - sample_name
+    - sample_type
+        - one of: antibody, amps, bd, bacterial, crispr, genetic, microbiome, mucosome
+
+### Changed
+
+-   added/renamed metadata columns to bd_qpcr_results
+    - results_id (unique results identifier)
+    - sample_id
+    - sample_name_bd <- bd_swab_id
+    - replicate_count
+    - extraction_plate_name
+    - qpcr_plate_name
+    - qpcr_well
+    - qpcr_plate_run
+-   dropped sample name columns from capture table, to allow for any number of samples per capture
+    - amps
+    - amps_2
+    - amps_3
+    - amps_4
+    - antibody
+    - antibody_2
+    - antibody_3
+    - antibody_4
+    - bd_swab_id
+    - bacterial_swab_id
+    - crispr_id
+    - genetic_id
+    - microbiome_id
+    - mucosome_id
+
 ## 2024-12-02
 
 ### Added
