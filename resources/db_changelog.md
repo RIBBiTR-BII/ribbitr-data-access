@@ -18,6 +18,10 @@ editor: source
     - sample_name
     - sample_type
         - one of: antibody, amps, bd, bacterial, crispr, genetic, microbiome, mucosome
+-   microclimate_data schema created with tables:
+    - logger
+    - sensor
+    - time_series_01_raw
 
 ### Changed
 

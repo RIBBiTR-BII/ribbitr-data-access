@@ -263,10 +263,10 @@ data_ves_filtered <- db_ves_sup %>%
          survey_id,
          site,
          date,
-         country_name) %>%
+         country) %>%
   filter(life_stage == "adult",
          year(date) == "2022",
-         country_name == "brazil") %>%
+         country == "brazil") %>%
   collect()
 ```
 
@@ -317,10 +317,10 @@ db_ves_adult_final <- tbl_left_join(dbcon, chain_ves) %>%
          survey_id,
          site,
          date,
-         country_name) %>%
+         country) %>%
   filter(life_stage == "adult",
          year(date) == "2022",
-         country_name == "brazil")
+         country == "brazil")
 
 # pull selected, filtered, joined data
 data_ves_adult_final <- db_ves_adult_final %>%
@@ -460,7 +460,7 @@ db_ves = dbcon.table(database="survey_data", name="ves")
 # survey lazy table
 db_survey = dbcon.table(database="survey_data", name="survey")
 
-# lef_join
+# leff_join
 left_ves_survey = db_ves.left_join(db_survey, "survey_id")
 
 # check columns
@@ -492,13 +492,13 @@ Joins unite rows from two tables along shared key column values, allowing unshar
 
 ![Types of dplyr joins. Graphic by [Software Carpentry](http://software-carpentry.org/) used under [Creative Commons 4.0](https://creativecommons.org/licenses/by/4.0/)](./images/07-dplyr_joins.png)
 
-The graphic above describes the treatment of key column values which are either unique to one table or shared in both, using Venn diagram. In our `db_ves_survey` example, our use of `left_join()` essentially says "return everything found in the 1st ("left") table (ie. `db_ves`) regardless of if it has a match in the 2nd ("right") table (ie. `db_survey`). This explains why the output row numbers are identical to those in `db_ves`.
+The graphic above describes the treatment of key column values which are either unique to one table or shared in both, using Venn diagram. In our `db_ves_survey` example, our use of `.left_join()` essentially says "return everything found in the 1st ("left") table (ie. `db_ves`) regardless of if it has a match in the 2nd ("right") table (ie. `db_survey`). This explains why the output row numbers are identical to those in `db_ves`.
 
-Using this diagram, let's try a different scenario. Let's instead use a `full_join()` to return all rows from each table, regardless of whether they have a matching `survey_id` in the other.
+Using this diagram, let's try a different scenario. Let's instead use `.outer_join()` to return all rows from each table, regardless of whether they have a matching `survey_id` in the other.
 
 ```{python}
 # Full join of db_ves and db_survey
-full_ves_survey = db_ves.join(db_survey, db_ves.survey_id == db_survey.survey_id, how='outer')
+full_ves_survey = db_ves.outer_join(db_survey, db_ves.survey_id == db_survey.survey_id)
 
 # count rows
 print(full_ves_survey.count().execute())
@@ -552,11 +552,11 @@ db_country = dbcon.table('country', database='survey_data')
 # Recursive joins
 db_ves_sup = (
     db_ves
-    .join(db_survey, db_ves.survey_id == db_survey.survey_id)
-    .join(db_visit, db_survey.visit_id == db_visit.visit_id)
-    .join(db_site, db_visit.site_id == db_site.site_id)
-    .join(db_region, db_site.region_id == db_region.region_id)
-    .join(db_country, db_region.country_id == db_country.country_id)
+    .left_join(db_survey, db_ves.survey_id == db_survey.survey_id)
+    .left_join(db_visit, db_survey.visit_id == db_visit.visit_id)
+    .left_join(db_site, db_visit.site_id == db_site.site_id)
+    .left_join(db_region, db_site.region_id == db_region.region_id)
+    .left_join(db_country, db_region.country_id == db_country.country_id)
 )
 
 ```
@@ -574,11 +574,11 @@ data_ves_filtered = (
       'survey_id',
       'site',
       'date',
-      'country_name')
+      'country')
     .filter([
         (_.life_stage == 'adult') &
         (_.date.year() == 2022) &
-        (_.country_name == 'brazil')
+        (_.country == 'brazil')
     ])
     .to_pandas()
 )
@@ -630,11 +630,11 @@ db_ves_filtered = (
     'survey_id',
     'site',
     'date',
-    'country_name')
+    'country')
     .filter([
       (_.life_stage == 'adult') &
       (_.date.year() == 2022) &
-      (_.country_name == 'brazil')
+      (_.country == 'brazil')
       ])
 )
 
@@ -662,5 +662,5 @@ db_ves_filtered.compile()
 :::
 
 ::: {style="text-align: center;"}
-[\<- 3. Data Pulling](03_data_pulling.html) \| [5. Data Workflow -\>](05_data_workflow.html)
+[\<- 3. Data Pulling](03_data_pulling.html) \| [5. Bd-Capture Workflow -\>](05_bd_capture_workflow.html)
 :::

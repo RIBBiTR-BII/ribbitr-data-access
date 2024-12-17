@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Cob Staines">
+<meta name="dcterms.date" content="2024-12-17">
+
+<title>5. Bd-Capture Workflow – RIBBiTR Data Access</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/05_bd_capture_workflow.html">5. Bd-Capture Workflow</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">RIBBiTR Data Access</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../tutorial_series/00_tutorial_series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR Database Tutorial Series</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/01_connection_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Connection Setup</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/02_data_discovery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Data Discovery</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/03_data_pulling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Data Pulling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/04_table_joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Table Joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/05_bd_capture_workflow.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">5. Bd-Capture Workflow</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Database updates</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Schema Diagrams</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././resources/schema_diagram_microclimate_data.png" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">microclimate_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././resources/schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">survey_data</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../resources/db_changelog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Changelog</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Presentations</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././presentations/db_context_presentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database in Context</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="05_bd_capture_workflow.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/05_bd_capture_workflow.html">5. Bd-Capture Workflow</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">5. Bd-Capture Workflow</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cob Staines </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 17, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><em>This tutorial is available as a <a href="https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series">.qmd on Github</a>.</em></p>
+<section id="motivation" class="level1">
+<h1>Motivation</h1>
+<ul>
+<li>Run through a complete workflow including: database connection, data discovery, data pulling, and data manipulation</li>
+<li>Demonstrate how to connect Capture data with sample data (in this case Bd qPCR results)</li>
+</ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Let’s run through a realistic data scenario from the beginning.</p>
+<p>Suppose we are interested in Capture and Bd qPCR data. Specifically, we want to compare Bd qPCR results for juvenile-to-adult individuals, captured in 2015 or later, across species and sites.</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB data discovery</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR<span class="sc">-</span>BII<span class="sc">/</span>ribbitrrr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">&lt;-</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Connecting to database... Success!</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table metadata</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(table_schema <span class="sc">==</span> <span class="st">"survey_data"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load column metadata</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"metadata_columns"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(table_schema <span class="sc">==</span> <span class="st">"survey_data"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-discovery-and-pulling" class="level2">
+<h2 class="anchored" data-anchor-id="data-discovery-and-pulling">Data discovery and pulling</h2>
+<p>Looking at the <a href="resources/schema_diagram_survey_data.png"><code>survey_data</code> schema diagram</a>, we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called “capture” and “bd_qpcr_results”.</p>
+<section id="point-to-support-tables" class="level3">
+<h3 class="anchored" data-anchor-id="point-to-support-tables">Point to support tables</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pointers for all tables of interest</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>db_bdqpcr <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"bd_qpcr_results"</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>db_sample <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"sample"</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>db_capture <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"capture"</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>db_survey <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"survey"</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>db_visit <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"visit"</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>db_site <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"site"</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>db_region <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"region"</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>db_country <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"country"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="join-all-data-of-interest" class="level3">
+<h3 class="anchored" data-anchor-id="join-all-data-of-interest">Join all data of interest</h3>
+<p>In this case we only want to consider cases for which he have both capture <em>and</em> Bd qPCR data. An inner join across the Bd, sample, and capture tables will keep only values which are common between them. Of these data, we want to return all supporting info, so we will left join to the remaining support tables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inner join capture and bd samples</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># left join supporting tables</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>data_bd_capture <span class="ot">=</span> db_bdqpcr <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(db_sample, <span class="at">by =</span> <span class="st">"sample_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(db_capture, <span class="at">by =</span> <span class="st">"capture_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_survey, <span class="at">by =</span> <span class="st">"survey_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_site, <span class="at">by =</span> <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_region, <span class="at">by =</span> <span class="st">"region_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_country, <span class="at">by =</span> <span class="st">"country_id"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns are available</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data_bd_capture)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "result_id"                        "sample_id"                       
+  [3] "sample_name_bd"                   "detected"                        
+  [5] "replicate"                        "replicate_count"                 
+  [7] "replicate_results"                "average_ct"                      
+  [9] "average_target_quant"             "total_qpcr_volume_uL"            
+ [11] "qpcr_dilution_factor"             "volume_template_dna_uL"          
+ [13] "extract_volume_uL"                "target_quant_per_swab"           
+ [15] "average_its1_copies_per_swab"     "swab_type"                       
+ [17] "standard_target_type"             "standard"                        
+ [19] "master_mix"                       "extraction_plate_name"           
+ [21] "extraction_date"                  "extraction_kit"                  
+ [23] "extraction_lab"                   "qpcr_plate_name"                 
+ [25] "qpcr_well"                        "qpcr_plate_run"                  
+ [27] "qpcr_date"                        "qpcr_machine"                    
+ [29] "qpcr_lab"                         "comments_qpcr"                   
+ [31] "sample_name"                      "sample_type"                     
+ [33] "capture_id"                       "species_capture"                 
+ [35] "time_of_capture"                  "capture_trx_loc"                 
+ [37] "microhabitat_type"                "body_temp_c"                     
+ [39] "substrate_temp_c"                 "svl_mm"                          
+ [41] "body_mass_g"                      "life_stage"                      
+ [43] "sex"                              "capture_animal_state"            
+ [45] "comments_capture"                 "photo"                           
+ [47] "photo_id"                         "microhab_moredetail"             
+ [49] "body_and_bag_mass_g"              "bag_mass_g"                      
+ [51] "marked"                           "recapture_from_campaign_n_number"
+ [53] "capture_utme"                     "capture_utmn"                    
+ [55] "capture_type"                     "observer_capture"                
+ [57] "bag_id"                           "processor"                       
+ [59] "cmr_id"                           "microhabitat_temperature"        
+ [61] "microhabitat_notes"               "tail_length_mm"                  
+ [63] "buckets"                          "location_serdp"                  
+ [65] "temp_gun"                         "clearcut"                        
+ [67] "number_of_mites"                  "flir"                            
+ [69] "tad_stage"                        "survey_id"                       
+ [71] "microhabitat_wet"                 "start_time"                      
+ [73] "end_time"                         "detection_type"                  
+ [75] "duration_minutes"                 "observers_survey"                
+ [77] "comments_survey"                  "description"                     
+ [79] "survey_quality"                   "transect"                        
+ [81] "number_observers"                 "visit_id"                        
+ [83] "start_timestamp"                  "end_timestamp"                   
+ [85] "date"                             "time_of_day"                     
+ [87] "campaign"                         "visit_status"                    
+ [89] "comments_visit"                   "site_id"                         
+ [91] "site"                             "utm_zone"                        
+ [93] "utme"                             "utmn"                            
+ [95] "area_sqr_m"                       "site_code"                       
+ [97] "elevation_m"                      "depth_m"                         
+ [99] "topo"                             "wilderness"                      
+[101] "site_comments"                    "region_id"                       
+[103] "site_name_alt"                    "region"                          
+[105] "country_id"                       "location_id"                     
+[107] "time_zone"                        "country"                         
+[109] "iso_country_code"                </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can also see which columns come from specified tables, for context</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_bdqpcr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "result_id"                    "sample_id"                   
+ [3] "sample_name_bd"               "detected"                    
+ [5] "replicate"                    "replicate_count"             
+ [7] "replicate_results"            "average_ct"                  
+ [9] "average_target_quant"         "total_qpcr_volume_uL"        
+[11] "qpcr_dilution_factor"         "volume_template_dna_uL"      
+[13] "extract_volume_uL"            "target_quant_per_swab"       
+[15] "average_its1_copies_per_swab" "swab_type"                   
+[17] "standard_target_type"         "standard"                    
+[19] "master_mix"                   "extraction_plate_name"       
+[21] "extraction_date"              "extraction_kit"              
+[23] "extraction_lab"               "qpcr_plate_name"             
+[25] "qpcr_well"                    "qpcr_plate_run"              
+[27] "qpcr_date"                    "qpcr_machine"                
+[29] "qpcr_lab"                     "comments_qpcr"               </code></pre>
+</div>
+</div>
+</section>
+<section id="select-columns-of-interest-filter-to-date" class="level3">
+<h3 class="anchored" data-anchor-id="select-columns-of-interest-filter-to-date">Select columns of interest, filter to date</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull data from database</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015 <span class="ot">=</span> data_bd_capture <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter to dates of interest</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="st">"2015-01-01"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select columns of interest</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(capture_id,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>         species_capture,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>         svl_mm,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>         body_mass_g,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>         survey_id,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>         cmr_id,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>         sample_id,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>         sample_name_bd,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>         detected,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>         average_ct,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>         average_target_quant,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>         target_quant_per_swab,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>         comments_capture,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>         comments_qpcr,</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>         date,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>         site,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>         region,</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>         country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="explore-of-filtered-observations-by-life-stage-then-filter-again" class="level3">
+<h3 class="anchored" data-anchor-id="explore-of-filtered-observations-by-life-stage-then-filter-again">Explore # of filtered observations by life stage, then filter again</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015 <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(life_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(life_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(row_count)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 14 × 2
+   life_stage              row_count
+   &lt;chr&gt;                     &lt;int64&gt;
+ 1 adult                       23157
+ 2 &lt;NA&gt;                         4605
+ 3 juvenile                     4123
+ 4 tadpole                      1787
+ 5 subadult                      998
+ 6 aquatic_larvae                573
+ 7 metamorph                     429
+ 8 larva                         417
+ 9 unknown                       367
+10 terrestrial_development       330
+11 larvae                        218
+12 metamorphosed                  28
+13 eggmass                         7
+14 Unknown                         1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015_life <span class="ot">&lt;-</span> data_bd_capture_2015 <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(life_stage <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"juvenile"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"subadult"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"adult"</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(life_stage))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pull-data" class="level3">
+<h3 class="anchored" data-anchor-id="pull-data">Pull data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check out our SQP "shopping list"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sql_render</span>(data_bd_capture_2015_life)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;SQL&gt; SELECT
+  "capture_id",
+  "species_capture",
+  "life_stage",
+  "svl_mm",
+  "body_mass_g",
+  "survey_id",
+  "cmr_id",
+  "sample_id",
+  "sample_name_bd",
+  "detected",
+  "average_ct",
+  "average_target_quant",
+  "target_quant_per_swab",
+  "comments_capture",
+  "comments_qpcr",
+  "date",
+  "site",
+  "region",
+  "country"
+FROM (
+  SELECT
+    "bd_qpcr_results".*,
+    "sample_name",
+    "sample_type",
+    "sample"."capture_id" AS "capture_id",
+    "species_capture",
+    "time_of_capture",
+    "capture_trx_loc",
+    "microhabitat_type",
+    "body_temp_c",
+    "substrate_temp_c",
+    "svl_mm",
+    "body_mass_g",
+    "life_stage",
+    "sex",
+    "capture_animal_state",
+    "comments_capture",
+    "photo",
+    "photo_id",
+    "microhab_moredetail",
+    "body_and_bag_mass_g",
+    "bag_mass_g",
+    "marked",
+    "recapture_from_campaign_n_number",
+    "capture_utme",
+    "capture_utmn",
+    "capture_type",
+    "observer_capture",
+    "bag_id",
+    "processor",
+    "cmr_id",
+    "microhabitat_temperature",
+    "microhabitat_notes",
+    "tail_length_mm",
+    "buckets",
+    "location_serdp",
+    "temp_gun",
+    "clearcut",
+    "number_of_mites",
+    "flir",
+    "tad_stage",
+    "capture"."survey_id" AS "survey_id",
+    "microhabitat_wet",
+    "start_time",
+    "end_time",
+    "detection_type",
+    "duration_minutes",
+    "observers_survey",
+    "comments_survey",
+    "description",
+    "survey_quality",
+    "transect",
+    "number_observers",
+    "survey"."visit_id" AS "visit_id",
+    "start_timestamp",
+    "end_timestamp",
+    "date",
+    "time_of_day",
+    "campaign",
+    "visit_status",
+    "comments_visit",
+    "visit"."site_id" AS "site_id",
+    "site",
+    "utm_zone",
+    "utme",
+    "utmn",
+    "area_sqr_m",
+    "site_code",
+    "elevation_m",
+    "depth_m",
+    "topo",
+    "wilderness",
+    "site_comments",
+    "site"."region_id" AS "region_id",
+    "site_name_alt",
+    "region",
+    "region"."country_id" AS "country_id",
+    "location_id",
+    "time_zone",
+    "country",
+    "iso_country_code"
+  FROM "survey_data"."bd_qpcr_results"
+  INNER JOIN "survey_data"."sample"
+    ON ("bd_qpcr_results"."sample_id" = "sample"."sample_id")
+  INNER JOIN "survey_data"."capture"
+    ON ("sample"."capture_id" = "capture"."capture_id")
+  LEFT JOIN "survey_data"."survey"
+    ON ("capture"."survey_id" = "survey"."survey_id")
+  LEFT JOIN "survey_data"."visit"
+    ON ("survey"."visit_id" = "visit"."visit_id")
+  LEFT JOIN "survey_data"."site"
+    ON ("visit"."site_id" = "site"."site_id")
+  LEFT JOIN "survey_data"."region"
+    ON ("site"."region_id" = "region"."region_id")
+  LEFT JOIN "survey_data"."country"
+    ON ("region"."country_id" = "country"."country_id")
+) AS "q01"
+WHERE
+  ("date" &gt;= '2015-01-01') AND
+  ("life_stage" IN ('juvenile', 'subadult', 'adult')) AND
+  (NOT(("life_stage" IS NULL)))</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># collect data</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>data_bd_capture_final <span class="ot">&lt;-</span> data_bd_capture_2015_life <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_bd_capture_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 19
+  capture_id      species_capture life_stage svl_mm body_mass_g survey_id cmr_id
+  &lt;chr&gt;           &lt;chr&gt;           &lt;chr&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt; 
+1 1dc9fa0d-13bd-… rana_muscosa    adult          47          12 bd398b88… 0ba8e…
+2 26089c8a-50bd-… rana_muscosa    adult          63          40 04c974ef… &lt;NA&gt;  
+3 d9d1ba1b-7c53-… lithobates_syl… adult          48          14 87b52157… &lt;NA&gt;  
+4 75cbebdb-663c-… rana_muscosa    adult          54          15 1ff0ec2e… a68f1…
+5 9c2be8d0-665e-… rana_muscosa    adult          51          17 57d19e16… fad92…
+6 4afccde9-0672-… rana_muscosa    adult          52          21 c332c44e… 38b9f…
+# ℹ 12 more variables: sample_id &lt;chr&gt;, sample_name_bd &lt;chr&gt;, detected &lt;dbl&gt;,
+#   average_ct &lt;dbl&gt;, average_target_quant &lt;dbl&gt;, target_quant_per_swab &lt;dbl&gt;,
+#   comments_capture &lt;chr&gt;, comments_qpcr &lt;chr&gt;, date &lt;date&gt;, site &lt;chr&gt;,
+#   region &lt;chr&gt;, country &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>These data are ready to be analyzed and visualized!</p>
+</section>
+</section>
+<section id="disconnect" class="level2">
+<h2 class="anchored" data-anchor-id="disconnect">Disconnect</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Let’s run through a realistic data scenario from the beginning.</p>
+<p>Suppose we are interested in Capture and Bd qPCR data. Specifically, we want to compare Bd qPCR results for juvenile-to-adult individuals, captured in 2015 or later, across species and sites.</p>
+<section id="setup-1" class="level2">
+<h2 class="anchored" data-anchor-id="setup-1">Setup</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB Workflow</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ibis <span class="im">import</span> _</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> db_access <span class="im">as</span> db</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># load table metadata</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co"># load column metadata</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>mdc <span class="op">=</span> (</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"public"</span>, name<span class="op">=</span><span class="st">"all_columns"</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.table_schema <span class="op">==</span> <span class="st">'survey_data'</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-discovery-and-pulling-1" class="level2">
+<h2 class="anchored" data-anchor-id="data-discovery-and-pulling-1">Data discovery and pulling</h2>
+<p>Looking at the <a href="resources/schema_diagram_survey_data.png"><code>survey_data</code> schema diagram</a>, we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called “capture” and “bd_qpcr_results”.</p>
+<section id="point-to-support-tables-1" class="level3">
+<h3 class="anchored" data-anchor-id="point-to-support-tables-1">Point to support tables</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ponters for all tables</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>db_bdqpcr <span class="op">=</span> dbcon.table(<span class="st">'bd_qpcr_results'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>db_sample <span class="op">=</span> dbcon.table(<span class="st">'sample'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>db_capture <span class="op">=</span> dbcon.table(<span class="st">'capture'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>db_survey <span class="op">=</span> dbcon.table(<span class="st">'survey'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>db_visit <span class="op">=</span> dbcon.table(<span class="st">'visit'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>db_site <span class="op">=</span> dbcon.table(<span class="st">'site'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>db_region <span class="op">=</span> dbcon.table(<span class="st">'region'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>db_country <span class="op">=</span> dbcon.table(<span class="st">'country'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="join-all-data-of-interest-1" class="level3">
+<h3 class="anchored" data-anchor-id="join-all-data-of-interest-1">Join all data of interest</h3>
+<p>In this case we only want to consider cases for which he have both capture <em>and</em> Bd qPCR data. An inner join across the Bd, sample, and capture tables will keep only values which are common between them. Of these data, we want to return all supporting info, so we will left join to the remaining support tables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recursive joins</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>data_bd_capture <span class="op">=</span> (</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    db_bdqpcr</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    .inner_join(db_sample, db_bdqpcr.sample_id <span class="op">==</span> db_sample.sample_id)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    .inner_join(db_capture, db_sample.capture_id <span class="op">==</span> db_capture.capture_id)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    .left_join(db_survey, db_capture.survey_id <span class="op">==</span> db_survey.survey_id)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    .left_join(db_visit, db_survey.visit_id <span class="op">==</span> db_visit.visit_id)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    .left_join(db_site, db_visit.site_id <span class="op">==</span> db_site.site_id)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    .left_join(db_region, db_site.region_id <span class="op">==</span> db_region.region_id)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    .left_join(db_country, db_region.country_id <span class="op">==</span> db_country.country_id)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns are available</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>data_bd_capture.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['result_id', 'sample_id', 'sample_name_bd', 'detected', 'replicate', 'replicate_count', 'replicate_results', 'average_ct', 'average_target_quant', 'total_qpcr_volume_uL', 'qpcr_dilution_factor', 'volume_template_dna_uL', 'extract_volume_uL', 'target_quant_per_swab', 'average_its1_copies_per_swab', 'swab_type', 'standard_target_type', 'standard', 'master_mix', 'extraction_plate_name', 'extraction_date', 'extraction_kit', 'extraction_lab', 'qpcr_plate_name', 'qpcr_well', 'qpcr_plate_run', 'qpcr_date', 'qpcr_machine', 'qpcr_lab', 'comments_qpcr', 'sample_name', 'sample_type', 'capture_id', 'species_capture', 'time_of_capture', 'capture_trx_loc', 'microhabitat_type', 'body_temp_c', 'substrate_temp_c', 'svl_mm', 'body_mass_g', 'life_stage', 'sex', 'capture_animal_state', 'comments_capture', 'photo', 'photo_id', 'microhab_moredetail', 'body_and_bag_mass_g', 'bag_mass_g', 'marked', 'recapture_from_campaign_n_number', 'capture_utme', 'capture_utmn', 'capture_type', 'observer_capture', 'bag_id', 'processor', 'cmr_id', 'microhabitat_temperature', 'microhabitat_notes', 'tail_length_mm', 'buckets', 'location_serdp', 'temp_gun', 'clearcut', 'number_of_mites', 'flir', 'tad_stage', 'survey_id', 'microhabitat_wet', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp', 'end_timestamp', 'date', 'time_of_day', 'campaign', 'visit_status', 'comments_visit', 'visit_id_right', 'site_id', 'site', 'utm_zone', 'utme', 'utmn', 'area_sqr_m', 'site_code', 'elevation_m', 'depth_m', 'topo', 'wilderness', 'site_comments', 'site_id_right', 'region_id', 'site_name_alt', 'region', 'region_id_right', 'country_id', 'location_id', 'time_zone', 'country', 'country_id_right', 'iso_country_code']</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can also see which columns come from specified tables, for context</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>db_bdqpcr.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['result_id', 'sample_id', 'sample_name_bd', 'detected', 'replicate', 'replicate_count', 'replicate_results', 'average_ct', 'average_target_quant', 'total_qpcr_volume_uL', 'qpcr_dilution_factor', 'volume_template_dna_uL', 'extract_volume_uL', 'target_quant_per_swab', 'average_its1_copies_per_swab', 'swab_type', 'standard_target_type', 'standard', 'master_mix', 'extraction_plate_name', 'extraction_date', 'extraction_kit', 'extraction_lab', 'qpcr_plate_name', 'qpcr_well', 'qpcr_plate_run', 'qpcr_date', 'qpcr_machine', 'qpcr_lab', 'comments_qpcr']</code></pre>
+</div>
+</div>
+</section>
+<section id="select-columns-of-interest-filter-to-date-1" class="level3">
+<h3 class="anchored" data-anchor-id="select-columns-of-interest-filter-to-date-1">Select columns of interest, filter to date</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># capture table, select, filter</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015 <span class="op">=</span> (</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  data_bd_capture</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.date <span class="op">&gt;=</span> <span class="st">'2015-01-01'</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  .select([</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"capture_id"</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"species_capture"</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"life_stage"</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"svl_mm"</span>,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"body_mass_g"</span>,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"survey_id"</span>,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cmr_id"</span>,</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sample_id"</span>,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sample_name_bd"</span>,</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"detected"</span>,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"average_ct"</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"average_target_quant"</span>,</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"target_quant_per_swab"</span>,</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"comments_capture"</span>,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"comments_qpcr"</span>,</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"site"</span>,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"region"</span>,</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"country"</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="explore-of-filtered-observations-by-life-stage-then-filter-again-1" class="level3">
+<h3 class="anchored" data-anchor-id="explore-of-filtered-observations-by-life-stage-then-filter-again-1">Explore # of filtered observations by life stage, then filter again</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count by life stage</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>life_stage_counts <span class="op">=</span> (</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  data_bd_capture_2015</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  .group_by(<span class="st">'life_stage'</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  .aggregate(row_count<span class="op">=</span>_.count())</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  .order_by(_.row_count.desc())</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  .to_pandas()</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 life_stage  row_count
+0                     adult      23157
+1                      None       4605
+2                  juvenile       4123
+3                   tadpole       1787
+4                  subadult        998
+5            aquatic_larvae        573
+6                 metamorph        429
+7                     larva        417
+8                   unknown        367
+9   terrestrial_development        330
+10                   larvae        218
+11            metamorphosed         28
+12                  eggmass          7
+13                  Unknown          1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to desired life stages</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015_life <span class="op">=</span> (</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  data_bd_capture_2015</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.life_stage.isin([<span class="st">'juvenile'</span>,<span class="st">'subadult'</span>, <span class="st">'adult'</span>]) <span class="op">&amp;</span> _.life_stage.notnull())</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pull-data-1" class="level3">
+<h3 class="anchored" data-anchor-id="pull-data-1">Pull data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check out our SQP "shopping list"</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015_life.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'SELECT "t16"."capture_id", "t16"."species_capture", "t16"."life_stage", "t16"."svl_mm", "t16"."body_mass_g", "t16"."survey_id", "t16"."cmr_id", "t16"."sample_id", "t16"."sample_name_bd", "t16"."detected", "t16"."average_ct", "t16"."average_target_quant", "t16"."target_quant_per_swab", "t16"."comments_capture", "t16"."comments_qpcr", "t16"."date", "t16"."site", "t16"."region", "t16"."country" FROM (SELECT "t8"."result_id", "t8"."sample_id", "t8"."sample_name_bd", "t8"."detected", "t8"."replicate", "t8"."replicate_count", "t8"."replicate_results", "t8"."average_ct", "t8"."average_target_quant", "t8"."total_qpcr_volume_uL", "t8"."qpcr_dilution_factor", "t8"."volume_template_dna_uL", "t8"."extract_volume_uL", "t8"."target_quant_per_swab", "t8"."average_its1_copies_per_swab", "t8"."swab_type", "t8"."standard_target_type", "t8"."standard", "t8"."master_mix", "t8"."extraction_plate_name", "t8"."extraction_date", "t8"."extraction_kit", "t8"."extraction_lab", "t8"."qpcr_plate_name", "t8"."qpcr_well", "t8"."qpcr_plate_run", "t8"."qpcr_date", "t8"."qpcr_machine", "t8"."qpcr_lab", "t8"."comments_qpcr", "t9"."sample_name", "t9"."sample_type", "t9"."capture_id", "t10"."species_capture", "t10"."time_of_capture", "t10"."capture_trx_loc", "t10"."microhabitat_type", "t10"."body_temp_c", "t10"."substrate_temp_c", "t10"."svl_mm", "t10"."body_mass_g", "t10"."life_stage", "t10"."sex", "t10"."capture_animal_state", "t10"."comments_capture", "t10"."photo", "t10"."photo_id", "t10"."microhab_moredetail", "t10"."body_and_bag_mass_g", "t10"."bag_mass_g", "t10"."marked", "t10"."recapture_from_campaign_n_number", "t10"."capture_utme", "t10"."capture_utmn", "t10"."capture_type", "t10"."observer_capture", "t10"."bag_id", "t10"."processor", "t10"."cmr_id", "t10"."microhabitat_temperature", "t10"."microhabitat_notes", "t10"."tail_length_mm", "t10"."buckets", "t10"."location_serdp", "t10"."temp_gun", "t10"."clearcut", "t10"."number_of_mites", "t10"."flir", "t10"."tad_stage", "t10"."survey_id", "t10"."microhabitat_wet", "t11"."start_time", "t11"."end_time", "t11"."detection_type", "t11"."duration_minutes", "t11"."observers_survey", "t11"."comments_survey", "t11"."description", "t11"."survey_quality", "t11"."transect", "t11"."number_observers", "t11"."survey_id" AS "survey_id_right", "t11"."visit_id", "t11"."start_timestamp", "t11"."end_timestamp", "t12"."date", "t12"."time_of_day", "t12"."campaign", "t12"."visit_status", "t12"."comments_visit", "t12"."visit_id" AS "visit_id_right", "t12"."site_id", "t13"."site", "t13"."utm_zone", "t13"."utme", "t13"."utmn", "t13"."area_sqr_m", "t13"."site_code", "t13"."elevation_m", "t13"."depth_m", "t13"."topo", "t13"."wilderness", "t13"."site_comments", "t13"."site_id" AS "site_id_right", "t13"."region_id", "t13"."site_name_alt", "t14"."region", "t14"."region_id" AS "region_id_right", "t14"."country_id", "t14"."location_id", "t14"."time_zone", "t15"."country", "t15"."country_id" AS "country_id_right", "t15"."iso_country_code" FROM "survey_data"."bd_qpcr_results" AS "t8" INNER JOIN "survey_data"."sample" AS "t9" ON "t8"."sample_id" = "t9"."sample_id" INNER JOIN "survey_data"."capture" AS "t10" ON "t9"."capture_id" = "t10"."capture_id" LEFT OUTER JOIN "survey_data"."survey" AS "t11" ON "t10"."survey_id" = "t11"."survey_id" LEFT OUTER JOIN "survey_data"."visit" AS "t12" ON "t11"."visit_id" = "t12"."visit_id" LEFT OUTER JOIN "survey_data"."site" AS "t13" ON "t12"."site_id" = "t13"."site_id" LEFT OUTER JOIN "survey_data"."region" AS "t14" ON "t13"."region_id" = "t14"."region_id" LEFT OUTER JOIN "survey_data"."country" AS "t15" ON "t14"."country_id" = "t15"."country_id") AS "t16" WHERE "t16"."date" &gt;= \'2015-01-01\' AND "t16"."life_stage" IN (\'juvenile\', \'subadult\', \'adult\') AND "t16"."life_stage" IS NOT NULL'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull data</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>data_bd_capture_final <span class="op">=</span> data_bd_capture_2015_life.to_pandas()</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># preview data</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>data_bd_capture_final.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                             capture_id  ... country
+0  1dc9fa0d-13bd-4d95-8594-10bb15e58d65  ...     usa
+1  26089c8a-50bd-43d3-8660-8895bdf21467  ...     usa
+2  d9d1ba1b-7c53-470b-9f6d-7db851d4c932  ...     usa
+3  75cbebdb-663c-46bd-a9ca-653893d6e8cd  ...     usa
+4  9c2be8d0-665e-4dff-8bca-9cb0417729a5  ...     usa
+
+[5 rows x 19 columns]</code></pre>
+</div>
+</div>
+<p>These data are ready to be analyzed and visualized!</p>
+</section>
+</section>
+<section id="disconnect-1" class="level2">
+<h2 class="anchored" data-anchor-id="disconnect-1">Disconnect</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># close connection</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</div>
+</div>
+</div>
+<div style="text-align: center;">
+<p><a href="04_table_joins.html">&lt;- 4. Table Joins</a> | <a href="06_microclimate_workflow.html">6. Microclimate Workflow -&gt;</a></p>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

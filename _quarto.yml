@@ -7,6 +7,7 @@ website:
   sidebar:
     style: "docked"
     search: true
+    collapse-level: 1
     contents:
       - section: "RIBBiTR Database Tutorial Series"
         href: tutorial_series/00_tutorial_series.qmd
@@ -15,11 +16,15 @@ website:
           - ./tutorial_series/02_data_discovery.qmd
           - ./tutorial_series/03_data_pulling.qmd
           - ./tutorial_series/04_table_joins.qmd
-          - ./tutorial_series/05_data_workflow.qmd
+          - ./tutorial_series/05_bd_capture_workflow.qmd
       - section: "Database updates"
         contents: 
-          - text: "Schema Diagram: survey_data"
-            href: ./resources/schema_diagram_survey_data.png
+          - section: "Schema Diagrams"
+            contents:
+              - text: "microclimate_data"
+                href: ./resources/schema_diagram_microclimate_data.png
+              - text: "survey_data"
+                href: ./resources/schema_diagram_survey_data.png
           - text: "Database Changelog"
             href: ./resources/db_changelog.md
       - section: "Presentations"

@@ -21,4 +21,5 @@ Dive into the tutorial series below:
 2. [Data Discovery](02_data_discovery.html).
 3. [Data Pulling](03_data_pulling.html).
 4. [Table Joins](04_table_joins.html).
-5. [Data Workflow](05_data_workflow.html).
+5. [Bd-Capture Workflow](05_bd_capture_workflow.html).
+6. [Microclimate Workflow](06_microclimate_workflow.html).

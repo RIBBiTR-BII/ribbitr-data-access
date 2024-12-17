@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-11-14">
+<meta name="dcterms.date" content="2024-12-17">
 
 <title>2. Data Discovery – RIBBiTR Data Access</title>
 <style>
@@ -184,13 +184,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">Database updates</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href=".././resources/schema_diagram_survey_data.png" class="sidebar-item-text sidebar-link">
@@ -207,13 +207,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
  <span class="menu-text">Presentations</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href=".././presentations/db_context_presentation.html" class="sidebar-item-text sidebar-link">
@@ -258,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 14, 2024</p>
+      <p class="date">December 17, 2024</p>
     </div>
   </div>
   
@@ -358,7 +358,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [15] "data_type"                "character_maximum_length"
 [17] "numeric_precision"        "datetime_precision"      
 [19] "column_default"           "ordinal_position"        
-[21] "pg_description"           "key_type"                </code></pre>
+[21] "pg_description"           "key_type"                
+[23] "fkey_ref_schema"          "fkey_ref_table"          
+[25] "fkey_ref_column"         </code></pre>
 </div>
 </div>
 <p>Curious about what a certain metadata column means? There’s metadata for that (metametadata?)!</p>
@@ -403,7 +405,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 28390</code></pre>
+[1] 29507</code></pre>
 </div>
 </div>
 <p><em>The pull() function executes a query to return a single column or variable, synonymous with the collect() function which returns a collection of variables as a table.</em></p>
@@ -417,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 28232</code></pre>
+[1] 29344</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -430,17 +432,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(row_count)) <span class="sc">%&gt;%</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8 × 2
-  life_stage row_count
-  &lt;chr&gt;        &lt;int64&gt;
-1 tadpole        10276
-2 adult           9551
-3 subadult        7162
-4 &lt;NA&gt;             764
-5 eggmass          625
-6 egg                9
-7 juvenile           2
-8 metamorph          1</code></pre>
+<pre><code># A tibble: 9 × 2
+  life_stage    row_count
+  &lt;chr&gt;           &lt;int64&gt;
+1 tadpole           10276
+2 adult              9617
+3 subadult           7162
+4 &lt;NA&gt;               1725
+5 eggmass             625
+6 juvenile             78
+7 egg                  16
+8 metamorphosed         7
+9 metamorph             1</code></pre>
 </div>
 </div>
 </section>
@@ -499,18 +502,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mdt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   table_schema          table_name  column_count table_description
-0      bay_area      amphib_dissect            41              None
-1      bay_area     amphib_parasite            11              None
-2      bay_area  water_quality_info            27              None
-3      bay_area                site            25              None
-4      bay_area        wetland_info            25              None
-..          ...                 ...           ...               ...
-59  survey_data      bd_swab_lookup             1              None
-60  survey_data    metadata_columns            22              None
-61  survey_data              region             4              None
-62  survey_data              survey            57              None
-63  survey_data             country             3              None
+<pre><code>         table_schema          table_name  column_count table_description
+0            bay_area      amphib_dissect            41              None
+1            bay_area     amphib_parasite            11              None
+2            bay_area  water_quality_info            27              None
+3            bay_area                site            25              None
+4            bay_area        wetland_info            25              None
+..                ...                 ...           ...               ...
+59  microclimate_data         time_series             3              None
+60  microclimate_data              logger             5              None
+61  microclimate_data              sensor             4              None
+62  microclimate_data    metadata_columns            25              None
+63  microclimate_data     metadata_tables             4              None
 
 [64 rows x 4 columns]</code></pre>
 </div>
@@ -534,20 +537,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view dataframe</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    table_schema        table_name  ... pg_description key_type
-0    survey_data              site  ...           None     None
-1    survey_data              site  ...           None     None
-2    survey_data              site  ...           None     None
-3    survey_data           capture  ...           None     None
-4    survey_data  metadata_columns  ...           None       PK
-..           ...               ...  ...            ...      ...
-343  survey_data          location  ...           None     None
-344  survey_data  metadata_columns  ...           None     None
-345  survey_data  metadata_columns  ...           None     None
-346  survey_data  metadata_columns  ...           None     None
-347  survey_data            region  ...           None     None
+<pre><code>    table_schema        table_name  ... fkey_ref_table fkey_ref_column
+0    survey_data              site  ...           None            None
+1    survey_data              site  ...           None            None
+2    survey_data           capture  ...           None            None
+3    survey_data  metadata_columns  ...           None            None
+4    survey_data  metadata_columns  ...           None            None
+..           ...               ...  ...            ...             ...
+355  survey_data   bd_qpcr_results  ...           None            None
+356  survey_data   bd_qpcr_results  ...         sample       sample_id
+357  survey_data   bd_qpcr_results  ...           None            None
+358  survey_data   bd_qpcr_results  ...           None            None
+359  survey_data              site  ...           None            None
 
-[348 rows x 22 columns]</code></pre>
+[360 rows x 25 columns]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list the columns in our column-metadata table</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>mdc.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -556,7 +559,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
        'accuracy', 'scale', 'format', 'reviewed', 'natural_key', 'primary_key',
        'foreign_key', 'unique', 'is_nullable', 'data_type',
        'character_maximum_length', 'numeric_precision', 'datetime_precision',
-       'column_default', 'ordinal_position', 'pg_description', 'key_type'],
+       'column_default', 'ordinal_position', 'pg_description', 'key_type',
+       'fkey_ref_schema', 'fkey_ref_table', 'fkey_ref_column'],
       dtype='object')</code></pre>
 </div>
 </div>
@@ -566,31 +570,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>metameta <span class="op">=</span> mdc[mdc[<span class="st">'table_name'</span>] <span class="op">==</span> <span class="st">'metadata_columns'</span>]</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(metameta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    table_schema        table_name  ... pg_description key_type
-4    survey_data  metadata_columns  ...           None       PK
-5    survey_data  metadata_columns  ...           None     None
-6    survey_data  metadata_columns  ...           None     None
-7    survey_data  metadata_columns  ...           None     None
-94   survey_data  metadata_columns  ...           None     None
-249  survey_data  metadata_columns  ...           None       PK
-250  survey_data  metadata_columns  ...           None       PK
-251  survey_data  metadata_columns  ...           None     None
-328  survey_data  metadata_columns  ...           None     None
-329  survey_data  metadata_columns  ...           None     None
-330  survey_data  metadata_columns  ...           None     None
-331  survey_data  metadata_columns  ...           None     None
-332  survey_data  metadata_columns  ...           None     None
-333  survey_data  metadata_columns  ...           None     None
-334  survey_data  metadata_columns  ...           None     None
-335  survey_data  metadata_columns  ...           None     None
-336  survey_data  metadata_columns  ...           None     None
-337  survey_data  metadata_columns  ...           None     None
-338  survey_data  metadata_columns  ...           None     None
-344  survey_data  metadata_columns  ...           None     None
-345  survey_data  metadata_columns  ...           None     None
-346  survey_data  metadata_columns  ...           None     None
+<pre><code>    table_schema        table_name  ... fkey_ref_table fkey_ref_column
+3    survey_data  metadata_columns  ...           None            None
+4    survey_data  metadata_columns  ...           None            None
+5    survey_data  metadata_columns  ...           None            None
+6    survey_data  metadata_columns  ...           None            None
+62   survey_data  metadata_columns  ...           None            None
+183  survey_data  metadata_columns  ...           None            None
+184  survey_data  metadata_columns  ...           None            None
+185  survey_data  metadata_columns  ...           None            None
+249  survey_data  metadata_columns  ...           None            None
+250  survey_data  metadata_columns  ...           None            None
+251  survey_data  metadata_columns  ...           None            None
+252  survey_data  metadata_columns  ...           None            None
+253  survey_data  metadata_columns  ...           None            None
+254  survey_data  metadata_columns  ...           None            None
+255  survey_data  metadata_columns  ...           None            None
+256  survey_data  metadata_columns  ...           None            None
+257  survey_data  metadata_columns  ...           None            None
+258  survey_data  metadata_columns  ...           None            None
+259  survey_data  metadata_columns  ...           None            None
+269  survey_data  metadata_columns  ...           None            None
+270  survey_data  metadata_columns  ...           None            None
+271  survey_data  metadata_columns  ...           None            None
+287  survey_data  metadata_columns  ...           None            None
+288  survey_data  metadata_columns  ...           None            None
+289  survey_data  metadata_columns  ...           None            None
 
-[22 rows x 22 columns]</code></pre>
+[25 rows x 25 columns]</code></pre>
 </div>
 </div>
 <p>A few columns to point out:</p>
@@ -626,7 +633,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a> .count()</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a> .execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>28390</code></pre>
+<pre><code>29507</code></pre>
 </div>
 </div>
 <p><em>The ibis.execute() function executes a query and returns the result, regardless of the format. This is synonymous with the to_pandas() function which returns query results as a pandas dataframe where possible.</em></p>
@@ -641,7 +648,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>28232</code></pre>
+<pre><code>29344</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -656,15 +663,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  life_stage  row_count
-0    tadpole      10276
-1      adult       9551
-2   subadult       7162
-3       None        764
-4    eggmass        625
-5        egg          9
-6   juvenile          2
-7  metamorph          1</code></pre>
+<pre><code>      life_stage  row_count
+0        tadpole      10276
+1          adult       9617
+2       subadult       7162
+3           None       1725
+4        eggmass        625
+5       juvenile         78
+6            egg         16
+7  metamorphosed          7
+8      metamorph          1</code></pre>
 </div>
 </div>
 </section>

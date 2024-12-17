@@ -1,0 +1,315 @@
+---
+title: "5. Bd-Capture Workflow"
+author: "Cob Staines"
+date: today
+toc: true
+format:
+  html: 
+    code-line-numbers: false
+  pdf:
+    code-line-numbers: false
+    geometry: 
+      - top=30mm
+      - left=30mm
+---
+
+```{r, include=FALSE}
+librarian::shelf(reticulate)
+# use_python("/home/cob/miniconda3/envs/ribbitr/bin/python")
+use_condaenv("ribbitr", required = TRUE)
+```
+
+*This tutorial is available as a [.qmd on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series).*
+
+# Motivation
+- Run through a complete workflow including: database connection, data discovery, data pulling, and data manipulation
+- Demonstrate how to connect Capture data with sample data (in this case Bd qPCR results)
+
+::: {.panel-tabset}
+
+# R
+Let's run through a realistic data scenario from the beginning.
+
+Suppose we are interested in Capture and Bd qPCR data. Specifically, we want to compare Bd qPCR results for juvenile-to-adult individuals, captured in 2015 or later, across species and sites.
+
+## Setup
+
+```{r, message=FALSE}
+# minimal packages for RIBBiTR DB data discovery
+librarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
+
+# establish database connection
+dbcon <- hopToDB("ribbitr")
+
+# load table metadata
+mdt <- tbl(dbcon, Id("public", "all_tables")) %>%
+  filter(table_schema == "survey_data") %>%
+  collect()
+
+# load column metadata
+mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
+  filter(table_schema == "survey_data") %>%
+  collect()
+```
+
+## Data discovery and pulling
+
+Looking at the [`survey_data` schema diagram](resources/schema_diagram_survey_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called "capture" and "bd_qpcr_results".
+
+### Point to support tables
+
+```{r}
+# pointers for all tables of interest
+db_bdqpcr = tbl(dbcon, Id("survey_data", "bd_qpcr_results"))
+db_sample = tbl(dbcon, Id("survey_data", "sample"))
+db_capture = tbl(dbcon, Id("survey_data", "capture"))
+db_survey = tbl(dbcon, Id("survey_data", "survey"))
+db_visit = tbl(dbcon, Id("survey_data", "visit"))
+db_site = tbl(dbcon, Id("survey_data", "site"))
+db_region = tbl(dbcon, Id("survey_data", "region"))
+db_country = tbl(dbcon, Id("survey_data", "country"))
+
+```
+
+### Join all data of interest
+
+In this case we only want to consider cases for which he have both capture *and* Bd qPCR data. An inner join across the Bd, sample, and capture tables will keep only values which are common between them. Of these data, we want to return all supporting info, so we will left join to the remaining support tables.
+```{r}
+# inner join capture and bd samples
+# left join supporting tables
+data_bd_capture = db_bdqpcr %>%
+  inner_join(db_sample, by = "sample_id") %>%
+  inner_join(db_capture, by = "capture_id") %>%
+  left_join(db_survey, by = "survey_id") %>%
+  left_join(db_visit, by = "visit_id") %>%
+  left_join(db_site, by = "site_id") %>%
+  left_join(db_region, by = "region_id") %>%
+  left_join(db_country, by = "country_id")
+
+# see what columns are available
+colnames(data_bd_capture)
+
+# we can also see which columns come from specified tables, for context
+colnames(db_bdqpcr)
+
+```
+
+### Select columns of interest, filter to date
+
+```{r}
+
+# pull data from database
+data_bd_capture_2015 = data_bd_capture %>%
+  # filter to dates of interest
+  filter(date >= "2015-01-01") %>%
+  # select columns of interest
+  select(capture_id,
+         species_capture,
+         life_stage,
+         svl_mm,
+         body_mass_g,
+         survey_id,
+         cmr_id,
+         sample_id,
+         sample_name_bd,
+         detected,
+         average_ct,
+         average_target_quant,
+         target_quant_per_swab,
+         comments_capture,
+         comments_qpcr,
+         date,
+         site,
+         region,
+         country)
+```
+
+### Explore # of filtered observations by life stage, then filter again
+```{r}
+
+data_bd_capture_2015 %>%
+  select(life_stage) %>%
+  group_by(life_stage) %>%
+  summarise(row_count = n()) %>%
+  arrange(desc(row_count)) %>%
+  collect()
+
+data_bd_capture_2015_life <- data_bd_capture_2015 %>%
+  filter(life_stage %in% c("juvenile",
+                           "subadult",
+                           "adult"),
+         !is.na(life_stage))
+
+```
+
+### Pull data
+
+```{r}
+# check out our SQP "shopping list"
+sql_render(data_bd_capture_2015_life)
+
+# collect data
+data_bd_capture_final <- data_bd_capture_2015_life %>%
+  collect()
+
+head(data_bd_capture_final)
+
+```
+
+These data are ready to be analyzed and visualized!
+
+## Disconnect
+
+```{r}
+dbDisconnect(dbcon)
+```
+
+# Python
+Let's run through a realistic data scenario from the beginning.
+
+Suppose we are interested in Capture and Bd qPCR data. Specifically, we want to compare Bd qPCR results for juvenile-to-adult individuals, captured in 2015 or later, across species and sites.
+
+## Setup
+
+```{python, message=FALSE}
+# minimal packages for RIBBiTR DB Workflow
+import ibis
+from ibis import _
+import pandas as pd
+import dbconfig
+import db_access as db
+
+# establish database connection
+dbcon = ibis.postgres.connect(**dbconfig.ribbitr)
+
+# load table metadata
+mdt = dbcon.table(database = "public", name = "all_tables").to_pandas()
+
+# load column metadata
+mdc = (
+  dbcon.table(database="public", name="all_columns")
+  .filter(_.table_schema == 'survey_data')
+  .to_pandas()
+  )
+```
+
+## Data discovery and pulling
+
+Looking at the [`survey_data` schema diagram](resources/schema_diagram_survey_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called "capture" and "bd_qpcr_results".
+
+### Point to support tables
+
+```{python}
+# Ponters for all tables
+db_bdqpcr = dbcon.table('bd_qpcr_results', database='survey_data')
+db_sample = dbcon.table('sample', database='survey_data')
+db_capture = dbcon.table('capture', database='survey_data')
+db_survey = dbcon.table('survey', database='survey_data')
+db_visit = dbcon.table('visit', database='survey_data')
+db_site = dbcon.table('site', database='survey_data')
+db_region = dbcon.table('region', database='survey_data')
+db_country = dbcon.table('country', database='survey_data')
+```
+
+### Join all data of interest
+
+In this case we only want to consider cases for which he have both capture *and* Bd qPCR data. An inner join across the Bd, sample, and capture tables will keep only values which are common between them. Of these data, we want to return all supporting info, so we will left join to the remaining support tables.
+
+```{python}
+# Recursive joins
+data_bd_capture = (
+    db_bdqpcr
+    .inner_join(db_sample, db_bdqpcr.sample_id == db_sample.sample_id)
+    .inner_join(db_capture, db_sample.capture_id == db_capture.capture_id)
+    .left_join(db_survey, db_capture.survey_id == db_survey.survey_id)
+    .left_join(db_visit, db_survey.visit_id == db_visit.visit_id)
+    .left_join(db_site, db_visit.site_id == db_site.site_id)
+    .left_join(db_region, db_site.region_id == db_region.region_id)
+    .left_join(db_country, db_region.country_id == db_country.country_id)
+)
+
+# see what columns are available
+data_bd_capture.columns
+
+# we can also see which columns come from specified tables, for context
+db_bdqpcr.columns
+
+```
+
+### Select columns of interest, filter to date
+
+```{python}
+# capture table, select, filter
+data_bd_capture_2015 = (
+  data_bd_capture
+  .filter(_.date >= '2015-01-01')
+  .select([
+    "capture_id",
+    "species_capture",
+    "life_stage",
+    "svl_mm",
+    "body_mass_g",
+    "survey_id",
+    "cmr_id",
+    "sample_id",
+    "sample_name_bd",
+    "detected",
+    "average_ct",
+    "average_target_quant",
+    "target_quant_per_swab",
+    "comments_capture",
+    "comments_qpcr",
+    "date",
+    "site",
+    "region",
+    "country"
+    ])
+  )
+
+```
+
+### Explore # of filtered observations by life stage, then filter again
+
+```{python}
+# count by life stage
+life_stage_counts = (
+  data_bd_capture_2015
+  .group_by('life_stage')
+  .aggregate(row_count=_.count())
+  .order_by(_.row_count.desc())
+  .to_pandas()
+  )
+
+print(life_stage_counts)
+
+# filter to desired life stages
+data_bd_capture_2015_life = (
+  data_bd_capture_2015
+  .filter(_.life_stage.isin(['juvenile','subadult', 'adult']) & _.life_stage.notnull())
+  )
+```
+### Pull data
+
+```{python}
+# check out our SQP "shopping list"
+data_bd_capture_2015_life.compile()
+
+# pull data
+data_bd_capture_final = data_bd_capture_2015_life.to_pandas()
+
+# preview data
+data_bd_capture_final.head()
+```
+
+These data are ready to be analyzed and visualized!
+
+## Disconnect
+```{python}
+# close connection
+dbcon.disconnect()
+```
+
+:::
+<div style="text-align: center;">
+[<- 4. Table Joins](04_table_joins.html) \| [6. Microclimate Workflow -\>](06_microclimate_workflow.html)
+</div>

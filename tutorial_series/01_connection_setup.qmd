@@ -54,11 +54,11 @@ Copy the following database connection parameters to your .Renviron file, substi
 
 ```{r, eval=FALSE}
 # RIBBiTR DB credentials
-ribbitr.dbname <- "ribbitr"
-ribbitr.host <- "ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"
-ribbitr.port <- "5432"
-ribbitr.user <- "[YOUR-USERNAME-HERE]"
-ribbitr.password <- "[YOUR-PASSWORD-HERE]"
+ribbitr.dbname = "ribbitr"
+ribbitr.host = "ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"
+ribbitr.port = "5432"
+ribbitr.user = "[YOUR-USERNAME-HERE]"
+ribbitr.password = "[YOUR-PASSWORD-HERE]"
 ```
 
 Save and close .Renviron, and restart RStudio.
