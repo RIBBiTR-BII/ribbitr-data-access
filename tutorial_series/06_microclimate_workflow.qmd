@@ -173,8 +173,6 @@ For this example, suppose we are interested in learning what microclimate time-s
 
 In this case, we will load metadata for all schemas by dropping the `filter()` commands from previous tutorials.
 
-## Setup
-
 ```{python, message=FALSE}
 # minimal packages for RIBBiTR DB Workflow
 import ibis
