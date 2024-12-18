@@ -11,7 +11,7 @@ editor: source
 
 ### Added
 
--   bd_qpcr results table updated with qPCR results through 2023
+-   bd qpcr results table updated with qPCR results from Richards-Zawacki lab through December 2023
 -   created sample table
     - capture_id
     - sample_id
