@@ -11,9 +11,6 @@ format:
     geometry: 
       - top=30mm
       - left=30mm
-website:
-  sidebar:
-    contents: auto
       
 ---
 
@@ -215,11 +212,17 @@ import dbconfig
 Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing DBeaver. DBeaver is a free, universal database tool which provides a great visual platform and robust backend for interacting with databases. [Download DBeaver](https://dbeaver.io/) and install to get started with the tutorial.
 
 ## Set up and test your connection.
-Open DBeaver.
+1) Open DBeaver.
+
+2) Right-click in the Database Navigator" panel and select `Create` -> `Connection`
 
 ![Right-click in the Database Navigator" panel and select `Create` -> `Connection`](images/DBeaver_connection_setup_01.png)
+
+3) Enter your database credentials as shown above, substituting your user and password.
+
 ![Enter your database credentials as shown above, substituting your user and password.](images/DBeaver_connection_setup_02.png)
-Click `Test Connection` in the bottom left to make sure your credentials work. Then click `OK`.
+
+4) Click `Test Connection` in the bottom left to make sure your credentials work. Then click `OK`.
 
 That's it, you are ready to start using your connection!
 

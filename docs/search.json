@@ -492,7 +492,7 @@
     "href": "index.html#closing-the-loop",
     "title": "RIBBiTR Data Access Center",
     "section": "Closing the loop",
-    "text": "Closing the loop\nData access is an important component of our collaborative effort within RIBBiTR, but it does not exist in a vacuum. Sharing of data is enhanced when coupled with other forms of high-context communication, such as interpersonal dialogue, collaborative writing and messaging, code sharing, and more. Confused by the data? See something odd? Encounter a barrier? help us increase the context in our communication by reaching out within the team for a conversation!\nAny questions? Contact the RIBBiTR data manager."
+    "text": "Closing the loop\nData access is an important component of our collaborative effort within RIBBiTR, but it does not exist in a vacuum. Sharing of data is enhanced when coupled with other forms of high-context communication, such as interpersonal dialogue, collaborative writing and messaging, code sharing, and more. Confused by the data? See something odd? Encounter a barrier? help us increase the context in our communication by reaching out within the team for a conversation!\nAny questions? Contact the RIBBiTR data manager.\n\nThis website and its contents were created entirely in R using Quatro, and is available on Github under a GPL v3 license."
   },
   {
     "objectID": "index.html#lets-practice",
@@ -921,7 +921,7 @@
     "href": "tutorial_series/01_connection_setup.html#set-up-and-test-your-connection.",
     "title": "1. Connection Setup",
     "section": "Set up and test your connection.",
-    "text": "Set up and test your connection.\nOpen DBeaver.\n  Click Test Connection in the bottom left to make sure your credentials work. Then click OK.\nThat’s it, you are ready to start using your connection!",
+    "text": "Set up and test your connection.\n\nOpen DBeaver.\nRight-click in the Database Navigator” panel and select Create -&gt; Connection\n\n\n\n\nRight-click in the Database Navigator” panel and select Create -&gt; Connection\n\n\n\nEnter your database credentials as shown above, substituting your user and password.\n\n\n\n\nEnter your database credentials as shown above, substituting your user and password.\n\n\n\nClick Test Connection in the bottom left to make sure your credentials work. Then click OK.\n\nThat’s it, you are ready to start using your connection!",
     "crumbs": [
       "RIBBiTR Database Tutorial Series",
       "1. Connection Setup"
