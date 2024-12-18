@@ -54,7 +54,7 @@ mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
 
 ## Data discovery and pulling
 
-Lets take a look at the [`microclimate_data` schema diagram](resources/schema_diagram_microclimate_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata for the `microclimate_data` schema. This schema is pretty simple, with only three substantive data tables: `logger`, `sensor`, and `time_series_01_raw`.
+Lets take a look at the [`microclimate_data` schema diagram](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata for the `microclimate_data` schema. This schema is pretty simple, with only three substantive data tables: `logger`, `sensor`, and `time_series_01_raw`.
 
 Our column metadata also contains a clue which is not obvious from the schema diagram: `microclimate_data.logger` has a foreign key which points to `survey_data.site`. knowing this, let's pull out all the ingrediants we may want to work with:
 

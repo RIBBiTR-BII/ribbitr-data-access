@@ -329,7 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="data-discovery-and-pulling" class="level2">
 <h2 class="anchored" data-anchor-id="data-discovery-and-pulling">Data discovery and pulling</h2>
-<p>Lets take a look at the <a href="resources/schema_diagram_microclimate_data.png"><code>microclimate_data</code> schema diagram</a>, we can browse to see which tables and columns we want. We can also consult the table or column metadata for the <code>microclimate_data</code> schema. This schema is pretty simple, with only three substantive data tables: <code>logger</code>, <code>sensor</code>, and <code>time_series_01_raw</code>.</p>
+<p>Lets take a look at the <a href="https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png"><code>microclimate_data</code> schema diagram</a>, we can browse to see which tables and columns we want. We can also consult the table or column metadata for the <code>microclimate_data</code> schema. This schema is pretty simple, with only three substantive data tables: <code>logger</code>, <code>sensor</code>, and <code>time_series_01_raw</code>.</p>
 <p>Our column metadata also contains a clue which is not obvious from the schema diagram: <code>microclimate_data.logger</code> has a foreign key which points to <code>survey_data.site</code>. knowing this, let’s pull out all the ingrediants we may want to work with:</p>
 <section id="point-to-tables-of-interest" class="level3">
 <h3 class="anchored" data-anchor-id="point-to-tables-of-interest">Point to tables of interest</h3>

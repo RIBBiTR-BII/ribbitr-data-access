@@ -54,7 +54,7 @@ mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
 
 ## Data discovery and pulling
 
-Looking at the [`survey_data` schema diagram](resources/schema_diagram_survey_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called "capture" and "bd_qpcr_results".
+Looking at the [`survey_data` schema diagram](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_survey_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called "capture" and "bd_qpcr_results".
 
 ### Point to support tables
 
@@ -145,7 +145,7 @@ data_bd_capture_2015_life <- data_bd_capture_2015 %>%
 ### Pull data
 
 ```{r}
-# check out our SQP "shopping list"
+# check out our SQL "shopping list"
 sql_render(data_bd_capture_2015_life)
 
 # collect data
