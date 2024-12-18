@@ -13,4 +13,4 @@ Data access is an important component of our collaborative effort within RIBBiTR
 
 Any questions? Contact the [RIBBiTR data manager](mailto:cobstainesconsulting@gmail.com).
 
-* This website and its contents were created entirely in R using [Quatro](https://quarto.org/), and is [available on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access) under a [GPL v3 license](https://github.com/RIBBiTR-BII/ribbitr-data-access/blob/main/LICENSE).
+**_This website and its contents were created in R using [Quatro](https://quarto.org/). Source files are [available on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access) under a [GPL v3 license](https://github.com/RIBBiTR-BII/ribbitr-data-access/blob/main/LICENSE)._**
