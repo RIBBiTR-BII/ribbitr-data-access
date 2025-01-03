@@ -7,6 +7,35 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-01-03
+
+### Changed
+
+-   lat/lon coordinates calculated for all spatial data
+  -   site table
+      - renamed:
+          -   site_utme <- utme
+          -   site_utmn <- utmn
+          -   site_utm_zone <- utm_zone
+          -   site_elevation_m <- elevation_m
+      - new columns:
+          -   site_latitude
+          -   site_longitude
+  -   environmental table
+      - renamed:
+          -   environmental_utme <- sample_location_utme
+          -   environmental_utmn <- sample_location_utmn
+          -   environmental_utm_zone <- sample_location_utm_zone
+          -   environmental_elevation_m <- sample_location_elevation_m
+      - new columns:
+          -   environmental_latitude
+          -   environmental_longitude
+  -   capture table
+      - new columns:
+          -   capture_utm_zone
+          -   capture_latitude
+          -   capture_longitude
+
 ## 2024-12-13
 
 ### Added
