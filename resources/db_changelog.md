@@ -1,11 +1,18 @@
 ---
-title: "ribbitr_db Changelog"
+title: "ribbitr_db changelog"
 author: "Cob Staines"
 format: html
 editor: source
 ---
 
 # Change Log for RIBBiTR_DB
+
+## 2025-01-03
+
+### Added
+
+-   table: survey_data.taxonomy
+-   table: survey_data.lab
 
 ## 2025-01-03
 
