@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-12-18">
+<meta name="dcterms.date" content="2025-01-13">
 
 <title>2. Data Discovery – RIBBiTR Data Access</title>
 <style>
@@ -281,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 18, 2024</p>
+      <p class="date">January 13, 2025</p>
     </div>
   </div>
   
@@ -414,7 +414,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return columns of lazy table</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_ves)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "species_ves"         "count_ves"           "detection_location" 
+<pre><code> [1] "taxon_ves"           "count_ves"           "detection_location" 
  [4] "microhab"            "life_stage"          "sex"                
  [7] "comments_ves"        "microhab_moredetail" "observer_ves"       
 [10] "visual_animal_state" "ves_id"              "survey_id"          </code></pre>
@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 29507</code></pre>
+[1] 29504</code></pre>
 </div>
 </div>
 <p><em>The pull() function executes a query to return a single column or variable, synonymous with the collect() function which returns a collection of variables as a table.</em></p>
@@ -436,13 +436,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows with known species</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(species_ves),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>         species_ves <span class="sc">!=</span> <span class="st">"unknown_species"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(taxon_ves),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>         taxon_ves <span class="sc">!=</span> <span class="st">"unknown_species"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 29344</code></pre>
+[1] 29341</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -461,7 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 1 tadpole           10276
 2 adult              9617
 3 subadult           7162
-4 &lt;NA&gt;               1725
+4 &lt;NA&gt;               1722
 5 eggmass             625
 6 juvenile             78
 7 egg                  16
@@ -525,20 +525,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mdt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>         table_schema          table_name  column_count table_description
-0            bay_area      amphib_dissect            41              None
-1            bay_area     amphib_parasite            11              None
-2            bay_area  water_quality_info            27              None
-3            bay_area                site            25              None
-4            bay_area        wetland_info            25              None
-..                ...                 ...           ...               ...
-59  microclimate_data    metadata_columns            25              None
-60  microclimate_data     metadata_tables             4              None
-61  microclimate_data              logger             4              None
-62  microclimate_data              sensor             5              None
-63  microclimate_data  time_series_01_raw             3              None
+<pre><code>         table_schema  ... table_description
+0   microclimate_data  ...              None
+1   microclimate_data  ...              None
+2   microclimate_data  ...              None
+3   microclimate_data  ...              None
+4   microclimate_data  ...              None
+5         survey_data  ...              None
+6         survey_data  ...              None
+7         survey_data  ...              None
+8         survey_data  ...              None
+9         survey_data  ...              None
+10        survey_data  ...              None
+11        survey_data  ...              None
+12        survey_data  ...              None
+13        survey_data  ...              None
+14        survey_data  ...              None
+15        survey_data  ...              None
+16        survey_data  ...              None
+17        survey_data  ...              None
+18        survey_data  ...              None
+19        survey_data  ...              None
+20        survey_data  ...              None
+21        survey_data  ...              None
+22        survey_data  ...              None
+23        survey_data  ...              None
+24        survey_data  ...              None
+25        survey_data  ...              None
+26        survey_data  ...              None
+27        survey_data  ...              None
 
-[64 rows x 4 columns]</code></pre>
+[28 rows x 4 columns]</code></pre>
 </div>
 </div>
 </section>
@@ -568,10 +585,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 4    survey_data  metadata_columns  ...           None            None
 ..           ...               ...  ...            ...             ...
 355  survey_data   bd_qpcr_results  ...           None            None
-356  survey_data   bd_qpcr_results  ...         sample       sample_id
-357  survey_data   bd_qpcr_results  ...           None            None
+356  survey_data   bd_qpcr_results  ...           None            None
+357  survey_data              site  ...           None            None
 358  survey_data   bd_qpcr_results  ...           None            None
-359  survey_data              site  ...           None            None
+359  survey_data   bd_qpcr_results  ...           None            None
 
 [360 rows x 25 columns]</code></pre>
 </div>
@@ -646,7 +663,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return columns of lazy table</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>db_ves.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id']</code></pre>
+<pre><code>['taxon_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id']</code></pre>
 </div>
 </div>
 <p>How many total rows a table contains:</p>
@@ -656,7 +673,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a> .count()</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a> .execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>29507</code></pre>
+<pre><code>29504</code></pre>
 </div>
 </div>
 <p><em>The ibis.execute() function executes a query and returns the result, regardless of the format. This is synonymous with the to_pandas() function which returns query results as a pandas dataframe where possible.</em></p>
@@ -665,13 +682,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows with known species</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>filtered_row_count <span class="op">=</span> (</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  db_ves</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.species_ves.notnull() <span class="op">&amp;</span> (_.species_ves <span class="op">!=</span> <span class="st">'unknown_species'</span>))</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.taxon_ves.notnull() <span class="op">&amp;</span> (_.taxon_ves <span class="op">!=</span> <span class="st">'unknown_species'</span>))</span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  .count()</span>
 <span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  .execute())</span>
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>29344</code></pre>
+<pre><code>29341</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -690,7 +707,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 0        tadpole      10276
 1          adult       9617
 2       subadult       7162
-3           None       1725
+3           None       1722
 4        eggmass        625
 5       juvenile         78
 6            egg         16

@@ -104,7 +104,7 @@ data_bd_capture_2015 = data_bd_capture %>%
   filter(date >= "2015-01-01") %>%
   # select columns of interest
   select(capture_id,
-         species_capture,
+         taxon_capture,
          life_stage,
          svl_mm,
          body_mass_g,
@@ -245,7 +245,7 @@ data_bd_capture_2015 = (
   .filter(_.date >= '2015-01-01')
   .select([
     "capture_id",
-    "species_capture",
+    "taxon_capture",
     "life_stage",
     "svl_mm",
     "body_mass_g",

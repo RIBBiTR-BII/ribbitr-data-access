@@ -73,7 +73,7 @@ Great, that was easy! But what if we don't need all that data? Suppose we are on
 ```{r}
 # lazy table, select, and collect
 db_ves <- tbl(dbcon, Id("survey_data", "ves")) %>%
-  select(species_ves,
+  select(taxon_ves,
          count_ves,
          life_stage,
          sex,
@@ -86,7 +86,7 @@ And perhaps we are only interested in adults, in which case we can also `dplyr::
 ```{r}
 # lazy table select, filter, and collect all in one
 db_ves_adult <- tbl(dbcon, Id("survey_data", "ves")) %>%
-  select(species_ves,
+  select(taxon_ves,
          count_ves,
          life_stage,
          sex,
@@ -108,7 +108,7 @@ But if we want to see the SQL, we can! Let's take a closer look at the lazy tabl
 ```{r}
 # lazy table only (not collected)
 ves_adult <- tbl(dbcon, Id("survey_data", "ves")) %>%
-  select(species_ves,
+  select(taxon_ves,
          count_ves,
          life_stage,
          sex,
@@ -196,7 +196,7 @@ Great, that was easy! But what if we don't need all that data? Suppose we are on
 db_ves_select = (
   dbcon.table(database="survey_data", name="ves")
   .select([
-    'species_ves',
+    'taxon_ves',
     'count_ves',
     'life_stage',
     'sex',
@@ -215,7 +215,7 @@ And perhaps we are only interested in adults, in which case we can also `ibis.fi
 db_ves_adult = (
   dbcon.table(database="survey_data", name="ves")
   .select([
-    'species_ves',
+    'taxon_ves',
     'count_ves',
     'life_stage',
     'sex',
@@ -241,7 +241,7 @@ But if we want to see the SQL, we can! Let's take a closer look at the lazy tabl
 ves_adult = (
   dbcon.table(database="survey_data", name="ves")
   .select([
-    'species_ves',
+    'taxon_ves',
     'count_ves',
     'life_stage',
     'sex',

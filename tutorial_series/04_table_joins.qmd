@@ -61,7 +61,7 @@ Let's begin with the query we constructed in our last tutorial:
 ```{r}
 # lazy table select, filter, and collect all in one
 db_ves_adult <- tbl(dbcon, Id("survey_data", "ves")) %>%
-  select(species_ves,
+  select(taxon_ves,
          count_ves,
          life_stage,
          sex,
@@ -256,7 +256,7 @@ Finally we can select for and filter the variables of interest:
 
 ```{r}
 data_ves_filtered <- db_ves_sup %>%
-  select(species_ves,
+  select(taxon_ves,
          count_ves,
          life_stage,
          sex,
@@ -310,7 +310,7 @@ chain_ves <- tbl_chain("ves", mdc)
 
 # join recursively, specifying desired columns, filter, collect
 db_ves_adult_final <- tbl_left_join(dbcon, chain_ves) %>%
-    select(species_ves,
+    select(taxon_ves,
          count_ves,
          life_stage,
          sex,
@@ -393,7 +393,7 @@ Let's begin with the query we constructed in our last tutorial:
 ves_adult = (
   dbcon.table(database="survey_data", name="ves")
   .select([
-    'species_ves',
+    'taxon_ves',
     'count_ves',
     'life_stage',
     'sex',
@@ -567,7 +567,7 @@ Finally we can select for and filter the variables of interest:
 data_ves_filtered = (
     db_ves_sup
     .select(
-      'species_ves',
+      'taxon_ves',
       'count_ves',
       'life_stage',
       'sex',
@@ -623,7 +623,7 @@ Let's use the chain workflow to join only the data we want, to filter to Brazil 
 db_ves_filtered = (
   db.tbl_join(dbcon, chain_ves, join="left")
   .select(
-    'species_ves',
+    'taxon_ves',
     'count_ves',
     'life_stage',
     'sex',

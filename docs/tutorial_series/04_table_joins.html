@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-12-18">
+<meta name="dcterms.date" content="2025-01-13">
 
 <title>4. Table Joins – RIBBiTR Data Access</title>
 <style>
@@ -281,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 18, 2024</p>
+      <p class="date">January 13, 2025</p>
     </div>
   </div>
   
@@ -334,7 +334,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy table select, filter, and collect all in one</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>db_ves_adult <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"ves"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species_ves,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(taxon_ves,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         count_ves,</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         sex,</span>
@@ -412,7 +412,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(left_ves_survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "species_ves"         "count_ves"           "detection_location" 
+<pre><code> [1] "taxon_ves"           "count_ves"           "detection_location" 
  [4] "microhab"            "life_stage"          "sex"                
  [7] "comments_ves"        "microhab_moredetail" "observer_ves"       
 [10] "visual_animal_state" "ves_id"              "survey_id"          
@@ -434,7 +434,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>(ves_rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 29507</code></pre>
+[1] 29504</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>survey_rows <span class="ot">&lt;-</span> db_survey <span class="sc">%&gt;%</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
@@ -452,7 +452,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>(left_ves_survey_rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 29507</code></pre>
+[1] 29504</code></pre>
 </div>
 </div>
 <p>Notice that in this case, the number of rows in the joined <code>db_ves_survey</code> table is equal to the number ofrows in the <code>db_ves</code> table. This has to do with the type of join we used to join these tables, in this case a “left join”.</p>
@@ -478,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>(full_ves_survey_rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 59034</code></pre>
+[1] 59031</code></pre>
 </div>
 </div>
 <p>In this case we see a greater number of rows returned than are present in either table (though less than the sum of rows in each table). This tells us that some rows did align between tables, while others did not. Specifically, <code>full_ves_survey_rows</code> returns all VES observations (which have a corresponding <code>survey_id</code> in the <code>survey</code> table by design, see note below) <em>as well as</em> all other surveys in the <code>survey</code> table, even those that do not correspond to a VES survey. We can see this quickly by comparing the distinct <code>detection_type</code>’s seen in each joined table:</p>
@@ -487,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(detection_type) <span class="sc">%&gt;%</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># Source:   SQL [1 x 1]
+<pre><code># Source:   SQL [?? x 1]
 # Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
   detection_type
   &lt;chr&gt;         
@@ -497,7 +497,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(detection_type) <span class="sc">%&gt;%</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># Source:   SQL [5 x 1]
+<pre><code># Source:   SQL [?? x 1]
 # Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
   detection_type
   &lt;chr&gt;         
@@ -558,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Finally we can select for and filter the variables of interest:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>data_ves_filtered <span class="ot">&lt;-</span> db_ves_sup <span class="sc">%&gt;%</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species_ves,</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(taxon_ves,</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>         count_ves,</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>         sex,</span>
@@ -588,7 +588,7 @@ Joining with survey ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_ves_survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "species_ves"         "count_ves"           "detection_location" 
+<pre><code> [1] "taxon_ves"           "count_ves"           "detection_location" 
  [4] "microhab"            "life_stage"          "sex"                
  [7] "comments_ves"        "microhab_moredetail" "observer_ves"       
 [10] "visual_animal_state" "ves_id"              "survey_id"          
@@ -618,7 +618,7 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_ves_survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "species_ves"         "count_ves"           "detection_location" 
+<pre><code> [1] "taxon_ves"           "count_ves"           "detection_location" 
  [4] "microhab"            "life_stage"          "sex"                
  [7] "comments_ves"        "microhab_moredetail" "observer_ves"       
 [10] "visual_animal_state" "ves_id"              "survey_id"          
@@ -628,13 +628,14 @@ Joining with country ... done.</code></pre>
 [22] "number_observers"    "visit_id"            "start_timestamp"    
 [25] "end_timestamp"       "date"                "time_of_day"        
 [28] "campaign"            "visit_status"        "comments_visit"     
-[31] "site_id"             "site"                "utm_zone"           
-[34] "utme"                "utmn"                "area_sqr_m"         
-[37] "site_code"           "elevation_m"         "depth_m"            
-[40] "topo"                "wilderness"          "site_comments"      
-[43] "region_id"           "site_name_alt"       "region"             
-[46] "country_id"          "location_id"         "time_zone"          
-[49] "country"             "iso_country_code"   </code></pre>
+[31] "site_id"             "visit_lab"           "site"               
+[34] "site_utm_zone"       "site_utme"           "site_utmn"          
+[37] "area_sqr_m"          "site_code"           "site_elevation_m"   
+[40] "depth_m"             "topo"                "wilderness"         
+[43] "site_comments"       "region_id"           "site_name_alt"      
+[46] "site_latitude"       "site_longitude"      "region"             
+[49] "country_id"          "location_id"         "time_zone"          
+[52] "country"             "iso_country_code"   </code></pre>
 </div>
 </div>
 <p>Hooray! Also yikes, that’s a lot of columns! I am starting to see why we store all these in separate tables!</p>
@@ -645,7 +646,7 @@ Joining with country ... done.</code></pre>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># join recursively, specifying desired columns, filter, collect</span></span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>db_ves_adult_final <span class="ot">&lt;-</span> <span class="fu">tbl_left_join</span>(dbcon, chain_ves) <span class="sc">%&gt;%</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(species_ves,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(taxon_ves,</span>
 <span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>         count_ves,</span>
 <span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
 <span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>         sex,</span>
@@ -732,7 +733,7 @@ Joining with country ... done.</code></pre>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>ves_adult <span class="op">=</span> (</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>)</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  .select([</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'taxon_ves'</span>,</span>
 <span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
 <span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>
@@ -799,7 +800,7 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all unique key columns for ves table</span></span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>db.tbl_keys(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['survey_id', 'ves_id']</code></pre>
+<pre><code>['ves_id', 'survey_id']</code></pre>
 </div>
 </div>
 <p>Notice that we passed the column metadata to these functions, to help us automate key lookups.</p>
@@ -820,7 +821,7 @@ Joining with country ... done.</code></pre>
 <span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
 <span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>left_ves_survey.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp', 'end_timestamp']</code></pre>
+<pre><code>['taxon_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp', 'end_timestamp']</code></pre>
 </div>
 </div>
 <p>We see that the columns of <code>db_ves_survey</code> correspond to the union of those from both the ves and survey tables. More importantly, the rows are lined up using <code>survey_id</code> as the key “join by” column. You could also substitute this with <code>by = tbl_fkey("ves", mdc)</code>.</p>
@@ -830,7 +831,7 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count rows in db_ves</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(db_ves.count().execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>29507</code></pre>
+<pre><code>29504</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count rows in db_survey</span></span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(db_survey.count().execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -840,7 +841,7 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count rows in left_ves_survey</span></span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(left_ves_survey.count().execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>29507</code></pre>
+<pre><code>29504</code></pre>
 </div>
 </div>
 <p>Notice that in this case, the number of rows in the joined <code>db_ves_survey</code> table is equal to the number ofrows in the <code>db_ves</code> table. This has to do with the type of join we used to join these tables, in this case a “left join”.</p>
@@ -862,7 +863,7 @@ Joining with country ... done.</code></pre>
 <span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows</span></span>
 <span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(full_ves_survey.count().execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>59034</code></pre>
+<pre><code>59031</code></pre>
 </div>
 </div>
 <p>In this case we see a greater number of rows returned than are present in either table (though less than the sum of rows in each table). This tells us that some rows did align between tables, while others did not. Specifically, <code>full_ves_survey_rows</code> returns all VES observations (which have a corresponding <code>survey_id</code> in the <code>survey</code> table by design, see note below) <em>as well as</em> all other surveys in the <code>survey</code> table, even those that do not correspond to a VES survey. We can see this quickly by comparing the distinct <code>detection_type</code>’s seen in each joined table:</p>
@@ -934,7 +935,7 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>data_ves_filtered <span class="op">=</span> (</span>
 <span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>    db_ves_sup</span>
 <span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>    .select(</span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">'species_ves'</span>,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">'taxon_ves'</span>,</span>
 <span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">'count_ves'</span>,</span>
 <span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">'life_stage'</span>,</span>
 <span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">'sex'</span>,</span>
@@ -967,7 +968,7 @@ Joining with survey ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
 <span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>db_ves_survey.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp', 'end_timestamp']</code></pre>
+<pre><code>['taxon_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp', 'end_timestamp']</code></pre>
 </div>
 </div>
 <p>Great, similar results to our previous manual join of <code>ves</code> and <code>survey</code>, but do I need to do this recursively to get to the country table? Is there another way?</p>
@@ -989,7 +990,7 @@ Joining with country ... done.</code></pre>
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>db_ves_survey.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['species_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp', 'end_timestamp', 'date', 'time_of_day', 'campaign', 'visit_status', 'comments_visit', 'visit_id_right', 'site_id', 'site', 'utm_zone', 'utme', 'utmn', 'area_sqr_m', 'site_code', 'elevation_m', 'depth_m', 'topo', 'wilderness', 'site_comments', 'site_id_right', 'region_id', 'site_name_alt', 'region', 'region_id_right', 'country_id', 'location_id', 'time_zone', 'country', 'country_id_right', 'iso_country_code']</code></pre>
+<pre><code>['taxon_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp', 'end_timestamp', 'date', 'time_of_day', 'campaign', 'visit_status', 'comments_visit', 'visit_id_right', 'site_id', 'visit_lab', 'site', 'site_utm_zone', 'site_utme', 'site_utmn', 'area_sqr_m', 'site_code', 'site_elevation_m', 'depth_m', 'topo', 'wilderness', 'site_comments', 'site_id_right', 'region_id', 'site_name_alt', 'site_latitude', 'site_longitude', 'region', 'region_id_right', 'country_id', 'location_id', 'time_zone', 'country', 'country_id_right', 'iso_country_code']</code></pre>
 </div>
 </div>
 <p>Hooray! Also yikes, that’s a lot of columns! I am starting to see why we store all these in separate tables!</p>
@@ -999,7 +1000,7 @@ Joining with country ... done.</code></pre>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>db_ves_filtered <span class="op">=</span> (</span>
 <span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  db.tbl_join(dbcon, chain_ves, join<span class="op">=</span><span class="st">"left"</span>)</span>
 <span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>  .select(</span>
-<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'species_ves'</span>,</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'taxon_ves'</span>,</span>
 <span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'count_ves'</span>,</span>
 <span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'life_stage'</span>,</span>
 <span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sex'</span>,</span>

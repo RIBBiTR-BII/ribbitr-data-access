@@ -145,8 +145,8 @@ How many rows after filtering for unknown species:
 ```{r}
 # count rows with known species
 db_ves %>%
-  filter(!is.na(species_ves),
-         species_ves != "unknown_species") %>%
+  filter(!is.na(taxon_ves),
+         taxon_ves != "unknown_species") %>%
   summarise(row_count = n()) %>%
   pull(row_count)
 
@@ -297,7 +297,7 @@ How many rows after filtering for unknown species:
 # count rows with known species
 filtered_row_count = (
   db_ves
-  .filter(_.species_ves.notnull() & (_.species_ves != 'unknown_species'))
+  .filter(_.taxon_ves.notnull() & (_.taxon_ves != 'unknown_species'))
   .count()
   .execute())
 
