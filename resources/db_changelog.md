@@ -7,7 +7,7 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
-## 2025-01-03
+## 2025-01-13
 
 ### Added
 
