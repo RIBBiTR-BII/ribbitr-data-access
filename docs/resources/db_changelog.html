@@ -329,11 +329,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="changed" class="level3">
 <h3 class="anchored" data-anchor-id="changed">Changed</h3>
 <ul>
-<li>column names changed from “species” to “taxon” to reflect that some data reflect taxa at higher ranks than species (genus, etc.)</li>
+<li>column names changed from “species” to “taxon” to reflect that some data reflect taxa at higher ranks than species (genus, etc.)
+<ul>
 <li>survey_data.aural.taxon_aural &lt;- survey_data.aural.species_aural</li>
 <li>survey_data.capture.taxon_capture &lt;- survey_data.capture.species_capture</li>
 <li>survey_data.cmr.taxon_cmr &lt;- survey_data.cmr.species_cmr</li>
 <li>survey_data.ves.taxon_ves &lt;- survey_data.ves.species_ves</li>
+</ul></li>
 </ul>
 </section>
 </section>
@@ -342,7 +344,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="changed-1" class="level3">
 <h3 class="anchored" data-anchor-id="changed-1">Changed</h3>
 <ul>
-<li>lat/lon coordinates calculated for all spatial data</li>
+<li>lat/lon coordinates calculated for all spatial data
+<ul>
 <li>site table
 <ul>
 <li>renamed:
@@ -382,6 +385,7 @@ ul.task-list li input[type="checkbox"] {
 <li>capture_longitude</li>
 </ul></li>
 </ul></li>
+</ul></li>
 </ul>
 </section>
 </section>
@@ -415,6 +419,7 @@ ul.task-list li input[type="checkbox"] {
 <li>added/renamed metadata columns to bd_qpcr_results
 <ul>
 <li>results_id (unique results identifier)</li>
+</ul></li>
 <li>sample_id</li>
 <li>sample_name_bd &lt;- bd_swab_id</li>
 <li>replicate_count</li>
@@ -422,7 +427,6 @@ ul.task-list li input[type="checkbox"] {
 <li>qpcr_plate_name</li>
 <li>qpcr_well</li>
 <li>qpcr_plate_run</li>
-</ul></li>
 <li>dropped sample name columns from capture table, to allow for any number of samples per capture
 <ul>
 <li>amps</li>
