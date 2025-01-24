@@ -14,6 +14,13 @@ editor: source
 -   table: survey_data.taxonomy
 -   table: survey_data.lab
 
+### Changed
+-   column names changed from "species" to "taxon" to reflect that some data reflect taxa at higher ranks than species (genus, etc.)
+  -   survey_data.aural.taxon_aural <- survey_data.aural.species_aural
+  -   survey_data.capture.taxon_capture <- survey_data.capture.species_capture
+  -   survey_data.cmr.taxon_cmr <- survey_data.cmr.species_cmr
+  -   survey_data.ves.taxon_ves <- survey_data.ves.species_ves
+
 ## 2025-01-03
 
 ### Changed
