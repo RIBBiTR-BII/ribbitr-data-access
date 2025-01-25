@@ -15,7 +15,8 @@ editor: source
   - lookup table for all taxonomy columns which includes corresponding taxon reference IDs in external taxonomy databases (AmphibiaWeb, ITIS, NCBI, GBIF, IUCN), taxon hierarchies and ranks, and other metadata to support analysis accross taxa.
 - table: survey_data.lab
   - lookup table for labs corresponding to project data, as well and contacts for consulting, interpreting and seeking permission to use these data for analysis and publication.
-
+- column: survey_data.visit.visit_lab
+  - column to track which lab is responsible for field visit data
 ### Changed
 - column names changed from "species" to "taxon" to reflect that some data reflect taxa at higher ranks than species (genus, etc.)
   - survey_data.aural.taxon_aural <- survey_data.aural.species_aural
