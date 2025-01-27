@@ -7,6 +7,14 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-01-27
+
+## Changed
+- reconcile microhabitat column names
+  - survey_data.capture.microhabitat_detailed <- survey_data.capture.microhabitat_moredetail
+  - survey_data.ves.microhabitat_detailed <- survey_data.ves.microhab_moredetail
+  - survey_data.ves.microhab_type <- survey_data.ves.microhab
+
 ## 2025-01-13
 
 ### Added
