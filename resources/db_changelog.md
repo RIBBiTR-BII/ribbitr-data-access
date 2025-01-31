@@ -14,6 +14,8 @@ editor: source
   - survey_data.capture.microhabitat_detailed <- survey_data.capture.microhabitat_moredetail
   - survey_data.ves.microhabitat_detailed <- survey_data.ves.microhab_moredetail
   - survey_data.ves.microhab_type <- survey_data.ves.microhab
+- bd_qpcr_results column name change
+  - survey_data.bd_qpcr_results.replicate_detected <- survey_data.db_qpcr_results.replicate_results
 
 ## 2025-01-13
 
