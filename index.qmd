@@ -11,6 +11,6 @@ To begin, take a look at the resources provided in the menu to the left!
 ## Closing the loop
 Data access is an important component of our collaborative effort within RIBBiTR, but it does not exist in a vacuum. Sharing of data is enhanced when coupled with other forms of high-context communication, such as interpersonal dialogue, collaborative writing and messaging, code sharing, and more. Confused by the data? See something odd? Encounter a barrier? help us increase the context in our communication by reaching out within the team for a conversation!
 
-Any questions? Contact the [RIBBiTR data manager](mailto:cobstainesconsulting@gmail.com).
+Any questions? Contact the [RIBBiTR data manager](mailto:jstaines@ucsb.edu).
 
 **_This website and its contents were created in R using [Quatro](https://quarto.org/). Source files are [available on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access) under a [GPL v3 license](https://github.com/RIBBiTR-BII/ribbitr-data-access/blob/main/LICENSE)._**
