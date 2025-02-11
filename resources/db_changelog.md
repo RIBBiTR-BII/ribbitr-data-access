@@ -7,9 +7,33 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+# 2025-02-11
+
+## Added
+
+- survey_data.visit.project -- to describe between different initiatives
+- survey_data.site.geographical_area -- supplementary grouping variable
+- survey_data.site.geographical_area_type  -- descriptor of grouping variable
+
+## Changed
+
+- updated data from Brazil Landscapes project (survey_data.visit.project == landscapes) including
+  - life stage
+  - transect
+  - qpcr_plate
+  - region
+- updated data from Brazil Santa Virginia project (survey_data.visit.project == pce_santa_virginia) including
+  - dropped bd_qpcr_results for possibly cross-contaminated samples
+  - life stage
+  - sex
+  - capture status
+  - qpcr_plate
+  - site
+
 ## 2025-01-27
 
 ## Changed
+
 - reconcile microhabitat column names
   - survey_data.capture.microhabitat_detailed <- survey_data.capture.microhabitat_moredetail
   - survey_data.ves.microhabitat_detailed <- survey_data.ves.microhab_moredetail
@@ -27,6 +51,7 @@ editor: source
   - lookup table for labs corresponding to project data, as well and contacts for consulting, interpreting and seeking permission to use these data for analysis and publication.
 - column: survey_data.visit.visit_lab
   - column to track which lab is responsible for field visit data
+  
 ### Changed
 - column names changed from "species" to "taxon" to reflect that some data reflect taxa at higher ranks than species (genus, etc.)
   - survey_data.aural.taxon_aural <- survey_data.aural.species_aural
