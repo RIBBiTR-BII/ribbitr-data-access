@@ -7,6 +7,13 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+# 2025-02-12
+
+## Added
+
+- Kira PEP data incorporated into RIBBiTR survey_data tables
+  - (survey_data.visit.visit_lab == km_pep)
+
 # 2025-02-11
 
 ## Added
