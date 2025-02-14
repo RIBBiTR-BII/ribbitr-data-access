@@ -21,6 +21,7 @@ editor: source
 - survey_data.visit.project -- to describe between different initiatives
 - survey_data.site.geographical_area -- supplementary grouping variable
 - survey_data.site.geographical_area_type  -- descriptor of grouping variable
+- Sierra Nevada sites now have drainage (hydrological basin) information in survey_data.site.geographical_area
 
 ## Changed
 

@@ -1807,7 +1807,7 @@
     "href": "resources/db_changelog.html#added-1",
     "title": "ribbitr_db changelog",
     "section": "Added",
-    "text": "Added\n\nsurvey_data.visit.project – to describe between different initiatives\nsurvey_data.site.geographical_area – supplementary grouping variable\nsurvey_data.site.geographical_area_type – descriptor of grouping variable",
+    "text": "Added\n\nsurvey_data.visit.project – to describe between different initiatives\nsurvey_data.site.geographical_area – supplementary grouping variable\nsurvey_data.site.geographical_area_type – descriptor of grouping variable\nSierra Nevada sites now have drainage (hydrological basin) information in survey_data.site.geographical_area",
     "crumbs": [
       "Database updates",
       "Database Changelog"
