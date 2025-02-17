@@ -7,6 +7,20 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+# 2025-02-17
+
+## Added
+
+- columns to survey_data.taxonomy table
+  - ribbitr_target_species (bool)
+  - development_mode (char) - distinguish between species with "aquatic larva" as a development stage and those which are "direct developers"
+
+## Changed
+
+- Sierra Nevada sites now have drainage (hydrological basin) information in survey_data.site.geographical_area
+- Sierra nevada survey data species distinction
+  - distinguished between Rana muscosa and Rana sierrae using drainage basin
+
 # 2025-02-12
 
 ## Added
@@ -21,7 +35,6 @@ editor: source
 - survey_data.visit.project -- to describe between different initiatives
 - survey_data.site.geographical_area -- supplementary grouping variable
 - survey_data.site.geographical_area_type  -- descriptor of grouping variable
-- Sierra Nevada sites now have drainage (hydrological basin) information in survey_data.site.geographical_area
 
 ## Changed
 
