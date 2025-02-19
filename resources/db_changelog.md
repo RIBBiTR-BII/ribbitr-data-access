@@ -7,6 +7,15 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+# 2025-02-18
+
+## Changed
+
+- Brazil sites, transects restructured to be consistent across projects
+  - consolidated sites "b2w" and "b2t" into "t2" with transects "water" and "land" (region boraceia)
+  - consolidated sites "a2w" and "a2t" into "s2" with transects "water" and "land" (region santa_virginia)
+  - old site names can be found under survey_data.site.site_name_alt
+
 # 2025-02-17
 
 ## Added
