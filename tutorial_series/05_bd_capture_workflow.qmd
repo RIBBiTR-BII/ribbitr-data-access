@@ -145,7 +145,7 @@ data_bd_capture_2015_life <- data_bd_capture_2015 %>%
 ### Pull data
 
 ```{r}
-# check out our SQL "shopping list"
+# inspect our SQL "shopping list"
 sql_render(data_bd_capture_2015_life)
 
 # collect data
@@ -236,10 +236,10 @@ db_bdqpcr.columns
 
 ```
 
-### Select columns of interest, filter to date
+### Filter to date, select columns of interest
 
 ```{python}
-# capture table, select, filter
+# capture table, filter, select
 data_bd_capture_2015 = (
   data_bd_capture
   .filter(_.date >= '2015-01-01')
@@ -291,7 +291,7 @@ data_bd_capture_2015_life = (
 ### Pull data
 
 ```{python}
-# check out our SQP "shopping list"
+# inspect our SQL "shopping list"
 data_bd_capture_2015_life.compile()
 
 # pull data
