@@ -7,45 +7,45 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
-# 2025-02-18
+## 2025-02-18
 
-## Changed
+### Changed
 
 - Brazil sites, transects restructured to be consistent across projects
   - consolidated sites "b2w" and "b2t" into "t2" with transects "water" and "land" (region boraceia)
   - consolidated sites "a2w" and "a2t" into "s2" with transects "water" and "land" (region santa_virginia)
   - old site names can be found under survey_data.site.site_name_alt
 
-# 2025-02-17
+## 2025-02-17
 
-## Added
+### Added
 
 - columns to survey_data.taxonomy table
   - ribbitr_target_species (bool)
   - development_mode (char) - distinguish between species with "aquatic larva" as a development stage and those which are "direct developers"
 
-## Changed
+### Changed
 
 - Sierra Nevada sites now have drainage (hydrological basin) information in survey_data.site.geographical_area
 - Sierra nevada survey data species distinction
   - distinguished between Rana muscosa and Rana sierrae using drainage basin
 
-# 2025-02-12
+## 2025-02-12
 
-## Added
+### Added
 
 - Kira PEP data incorporated into RIBBiTR survey_data tables
   - (survey_data.visit.visit_lab == km_pep)
 
-# 2025-02-11
+## 2025-02-11
 
-## Added
+### Added
 
 - survey_data.visit.project -- to describe between different initiatives
 - survey_data.site.geographical_area -- supplementary grouping variable
 - survey_data.site.geographical_area_type  -- descriptor of grouping variable
 
-## Changed
+### Changed
 
 - updated data from Brazil Landscapes project (survey_data.visit.project == landscapes) including
   - life stage
@@ -62,7 +62,7 @@ editor: source
 
 ## 2025-01-27
 
-## Changed
+### Changed
 
 - reconcile microhabitat column names
   - survey_data.capture.microhabitat_detailed <- survey_data.capture.microhabitat_moredetail
