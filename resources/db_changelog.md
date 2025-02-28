@@ -7,6 +7,16 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-02-27
+
+### Changed
+
+- microclimate.time_series table split into 4 tables consistent with measurement type:
+  - microclimate.ts_temperature
+  - microclimate.ts_dew_point
+  - microclimate.ts_relative_humidity
+  - microclimate.ts_illuminance
+
 ## 2025-02-18
 
 ### Changed
