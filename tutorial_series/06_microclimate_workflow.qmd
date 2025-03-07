@@ -54,15 +54,19 @@ mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
 
 ## Data discovery and pulling
 
-Lets take a look at the [`microclimate_data` schema diagram](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata for the `microclimate_data` schema. This schema is pretty simple, with only three substantive data tables: `logger`, `sensor`, and `time_series_01_raw`.
+Lets take a look at the [`microclimate_data` schema diagram](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata for the `microclimate_data` schema. This schema is pretty simple compared to the `survey_data` schema, with only a handful of tables: `logger`, `sensor`, and a number of time-series tables with names `ts_*` (e.g. `ts_temperature`). In this tutorial we will focus on temperature data, but the same workflow applies for data of other sensor types (e.g. relative humidity).
 
-Our column metadata also contains a clue which is not obvious from the schema diagram: `microclimate_data.logger` has a foreign key which points to `survey_data.site`. knowing this, let's pull out all the ingrediants we may want to work with:
+Our column metadata also contains a clue which is not obvious from the schema diagram: `microclimate_data.logger` has a foreign key which points to `survey_data.site`. knowing this, let's pull out all the ingredients we may want to work with:
 
 ### Point to tables of interest
 
 ```{r}
 # pointers for all tables of interest
-db_ts01 = tbl(dbcon, Id("microclimate_data", "time_series_01_raw"))
+
+## observation table
+db_ts_temp = tbl(dbcon, Id("microclimate_data", "ts_temperature"))
+
+## lookup tables
 db_sensor = tbl(dbcon, Id("microclimate_data", "sensor"))
 db_logger = tbl(dbcon, Id("microclimate_data", "logger"))
 db_site = tbl(dbcon, Id("survey_data", "site"))
@@ -72,7 +76,7 @@ db_country = tbl(dbcon, Id("survey_data", "country"))
 ```
 
 ### Explore the data
-While we could dive right into the time-series data to see what is there, this may mean loading lots of observations without knowing exatly what we are looking for. Instead, let's begin by exploring the support tables `logger` and `sensor`, to see what context we can bring without doing any heavy lifting yet.
+While we could dive right into the time-series data to see what is there, this may mean loading lots of observations without knowing exactly what we are looking for. Instead, let's begin by exploring the lookup tables `logger` and `sensor`, to see what context we can bring without doing any heavy lifting yet.
 
 ```{r}
 # pointers for all tables of interest
@@ -90,7 +94,7 @@ Looking at the `pa_logger`, we see the Panama microclimate loggers for a number 
 ```{r}
 pa_ss_sensor = db_sensor %>%
   left_join(db_logger, by = "logger_id") %>%
-  inner_join(db_site, "site_id") %>%
+  left_join(db_site, "site_id") %>%
   left_join(db_region, by = "region_id") %>%
   left_join(db_country, by = "country_id") %>%
   filter(country == "panama",
@@ -99,17 +103,17 @@ pa_ss_sensor = db_sensor %>%
 
 ```
 
-As we explore the sensor data, we see variables of `sensor_type` (with values "dew_point_c", "temperature_c", "intensity_lux", and "relative_humidity_percent") and `height_cm` (with values "5" and "100"). For our interest, let's consider temperature time series with sensors located at near-ground-level. Building on our code above:
+As we explore the sensor data, we see variables of `sensor_type` (with values "dew_point", "temperature", "illuminance", and "relative_humidity") and `height_cm` (with values "5" and "100"). For our interest, let's consider temperature time series with sensors located at near-ground-level. Building on our code above:
 
 ```{r}
 sensors_of_interest = db_sensor %>%
   left_join(db_logger, by = "logger_id") %>%
-  inner_join(db_site, "site_id") %>%
+  left_join(db_site, "site_id") %>%
   left_join(db_region, by = "region_id") %>%
   left_join(db_country, by = "country_id") %>%
   filter(country == "panama",
          microhabitat %in% c("sun", "shade"),
-         sensor_type == "temperature_c",
+         sensor_type == "temperature",
          height_cm == 5) %>%
   collect()
 
@@ -117,42 +121,54 @@ sensors_of_interest = db_sensor %>%
 
 ## Filter and pull associated time series data
 
-Each sensor in `sensors_of_interest` has an associated time series, with values in the `time_series_01_raw` table. Let's pull data which correspond to the `sensor_id`s in our list, filtering to the date range of interest.
+Each sensor in `sensors_of_interest` has an associated time series in our database, the table in which it is stored corresponds to values of `sensor_type`. For example, all time series from sensors with `sensor_type == 'temperature'` are stored in the corresponding `ts_temperature` table. Let's pull temperature data which correspond to the `sensor_id`s in our list, filtering to the date range of interest.
 
- **_NOTE ON TIMESTAMPS:_**  The `timestamptz` columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the local time and timezone of the observations. When we filter our data to 2023, we need to specify the local timezone to be clear about where our data of interest begins and ends. The `region` table provides a local `region.time_zone`, which we can refer to in our filter.
+ **_NOTE ON TIMESTAMPS:_**  The `timestamp_utc` columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the time *in UTC* of the observations. When we filter our data to 2023, we may wish to specify the filter with start and end times in the local timezone to be clear about where our data of interest begins and ends. The `region` table provides a local `region.time_zone`, which we can refer to in our filter. If we want our data in local time, we will need to convert it to the regional timezone after pulling.
 
 ```{r}
+# pull local time zone
+local_tz = unique(sensors_of_interest$time_zone)
 
-patz = unique(sensors_of_interest$time_zone)
-start_datetime <- with_tz(ymd_hms("2023-01-01 00:00:00"), patz)
-end_datetime <- with_tz(ymd_hms("2024-01-01 00:00:00"), patz)
+# specify window of interest in local time, convert to utc fir query
+start_datetime <- with_tz(force_tz(ymd_hms("2023-01-01 00:00:00"), tzone = local_tz), tzone = "UTC")
+end_datetime <- with_tz(force_tz(ymd_hms("2024-01-01 00:00:00"), tzone = local_tz), tzone = "UTC")
 
-ts_of_interest_long = db_ts01 %>%
+# filter and pull
+ts_of_interest_long = db_ts_temp %>%
   filter(sensor_id %in% sensors_of_interest$sensor_id,
-         timestamptz >= start_datetime,
-         timestamptz < end_datetime) %>%
-  collect()
+         timestamp_utc >= start_datetime,
+         timestamp_utc < end_datetime) %>%
+  collect() %>%
+  mutate(timestamp_local = with_tz(timestamp_utc, tzone = local_tz)) # transform timestamp_utc to local timezone
+
+head(ts_of_interest_long)
 ```
 
 ## Pivot wider
-We have our data! Though depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the `tidyr::pivot_wider()` function to rearrange our data to a wide format, with a few options regarding how we name the columns:
+We have our data! Taking a closer look, we find our temperature data in the column `temperature_c_01_raw`, where '01_raw' tells us that these are the raw data pulled from the sensor (i.e. no filtering or gap filling).
+
+Now, depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the `tidyr::pivot_wider()` function to rearrange our data to a wide format, with a few options regarding how we name the columns:
 
 ```{r}
 # column names from sensor_id
-ts_of_interest_id = ts_of_interest_long %>%
-  pivot_wider(id_cols = timestamptz,
-              names_from = sensor_id)
+ts_of_interest_temp_c_id = ts_of_interest_long %>%
+  pivot_wider(id_cols = c(timestamp_utc,
+                          timestamp_local),
+              names_from = sensor_id,
+              values_from = temperature_c_01_raw)
 
 # descriptive column names
-ts_of_interest_desc = sensors_of_interest %>%
+ts_of_interest_temp_c_desc = sensors_of_interest %>%
   select(sensor_id,
          site_microclimate,
          microhabitat) %>%
   inner_join(ts_of_interest_long, by = "sensor_id") %>%
   select(-sensor_id) %>%
-  pivot_wider(id_cols = timestamptz,
+  pivot_wider(id_cols = c(timestamp_utc,
+                          timestamp_local),
               names_from = c(site_microclimate,
-                             microhabitat))
+                             microhabitat),
+              values_from = temperature_c_01_raw)
 
 ```
 
@@ -183,6 +199,10 @@ import db_access as db
 
 # establish database connection
 dbcon = ibis.postgres.connect(**dbconfig.ribbitr)
+# recommended to set timezone to utc when working with IBIS, to keep query results consistent across local times zones.
+# dbcon.raw_sql("SET TIME ZONE 'UTC';")
+# 
+# peace = dbcon.raw_sql("show timezone;").fetchall()
 
 # load table metadata
 mdt = dbcon.table(database = "public", name = "all_tables").to_pandas()
@@ -193,15 +213,19 @@ mdc = dbcon.table(database="public", name="all_columns").to_pandas()
 
 ## Data discovery and pulling
 
-Lets take a look at the [`microclimate_data` schema diagram](resources/schema_diagram_microclimate_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata for the `microclimate_data` schema. This schema is pretty simple, with only three substantive data tables: `logger`, `sensor`, and `time_series_01_raw`.
+Lets take a look at the [`microclimate_data` schema diagram](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata for the `microclimate_data` schema. This schema is pretty simple compared to the `survey_data` schema, with only a handful of tables: `logger`, `sensor`, and a number of time-series tables with names `ts_*` (e.g. `ts_temperature`). In this tutorial we will focus on temperature data, but the same workflow applies for data of other sensor types (e.g. relative humidity).
 
-Our column metadata also contains a clue which is not obvious from the schema diagram: `microclimate_data.logger` has a foreign key which points to `survey_data.site`. knowing this, let's pull out all the ingrediants we may want to work with:
+Our column metadata also contains a clue which is not obvious from the schema diagram: `microclimate_data.logger` has a foreign key which points to `survey_data.site`. knowing this, let's pull out all the ingredients we may want to work with:
 
 ### Point to tables of interest
 
 ```{python}
 # pointers for all tables of interest
-db_ts01 = dbcon.table('time_series_01_raw', database='microclimate_data')
+
+## observation tables
+db_ts_temp = dbcon.table('ts_temperature', database='microclimate_data')
+
+## lookup tables
 db_sensor = dbcon.table('sensor', database='microclimate_data')
 db_logger = dbcon.table('logger', database='microclimate_data')
 db_site = dbcon.table('site', database='survey_data')
@@ -210,7 +234,7 @@ db_country = dbcon.table('country', database='survey_data')
 ```
 
 ### Explore the data
-While we could dive right into the time-series data to see what is there, this may mean loading lots of observations without knowing exatly what we are looking for. Instead, let's begin by exploring the support tables `logger` and `sensor`, to see what context we can bring without doing any heavy lifting yet.
+While we could dive right into the time-series data to see what is there, this may mean loading lots of observations without knowing exactly what we are looking for. Instead, let's begin by exploring the lookup tables `logger` and `sensor`, to see what context we can bring without doing any heavy lifting yet.
 
 ```{python}
 # Recursive joins
@@ -231,7 +255,7 @@ Looking at `pa_logger`, we see the Panama microclimate loggers for a number of s
 # Recursive joins
 pa_ss_logger = (
     db_logger
-    .inner_join(db_site, db_logger.site_id == db_site.site_id)
+    .left_join(db_site, db_logger.site_id == db_site.site_id)
     .left_join(db_region, db_site.region_id == db_region.region_id)
     .left_join(db_country, db_region.country_id == db_country.country_id)
     .filter(_.country == 'panama',
@@ -241,19 +265,19 @@ pa_ss_logger = (
 
 ```
 
-As we explore the sensor data, we see variables of `sensor_type` (with values "dew_point_c", "temperature_c", "intensity_lux", and "relative_humidity_percent") and `height_cm` (with values "5" and "100"). For our interest, let's consider temperature time series with sensors located at near-ground-level. Building on our code above:
+As we explore the sensor data, we see variables of `sensor_type` (with values "dew_point", "temperature", "illuminance", and "relative_humidity") and `height_cm` (with values "5" and "100"). For our interest, let's consider temperature time series with sensors located at near-ground-level. Building on our code above:
 
 ```{python}
 # Recursive joins
 sensors_of_interest = (
     db_sensor
     .left_join(db_logger, db_sensor.logger_id == db_logger.logger_id)
-    .inner_join(db_site, db_logger.site_id == db_site.site_id)
+    .left_join(db_site, db_logger.site_id == db_site.site_id)
     .left_join(db_region, db_site.region_id == db_region.region_id)
     .left_join(db_country, db_region.country_id == db_country.country_id)
     .filter(_.country == 'panama',
             _.microhabitat.isin(['sun','shade']),
-            _.sensor_type == 'temperature_c',
+            _.sensor_type == 'temperature',
             _.height_cm == 5)
     .to_pandas()
 )
@@ -262,25 +286,33 @@ sensors_of_interest = (
 
 ## Filter and pull associated time series data
 
-Each sensor in `sensors_of_interest` has an associated time series, with values in the `time_series_01_raw` table. Let's pull data which correspond to the `sensor_id`s in our list, filtering to the date range of interest.
+Each sensor in `sensors_of_interest` has an associated time series in our database, the table in which it is stored corresponds to values of `sensor_type`. For example, all time series from sensors with `sensor_type == 'temperature'` are stored in the corresponding `ts_temperature` table. Let's pull temperature data which correspond to the `sensor_id`s in our list, filtering to the date range of interest.
 
- **_NOTE ON TIMESTAMPS:_**  The `timestamptz` columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the local time and timezone of the observations. When we filter our data to 2023, we need to specify the local timezone to be clear about where our data of interest begins and ends. The `region` table provides a local `region.time_zone`, which we can refer to in our filter.
+ **_NOTE ON TIMESTAMPS:_**  The `timestamp_utc` columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the time *in UTC* of the observations. When we filter our data to 2023, we may wish to specify the filter with start and end times in the local timezone to be clear about where our data of interest begins and ends. The `region` table provides a local `region.time_zone`, which we can refer to in our filter. If we want our data in local time, we will need to convert it to the regional timezone after pulling.
 
 ```{python}
+# pull local time zone
+local_tz = sensors_of_interest['time_zone'].unique()[0]
 
-patz = sensors_of_interest['time_zone'].unique()[0]
+local_tz = "Pacific/Honolulu"
 
-start_datetime = pd.to_datetime("2023-01-01 00:00:00").tz_localize(patz)
-end_datetime = pd.to_datetime("2024-01-01 00:00:00").tz_localize(patz)
+# specify window of interest in local time, converted to utc for querying
+start_datetime = pd.to_datetime("2023-01-01 00:00:00").tz_localize(local_tz).tz_convert("UTC")
+end_datetime = pd.to_datetime("2024-01-01 00:00:00").tz_localize(local_tz).tz_convert("UTC")
 
+# filter and pull
 ts_of_interest_long = (
-    db_ts01
+    db_ts_temp
     .filter(_.sensor_id.isin(sensors_of_interest['sensor_id'].astype(str).tolist()),
-            _.timestamptz >= start_datetime,
-            _.timestamptz < end_datetime)
+            _.timestamp_utc >= start_datetime,
+            _.timestamp_utc < end_datetime)
     .to_pandas()
 )
 
+# convert to local timezone
+ts_of_interest_long['timestamp_local'] = ts_of_interest_long['timestamp_utc'].dt.tz_localize("UTC").dt.tz_convert(local_tz)
+
+ts_of_interest_long.head(6)
 ```
 
 ## Pivot wider
@@ -289,9 +321,9 @@ We have our data! Though depending on our application, we may want to reformat t
 ```{python}
 # column names from sensor_id
 ts_of_interest_id = ts_of_interest_long.pivot(
-    index='timestamptz',
+    index='timestamp_local',
     columns='sensor_id',
-    values='value'
+    values='temperature_c_01_raw'
 ).reset_index()
 
 # descriptive column names
@@ -300,9 +332,9 @@ ts_of_interest_desc = (
     .merge(ts_of_interest_long, on='sensor_id', how='inner')
     .drop(columns=['sensor_id'])
     .pivot(
-        index='timestamptz',
+        index='timestamp_local',
         columns=['site_microclimate', 'microhabitat'],
-        values='value'
+        values='temperature_c_01_raw'
     )
     .reset_index()
 )

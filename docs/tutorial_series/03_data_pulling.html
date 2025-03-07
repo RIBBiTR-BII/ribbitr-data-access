@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-01-13">
+<meta name="dcterms.date" content="2025-03-07">
 
 <title>3. Data Pulling – RIBBiTR Data Access</title>
 <style>
@@ -281,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 13, 2025</p>
+      <p class="date">March 7, 2025</p>
     </div>
   </div>
   
@@ -318,7 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">&lt;-</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Connecting to database... Success!</code></pre>
+<pre><code>Connecting to 'ribbitr'... Success!</code></pre>
 </div>
 </div>
 </section>
@@ -371,14 +371,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(db_ves_adult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
-  taxon_ves       count_ves life_stage sex   survey_id                          
-  &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;                              
-1 rana_muscosa            1 adult      &lt;NA&gt;  bb18f750-d1ab-47b1-84ef-67c090d73d…
-2 rana_muscosa            3 adult      &lt;NA&gt;  cefe838f-c113-42af-9d8f-dddac25c3b…
-3 rana_muscosa            1 adult      &lt;NA&gt;  bf1255c8-75b0-47d8-bd92-58df7564c4…
-4 rana_muscosa            7 adult      &lt;NA&gt;  cfbff4da-7b21-40cb-b3cb-de3a7469ab…
-5 hyliola_regilla         1 adult      &lt;NA&gt;  6c6e5383-1ca1-47b1-a683-9cf83668f0…
-6 rana_muscosa            2 adult      &lt;NA&gt;  f1fdd662-7820-44c0-97cd-22f6b289c3…</code></pre>
+  taxon_ves              count_ves life_stage sex   survey_id                   
+  &lt;chr&gt;                      &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;                       
+1 pseudacris_regilla             1 adult      &lt;NA&gt;  5032be22-1091-4f97-b0ab-e2c…
+2 pseudacris_regilla             1 adult      &lt;NA&gt;  97b2d63c-1d58-4829-8735-c2b…
+3 pseudacris_regilla             1 adult      &lt;NA&gt;  185ed419-3cf7-48d8-80b2-d12…
+4 colostethus_panamansis         1 adult      &lt;NA&gt;  5caa0f71-08cb-4b04-b332-916…
+5 pseudacris_regilla            14 adult      &lt;NA&gt;  a3730ce1-e172-418a-a634-769…
+6 rana_muscosa                   1 adult      &lt;NA&gt;  bb18f750-d1ab-47b1-84ef-67c…</code></pre>
 </div>
 </div>
 <p>Great! The above script is an example of how we can efficiently pull the data of interest without having to pull excess data.</p>
@@ -413,20 +413,20 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># preview table</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(db_ves_adult_sql)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        taxon_ves count_ves life_stage  sex
-1    rana_muscosa         1      adult &lt;NA&gt;
-2    rana_muscosa         3      adult &lt;NA&gt;
-3    rana_muscosa         1      adult &lt;NA&gt;
-4    rana_muscosa         7      adult &lt;NA&gt;
-5 hyliola_regilla         1      adult &lt;NA&gt;
-6    rana_muscosa         2      adult &lt;NA&gt;
+<pre><code>               taxon_ves count_ves life_stage  sex
+1     pseudacris_regilla         1      adult &lt;NA&gt;
+2     pseudacris_regilla         1      adult &lt;NA&gt;
+3     pseudacris_regilla         1      adult &lt;NA&gt;
+4 colostethus_panamansis         1      adult &lt;NA&gt;
+5     pseudacris_regilla        14      adult &lt;NA&gt;
+6           rana_muscosa         1      adult &lt;NA&gt;
                              survey_id
-1 bb18f750-d1ab-47b1-84ef-67c090d73da8
-2 cefe838f-c113-42af-9d8f-dddac25c3b20
-3 bf1255c8-75b0-47d8-bd92-58df7564c4d9
-4 cfbff4da-7b21-40cb-b3cb-de3a7469ab76
-5 6c6e5383-1ca1-47b1-a683-9cf83668f0b8
-6 f1fdd662-7820-44c0-97cd-22f6b289c3e2</code></pre>
+1 5032be22-1091-4f97-b0ab-e2c4e4414c07
+2 97b2d63c-1d58-4829-8735-c2b95b019651
+3 185ed419-3cf7-48d8-80b2-d1288681e55d
+4 5caa0f71-08cb-4b04-b332-916ade72ce02
+5 a3730ce1-e172-418a-a634-769b184455ed
+6 bb18f750-d1ab-47b1-84ef-67c090d73da8</code></pre>
 </div>
 </div>
 <p>On close inspection we see that this is identical to the db_ves_adult_sql above. Now you have two ways to access the same data!</p>
@@ -490,8 +490,8 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"ves"</span>).to_pandas()</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>db_ves.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Index(['taxon_ves', 'count_ves', 'detection_location', 'microhab',
-       'life_stage', 'sex', 'comments_ves', 'microhab_moredetail',
+<pre><code>Index(['taxon_ves', 'count_ves', 'detection_location', 'microhabitat_type',
+       'life_stage', 'sex', 'comments_ves', 'microhabitat_detailed',
        'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id'],
       dtype='object')</code></pre>
 </div>
@@ -535,12 +535,12 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co"># preview table</span></span>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>db_ves_adult.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>         taxon_ves  count_ves  ...   sex                             survey_id
-0     rana_muscosa        1.0  ...  None  bb18f750-d1ab-47b1-84ef-67c090d73da8
-1     rana_muscosa        3.0  ...  None  cefe838f-c113-42af-9d8f-dddac25c3b20
-2     rana_muscosa        1.0  ...  None  bf1255c8-75b0-47d8-bd92-58df7564c4d9
-3     rana_muscosa        7.0  ...  None  cfbff4da-7b21-40cb-b3cb-de3a7469ab76
-4  hyliola_regilla        1.0  ...  None  6c6e5383-1ca1-47b1-a683-9cf83668f0b8
+<pre><code>                taxon_ves  ...                             survey_id
+0      pseudacris_regilla  ...  5032be22-1091-4f97-b0ab-e2c4e4414c07
+1      pseudacris_regilla  ...  97b2d63c-1d58-4829-8735-c2b95b019651
+2      pseudacris_regilla  ...  185ed419-3cf7-48d8-80b2-d1288681e55d
+3  colostethus_panamansis  ...  5caa0f71-08cb-4b04-b332-916ade72ce02
+4      pseudacris_regilla  ...  a3730ce1-e172-418a-a634-769b184455ed
 
 [5 rows x 5 columns]</code></pre>
 </div>

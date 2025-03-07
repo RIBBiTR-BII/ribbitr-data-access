@@ -134,19 +134,20 @@ How many total rows a table contains:
 ```{r}
 # count rows
 db_ves %>%
-  summarise(row_count = n()) %>%
-  pull(row_count)
+  count() %>%
+  pull()
 
 ```
 *The pull() function executes a query to return a single column or variable, synonymous with the collect() function which returns a collection of variables as a table.*
 
-How many rows after filtering for unknown species:
+We can also count rows using the `summarise()` and `n()` functions. While slightly more complicated, this will carry over into more colicated queries later.
+
+So, how many rows after filtering for unknown species:
 
 ```{r}
-# count rows with known species
+# count rows with known taxa
 db_ves %>%
-  filter(!is.na(taxon_ves),
-         taxon_ves != "unknown_species") %>%
+  filter(!is.na(taxon_ves)) %>%
   summarise(row_count = n()) %>%
   pull(row_count)
 
@@ -294,10 +295,10 @@ How many total rows a table contains:
 How many rows after filtering for unknown species:
 
 ```{python}
-# count rows with known species
+# count rows with known taxa
 filtered_row_count = (
   db_ves
-  .filter(_.taxon_ves.notnull() & (_.taxon_ves != 'unknown_species'))
+  .filter(_.taxon_ves.notnull())
   .count()
   .execute())
 

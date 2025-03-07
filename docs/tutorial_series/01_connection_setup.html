@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-12-18">
+<meta name="dcterms.date" content="2025-03-07">
 
 <title>1. Connection Setup – RIBBiTR Data Access</title>
 <style>
@@ -281,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 18, 2024</p>
+      <p class="date">March 7, 2025</p>
     </div>
   </div>
   
@@ -370,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">&lt;-</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Connecting to database... Success!</code></pre>
+<pre><code>Connecting to 'ribbitr'... Success!</code></pre>
 </div>
 </div>
 <p><code>hopToDB()</code> returns a database connection object (<code>dbcon</code>). Keep track of this, you will call it to explore and pull data later.</p>
@@ -385,14 +385,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mdt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
-  table_schema table_name         column_count table_description
-  &lt;chr&gt;        &lt;chr&gt;                   &lt;int64&gt; &lt;chr&gt;            
-1 bay_area     amphib_dissect               41 &lt;NA&gt;             
-2 bay_area     amphib_parasite              11 &lt;NA&gt;             
-3 bay_area     water_quality_info           27 &lt;NA&gt;             
-4 bay_area     site                         25 &lt;NA&gt;             
-5 bay_area     wetland_info                 25 &lt;NA&gt;             
-6 bay_area     bd_results                   25 &lt;NA&gt;             </code></pre>
+  table_schema      table_name       column_count table_description
+  &lt;chr&gt;             &lt;chr&gt;                 &lt;int64&gt; &lt;chr&gt;            
+1 microclimate_data metadata_columns           25 &lt;NA&gt;             
+2 microclimate_data metadata_tables             4 &lt;NA&gt;             
+3 microclimate_data logger                      4 &lt;NA&gt;             
+4 microclimate_data sensor                      5 &lt;NA&gt;             
+5 microclimate_data ts_dew_point                3 &lt;NA&gt;             
+6 microclimate_data ts_illuminance              3 &lt;NA&gt;             </code></pre>
 </div>
 </div>
 </section>
@@ -464,12 +464,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mdt.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  table_schema          table_name  column_count table_description
-0     bay_area      amphib_dissect            41              None
-1     bay_area     amphib_parasite            11              None
-2     bay_area  water_quality_info            27              None
-3     bay_area                site            25              None
-4     bay_area        wetland_info            25              None</code></pre>
+<pre><code>        table_schema        table_name  column_count table_description
+0  microclimate_data  metadata_columns            25              None
+1  microclimate_data   metadata_tables             4              None
+2  microclimate_data            logger             4              None
+3  microclimate_data            sensor             5              None
+4  microclimate_data      ts_dew_point             3              None</code></pre>
 </div>
 </div>
 </section>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-01-13">
+<meta name="dcterms.date" content="2025-03-07">
 
 <title>2. Data Discovery – RIBBiTR Data Access</title>
 <style>
@@ -281,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 13, 2025</p>
+      <p class="date">March 7, 2025</p>
     </div>
   </div>
   
@@ -318,7 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">&lt;-</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Connecting to database... Success!</code></pre>
+<pre><code>Connecting to 'ribbitr'... Success!</code></pre>
 </div>
 </div>
 </section>
@@ -414,35 +414,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return columns of lazy table</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_ves)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "taxon_ves"           "count_ves"           "detection_location" 
- [4] "microhab"            "life_stage"          "sex"                
- [7] "comments_ves"        "microhab_moredetail" "observer_ves"       
-[10] "visual_animal_state" "ves_id"              "survey_id"          </code></pre>
+<pre><code> [1] "taxon_ves"             "count_ves"             "detection_location"   
+ [4] "microhabitat_type"     "life_stage"            "sex"                  
+ [7] "comments_ves"          "microhabitat_detailed" "observer_ves"         
+[10] "visual_animal_state"   "ves_id"                "survey_id"            </code></pre>
 </div>
 </div>
 <p>How many total rows a table contains:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 29504</code></pre>
+[1] 29625</code></pre>
 </div>
 </div>
 <p><em>The pull() function executes a query to return a single column or variable, synonymous with the collect() function which returns a collection of variables as a table.</em></p>
-<p>How many rows after filtering for unknown species:</p>
+<p>We can also count rows using the <code>summarise()</code> and <code>n()</code> functions. While slightly more complicated, this will carry over into more colicated queries later.</p>
+<p>So, how many rows after filtering for unknown species:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows with known species</span></span>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows with known taxa</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(taxon_ves),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>         taxon_ves <span class="sc">!=</span> <span class="st">"unknown_species"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(taxon_ves)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">row_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 29341</code></pre>
+[1] 29450</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -458,11 +458,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 9 × 2
   life_stage    row_count
   &lt;chr&gt;           &lt;int64&gt;
-1 tadpole           10276
-2 adult              9617
-3 subadult           7162
+1 tadpole           10307
+2 adult              9667
+3 subadult           7186
 4 &lt;NA&gt;               1722
-5 eggmass             625
+5 eggmass             641
 6 juvenile             78
 7 egg                  16
 8 metamorphosed         7
@@ -531,9 +531,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2   microclimate_data  ...              None
 3   microclimate_data  ...              None
 4   microclimate_data  ...              None
-5         survey_data  ...              None
-6         survey_data  ...              None
-7         survey_data  ...              None
+5   microclimate_data  ...              None
+6   microclimate_data  ...              None
+7   microclimate_data  ...              None
 8         survey_data  ...              None
 9         survey_data  ...              None
 10        survey_data  ...              None
@@ -554,8 +554,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 25        survey_data  ...              None
 26        survey_data  ...              None
 27        survey_data  ...              None
+28        survey_data  ...              None
+29        survey_data  ...              None
+30        survey_data  ...              None
+31        survey_data  ...              None
+32        survey_data  ...              None
+33        survey_data  ...              None
 
-[28 rows x 4 columns]</code></pre>
+[34 rows x 4 columns]</code></pre>
 </div>
 </div>
 </section>
@@ -580,17 +586,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>    table_schema        table_name  ... fkey_ref_table fkey_ref_column
 0    survey_data              site  ...           None            None
 1    survey_data              site  ...           None            None
-2    survey_data           capture  ...           None            None
+2    survey_data  metadata_columns  ...           None            None
 3    survey_data  metadata_columns  ...           None            None
 4    survey_data  metadata_columns  ...           None            None
 ..           ...               ...  ...            ...             ...
-355  survey_data   bd_qpcr_results  ...           None            None
-356  survey_data   bd_qpcr_results  ...           None            None
-357  survey_data              site  ...           None            None
-358  survey_data   bd_qpcr_results  ...           None            None
-359  survey_data   bd_qpcr_results  ...           None            None
+414  survey_data   bd_qpcr_results  ...           None            None
+415  survey_data            sample  ...           None            None
+416  survey_data            sample  ...           None            None
+417  survey_data   bd_qpcr_results  ...         sample       sample_id
+418  survey_data   bd_qpcr_results  ...           None            None
 
-[360 rows x 25 columns]</code></pre>
+[419 rows x 25 columns]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list the columns in our column-metadata table</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>mdc.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -611,31 +617,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(metameta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    table_schema        table_name  ... fkey_ref_table fkey_ref_column
+2    survey_data  metadata_columns  ...           None            None
 3    survey_data  metadata_columns  ...           None            None
 4    survey_data  metadata_columns  ...           None            None
 5    survey_data  metadata_columns  ...           None            None
-6    survey_data  metadata_columns  ...           None            None
-62   survey_data  metadata_columns  ...           None            None
-183  survey_data  metadata_columns  ...           None            None
-184  survey_data  metadata_columns  ...           None            None
-185  survey_data  metadata_columns  ...           None            None
-249  survey_data  metadata_columns  ...           None            None
-250  survey_data  metadata_columns  ...           None            None
-251  survey_data  metadata_columns  ...           None            None
-252  survey_data  metadata_columns  ...           None            None
-253  survey_data  metadata_columns  ...           None            None
-254  survey_data  metadata_columns  ...           None            None
-255  survey_data  metadata_columns  ...           None            None
-256  survey_data  metadata_columns  ...           None            None
-257  survey_data  metadata_columns  ...           None            None
-258  survey_data  metadata_columns  ...           None            None
-259  survey_data  metadata_columns  ...           None            None
-269  survey_data  metadata_columns  ...           None            None
-270  survey_data  metadata_columns  ...           None            None
-271  survey_data  metadata_columns  ...           None            None
-287  survey_data  metadata_columns  ...           None            None
-288  survey_data  metadata_columns  ...           None            None
-289  survey_data  metadata_columns  ...           None            None
+73   survey_data  metadata_columns  ...           None            None
+238  survey_data  metadata_columns  ...           None            None
+241  survey_data  metadata_columns  ...           None            None
+242  survey_data  metadata_columns  ...           None            None
+317  survey_data  metadata_columns  ...           None            None
+318  survey_data  metadata_columns  ...           None            None
+319  survey_data  metadata_columns  ...           None            None
+320  survey_data  metadata_columns  ...           None            None
+321  survey_data  metadata_columns  ...           None            None
+322  survey_data  metadata_columns  ...           None            None
+323  survey_data  metadata_columns  ...           None            None
+324  survey_data  metadata_columns  ...           None            None
+325  survey_data  metadata_columns  ...           None            None
+326  survey_data  metadata_columns  ...           None            None
+327  survey_data  metadata_columns  ...           None            None
+339  survey_data  metadata_columns  ...           None            None
+340  survey_data  metadata_columns  ...           None            None
+341  survey_data  metadata_columns  ...           None            None
+342  survey_data  metadata_columns  ...           None            None
+350  survey_data  metadata_columns  ...           None            None
+376  survey_data  metadata_columns  ...           None            None
 
 [25 rows x 25 columns]</code></pre>
 </div>
@@ -663,7 +669,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return columns of lazy table</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>db_ves.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['taxon_ves', 'count_ves', 'detection_location', 'microhab', 'life_stage', 'sex', 'comments_ves', 'microhab_moredetail', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id']</code></pre>
+<pre><code>['taxon_ves', 'count_ves', 'detection_location', 'microhabitat_type', 'life_stage', 'sex', 'comments_ves', 'microhabitat_detailed', 'observer_ves', 'visual_animal_state', 'ves_id', 'survey_id']</code></pre>
 </div>
 </div>
 <p>How many total rows a table contains:</p>
@@ -673,22 +679,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a> .count()</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a> .execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>29504</code></pre>
+<pre><code>29625</code></pre>
 </div>
 </div>
 <p><em>The ibis.execute() function executes a query and returns the result, regardless of the format. This is synonymous with the to_pandas() function which returns query results as a pandas dataframe where possible.</em></p>
 <p>How many rows after filtering for unknown species:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows with known species</span></span>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count rows with known taxa</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>filtered_row_count <span class="op">=</span> (</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  db_ves</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.taxon_ves.notnull() <span class="op">&amp;</span> (_.taxon_ves <span class="op">!=</span> <span class="st">'unknown_species'</span>))</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">filter</span>(_.taxon_ves.notnull())</span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  .count()</span>
 <span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  .execute())</span>
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>29341</code></pre>
+<pre><code>29450</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -704,11 +710,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      life_stage  row_count
-0        tadpole      10276
-1          adult       9617
-2       subadult       7162
+0        tadpole      10307
+1          adult       9667
+2       subadult       7186
 3           None       1722
-4        eggmass        625
+4        eggmass        641
 5       juvenile         78
 6            egg         16
 7  metamorphosed          7

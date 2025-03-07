@@ -147,21 +147,22 @@ When we join two tables along a key column, we are asking to align rows in the t
 Let's take a closer look at the number of rows in our tables to understand better what is going on.
 
 ```{r}
+
 ves_rows <- db_ves %>%
-  summarise(row_count = n()) %>%
-  pull(row_count)
+  count() %>%
+  pull()
 
 (ves_rows)
 
 survey_rows <- db_survey %>%
-  summarise(row_count = n()) %>%
-  pull(row_count)
+  count() %>%
+  pull()
 
 (survey_rows)
 
 left_ves_survey_rows <- left_ves_survey %>%
-  summarise(row_count = n()) %>%
-  pull(row_count)
+  count() %>%
+  pull()
 
 (left_ves_survey_rows)
 
@@ -270,70 +271,7 @@ data_ves_filtered <- db_ves_sup %>%
   collect()
 ```
 
-## Links, Chains, Recursive Joins
-
-We developed some additional functions in the `ribbitrrr` package to help us avoid the tedium of consulting the database schema diagram or column metadata. The workflow for linking tables one at a time works like this:
-
-```{r}
-# create a link object for table ves: "which tables are 1 step away"
-link_ves <- tbl_link("ves", mdc)
-
-# join tables in link object
-db_ves_survey <- tbl_left_join(dbcon, link_ves)
-
-# check columns
-colnames(db_ves_survey)
-```
-
-Great, similar results to our previous manual join, but do I need to do this recursively to get to the country table? Is there another way?
-
-The workflow for linking tables recursively works like this:
-
-```{r}
-# create a chain (or recusive link) object for table ves: "which tables are any number of steps away"
-chain_ves <- tbl_chain("ves", mdc)
-
-# join tables in link object
-db_ves_survey <- tbl_left_join(dbcon, chain_ves)
-
-# check columns
-colnames(db_ves_survey)
-```
-
-Hooray! Also yikes, that's a lot of columns! I am starting to see why we store all these in separate tables!
-
-Let's use the chain workflow to join only the data we want, to filter to Brazil data.
-
-```{r}
-# create chain object
-chain_ves <- tbl_chain("ves", mdc)
-
-# join recursively, specifying desired columns, filter, collect
-db_ves_adult_final <- tbl_left_join(dbcon, chain_ves) %>%
-    select(taxon_ves,
-         count_ves,
-         life_stage,
-         sex,
-         survey_id,
-         site,
-         date,
-         country) %>%
-  filter(life_stage == "adult",
-         year(date) == "2022",
-         country == "brazil")
-
-# pull selected, filtered, joined data
-data_ves_adult_final <- db_ves_adult_final %>%
-  collect()
-
-```
-
-Note that there are corresponding recursive join functions in `ribbitrrr` for:
-
-- `tbl(_left_join()`
-- `tbl(_inner_join()`
-- `tbl(_full_join()`
-- `tbl(_right_join()`
+Great! These data are ready to be analyzed.
 
 ## Disconnect
 
@@ -584,65 +522,7 @@ data_ves_filtered = (
 )
 ```
 
-## Links, Chains, Automated Joins
-
-We developed some additional functions in the `ribbitrrr` package to help us avoid the tedium of consulting the database schema diagram or column metadata. The workflow for linking tables one at a time works like this:
-
-```{python}
-# create a link object for table ves: "which tables are 1 step away"
-link_ves = db.tbl_link("ves", mdc)
-
-# join tables in link object
-db_ves_survey = db.tbl_join(dbcon, link_ves, join="left")
-
-# check columns
-db_ves_survey.columns
-```
-
-Great, similar results to our previous manual join of `ves` and `survey`, but do I need to do this recursively to get to the country table? Is there another way?
-
-The workflow for linking tables recursively works like this:
-
-```{python}
-# create a chain (or recusive link) object for table ves: "which tables are any number of steps away"
-chain_ves = db.tbl_chain("ves", mdc)
-
-# join tables in link object
-db_ves_survey = db.tbl_join(dbcon, chain_ves, join="left")
-
-# check columns
-db_ves_survey.columns
-```
-
-Hooray! Also yikes, that's a lot of columns! I am starting to see why we store all these in separate tables!
-
-Let's use the chain workflow to join only the data we want, to filter to Brazil data.
-
-```{python}
-# join recursively, specifying desired columns, filter, collect
-db_ves_filtered = (
-  db.tbl_join(dbcon, chain_ves, join="left")
-  .select(
-    'taxon_ves',
-    'count_ves',
-    'life_stage',
-    'sex',
-    'survey_id',
-    'site',
-    'date',
-    'country')
-    .filter([
-      (_.life_stage == 'adult') &
-      (_.date.year() == 2022) &
-      (_.country == 'brazil')
-      ])
-)
-
-data_ves_filtered = db_ves_filtered.to_pandas()
-
-```
-
-Note that you can specify the recursive join type using `tbl_join(..., join = "full")` where valid options are "left", "full", "inner", and "right"
+Great! These data are ready to be analyzed.
 
 ## Disconnect
 

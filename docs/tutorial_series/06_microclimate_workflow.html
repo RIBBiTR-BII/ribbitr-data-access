@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2024-12-18">
+<meta name="dcterms.date" content="2025-03-07">
 
 <title>6. Microclimate Workflow – RIBBiTR Data Access</title>
 <style>
@@ -281,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 18, 2024</p>
+      <p class="date">March 7, 2025</p>
     </div>
   </div>
   
@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dbcon <span class="ot">&lt;-</span> <span class="fu">hopToDB</span>(<span class="st">"ribbitr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Connecting to database... Success!</code></pre>
+<pre><code>Connecting to 'ribbitr'... Success!</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load table metadata</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
@@ -329,23 +329,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="data-discovery-and-pulling" class="level2">
 <h2 class="anchored" data-anchor-id="data-discovery-and-pulling">Data discovery and pulling</h2>
-<p>Lets take a look at the <a href="https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png"><code>microclimate_data</code> schema diagram</a>, we can browse to see which tables and columns we want. We can also consult the table or column metadata for the <code>microclimate_data</code> schema. This schema is pretty simple, with only three substantive data tables: <code>logger</code>, <code>sensor</code>, and <code>time_series_01_raw</code>.</p>
-<p>Our column metadata also contains a clue which is not obvious from the schema diagram: <code>microclimate_data.logger</code> has a foreign key which points to <code>survey_data.site</code>. knowing this, let’s pull out all the ingrediants we may want to work with:</p>
+<p>Lets take a look at the <a href="https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png"><code>microclimate_data</code> schema diagram</a>, we can browse to see which tables and columns we want. We can also consult the table or column metadata for the <code>microclimate_data</code> schema. This schema is pretty simple compared to the <code>survey_data</code> schema, with only a handful of tables: <code>logger</code>, <code>sensor</code>, and a number of time-series tables with names <code>ts_*</code> (e.g.&nbsp;<code>ts_temperature</code>). In this tutorial we will focus on temperature data, but the same workflow applies for data of other sensor types (e.g.&nbsp;relative humidity).</p>
+<p>Our column metadata also contains a clue which is not obvious from the schema diagram: <code>microclimate_data.logger</code> has a foreign key which points to <code>survey_data.site</code>. knowing this, let’s pull out all the ingredients we may want to work with:</p>
 <section id="point-to-tables-of-interest" class="level3">
 <h3 class="anchored" data-anchor-id="point-to-tables-of-interest">Point to tables of interest</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pointers for all tables of interest</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>db_ts01 <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"microclimate_data"</span>, <span class="st">"time_series_01_raw"</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>db_sensor <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"microclimate_data"</span>, <span class="st">"sensor"</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>db_logger <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"microclimate_data"</span>, <span class="st">"logger"</span>))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>db_site <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"site"</span>))</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>db_region <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"region"</span>))</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>db_country <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"country"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">## observation table</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>db_ts_temp <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"microclimate_data"</span>, <span class="st">"ts_temperature"</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## lookup tables</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>db_sensor <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"microclimate_data"</span>, <span class="st">"sensor"</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>db_logger <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"microclimate_data"</span>, <span class="st">"logger"</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>db_site <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"site"</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>db_region <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"region"</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>db_country <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"country"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="explore-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="explore-the-data">Explore the data</h3>
-<p>While we could dive right into the time-series data to see what is there, this may mean loading lots of observations without knowing exatly what we are looking for. Instead, let’s begin by exploring the support tables <code>logger</code> and <code>sensor</code>, to see what context we can bring without doing any heavy lifting yet.</p>
+<p>While we could dive right into the time-series data to see what is there, this may mean loading lots of observations without knowing exactly what we are looking for. Instead, let’s begin by exploring the lookup tables <code>logger</code> and <code>sensor</code>, to see what context we can bring without doing any heavy lifting yet.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pointers for all tables of interest</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pa_logger <span class="ot">=</span> db_logger <span class="sc">%&gt;%</span></span>
@@ -359,23 +363,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pa_ss_sensor <span class="ot">=</span> db_sensor <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_logger, <span class="at">by =</span> <span class="st">"logger_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(db_site, <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_site, <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_region, <span class="at">by =</span> <span class="st">"region_id"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_country, <span class="at">by =</span> <span class="st">"country_id"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"panama"</span>,</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>         microhabitat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"sun"</span>, <span class="st">"shade"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As we explore the sensor data, we see variables of <code>sensor_type</code> (with values “dew_point_c”, “temperature_c”, “intensity_lux”, and “relative_humidity_percent”) and <code>height_cm</code> (with values “5” and “100”). For our interest, let’s consider temperature time series with sensors located at near-ground-level. Building on our code above:</p>
+<p>As we explore the sensor data, we see variables of <code>sensor_type</code> (with values “dew_point”, “temperature”, “illuminance”, and “relative_humidity”) and <code>height_cm</code> (with values “5” and “100”). For our interest, let’s consider temperature time series with sensors located at near-ground-level. Building on our code above:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sensors_of_interest <span class="ot">=</span> db_sensor <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_logger, <span class="at">by =</span> <span class="st">"logger_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(db_site, <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_site, <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_region, <span class="at">by =</span> <span class="st">"region_id"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_country, <span class="at">by =</span> <span class="st">"country_id"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"panama"</span>,</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         microhabitat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"sun"</span>, <span class="st">"shade"</span>),</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         sensor_type <span class="sc">==</span> <span class="st">"temperature_c"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         sensor_type <span class="sc">==</span> <span class="st">"temperature"</span>,</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>         height_cm <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -383,46 +387,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="filter-and-pull-associated-time-series-data" class="level2">
 <h2 class="anchored" data-anchor-id="filter-and-pull-associated-time-series-data">Filter and pull associated time series data</h2>
-<p>Each sensor in <code>sensors_of_interest</code> has an associated time series, with values in the <code>time_series_01_raw</code> table. Let’s pull data which correspond to the <code>sensor_id</code>s in our list, filtering to the date range of interest.</p>
-<p><strong><em>NOTE ON TIMESTAMPS:</em></strong> The <code>timestamptz</code> columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the local time and timezone of the observations. When we filter our data to 2023, we need to specify the local timezone to be clear about where our data of interest begins and ends. The <code>region</code> table provides a local <code>region.time_zone</code>, which we can refer to in our filter.</p>
+<p>Each sensor in <code>sensors_of_interest</code> has an associated time series in our database, the table in which it is stored corresponds to values of <code>sensor_type</code>. For example, all time series from sensors with <code>sensor_type == 'temperature'</code> are stored in the corresponding <code>ts_temperature</code> table. Let’s pull temperature data which correspond to the <code>sensor_id</code>s in our list, filtering to the date range of interest.</p>
+<p><strong><em>NOTE ON TIMESTAMPS:</em></strong> The <code>timestamp_utc</code> columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the time <em>in UTC</em> of the observations. When we filter our data to 2023, we may wish to specify the filter with start and end times in the local timezone to be clear about where our data of interest begins and ends. The <code>region</code> table provides a local <code>region.time_zone</code>, which we can refer to in our filter. If we want our data in local time, we will need to convert it to the regional timezone after pulling.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>patz <span class="ot">=</span> <span class="fu">unique</span>(sensors_of_interest<span class="sc">$</span>time_zone)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>start_datetime <span class="ot">&lt;-</span> <span class="fu">with_tz</span>(<span class="fu">ymd_hms</span>(<span class="st">"2023-01-01 00:00:00"</span>), patz)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>end_datetime <span class="ot">&lt;-</span> <span class="fu">with_tz</span>(<span class="fu">ymd_hms</span>(<span class="st">"2024-01-01 00:00:00"</span>), patz)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>ts_of_interest_long <span class="ot">=</span> db_ts01 <span class="sc">%&gt;%</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sensor_id <span class="sc">%in%</span> sensors_of_interest<span class="sc">$</span>sensor_id,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         timestamptz <span class="sc">&gt;=</span> start_datetime,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>         timestamptz <span class="sc">&lt;</span> end_datetime) <span class="sc">%&gt;%</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull local time zone</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>local_tz <span class="ot">=</span> <span class="fu">unique</span>(sensors_of_interest<span class="sc">$</span>time_zone)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specify window of interest in local time, convert to utc fir query</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>start_datetime <span class="ot">&lt;-</span> <span class="fu">with_tz</span>(<span class="fu">force_tz</span>(<span class="fu">ymd_hms</span>(<span class="st">"2023-01-01 00:00:00"</span>), <span class="at">tzone =</span> local_tz), <span class="at">tzone =</span> <span class="st">"UTC"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>end_datetime <span class="ot">&lt;-</span> <span class="fu">with_tz</span>(<span class="fu">force_tz</span>(<span class="fu">ymd_hms</span>(<span class="st">"2024-01-01 00:00:00"</span>), <span class="at">tzone =</span> local_tz), <span class="at">tzone =</span> <span class="st">"UTC"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># filter and pull</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>ts_of_interest_long <span class="ot">=</span> db_ts_temp <span class="sc">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sensor_id <span class="sc">%in%</span> sensors_of_interest<span class="sc">$</span>sensor_id,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>         timestamp_utc <span class="sc">&gt;=</span> start_datetime,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>         timestamp_utc <span class="sc">&lt;</span> end_datetime) <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">timestamp_local =</span> <span class="fu">with_tz</span>(timestamp_utc, <span class="at">tzone =</span> local_tz)) <span class="co"># transform timestamp_utc to local timezone</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ts_of_interest_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  sensor_id         timestamp_utc       temperature_c_01_raw timestamp_local    
+  &lt;chr&gt;             &lt;dttm&gt;                             &lt;dbl&gt; &lt;dttm&gt;             
+1 1e412c83-f3ba-45… 2023-01-01 05:00:00                 19.7 2023-01-01 00:00:00
+2 1e412c83-f3ba-45… 2023-01-01 05:30:00                 19.7 2023-01-01 00:30:00
+3 1e412c83-f3ba-45… 2023-01-01 06:00:00                 19.7 2023-01-01 01:00:00
+4 1e412c83-f3ba-45… 2023-01-01 06:30:00                 19.8 2023-01-01 01:30:00
+5 1e412c83-f3ba-45… 2023-01-01 07:00:00                 19.8 2023-01-01 02:00:00
+6 1e412c83-f3ba-45… 2023-01-01 07:30:00                 19.8 2023-01-01 02:30:00</code></pre>
+</div>
 </div>
 </section>
 <section id="pivot-wider" class="level2">
 <h2 class="anchored" data-anchor-id="pivot-wider">Pivot wider</h2>
-<p>We have our data! Though depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the <code>tidyr::pivot_wider()</code> function to rearrange our data to a wide format, with a few options regarding how we name the columns:</p>
+<p>We have our data! Taking a closer look, we find our temperature data in the column <code>temperature_c_01_raw</code>, where ‘01_raw’ tells us that these are the raw data pulled from the sensor (i.e.&nbsp;no filtering or gap filling).</p>
+<p>Now, depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the <code>tidyr::pivot_wider()</code> function to rearrange our data to a wide format, with a few options regarding how we name the columns:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column names from sensor_id</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ts_of_interest_id <span class="ot">=</span> ts_of_interest_long <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> timestamptz,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> sensor_id)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># descriptive column names</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>ts_of_interest_desc <span class="ot">=</span> sensors_of_interest <span class="sc">%&gt;%</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sensor_id,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>         site_microclimate,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>         microhabitat) <span class="sc">%&gt;%</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(ts_of_interest_long, <span class="at">by =</span> <span class="st">"sensor_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>sensor_id) <span class="sc">%&gt;%</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> timestamptz,</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> <span class="fu">c</span>(site_microclimate,</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                             microhabitat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column names from sensor_id</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ts_of_interest_temp_c_id <span class="ot">=</span> ts_of_interest_long <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="fu">c</span>(timestamp_utc,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                          timestamp_local),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> sensor_id,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> temperature_c_01_raw)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># descriptive column names</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>ts_of_interest_temp_c_desc <span class="ot">=</span> sensors_of_interest <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sensor_id,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>         site_microclimate,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>         microhabitat) <span class="sc">%&gt;%</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(ts_of_interest_long, <span class="at">by =</span> <span class="st">"sensor_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>sensor_id) <span class="sc">%&gt;%</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="fu">c</span>(timestamp_utc,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                          timestamp_local),</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> <span class="fu">c</span>(site_microclimate,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                             microhabitat),</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> temperature_c_01_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These data are ready to be analyzed and visualized!</p>
 </section>
 <section id="disconnect" class="level2">
 <h2 class="anchored" data-anchor-id="disconnect">Disconnect</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </div>
@@ -433,135 +460,163 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="setup-1">Setup</h2>
 <p>In this case, we will load metadata for all schemas by dropping the <code>filter()</code> commands from previous tutorials.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB Workflow</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ibis <span class="im">import</span> _</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> db_access <span class="im">as</span> db</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># load table metadata</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># load column metadata</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>mdc <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"public"</span>, name<span class="op">=</span><span class="st">"all_columns"</span>).to_pandas()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB Workflow</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ibis <span class="im">import</span> _</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dbconfig</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> db_access <span class="im">as</span> db</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># recommended to set timezone to utc when working with IBIS, to keep query results consistent across local times zones.</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># dbcon.raw_sql("SET TIME ZONE 'UTC';")</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># peace = dbcon.raw_sql("show timezone;").fetchall()</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># load table metadata</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># load column metadata</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>mdc <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"public"</span>, name<span class="op">=</span><span class="st">"all_columns"</span>).to_pandas()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-discovery-and-pulling-1" class="level2">
 <h2 class="anchored" data-anchor-id="data-discovery-and-pulling-1">Data discovery and pulling</h2>
-<p>Lets take a look at the <a href="resources/schema_diagram_microclimate_data.png"><code>microclimate_data</code> schema diagram</a>, we can browse to see which tables and columns we want. We can also consult the table or column metadata for the <code>microclimate_data</code> schema. This schema is pretty simple, with only three substantive data tables: <code>logger</code>, <code>sensor</code>, and <code>time_series_01_raw</code>.</p>
-<p>Our column metadata also contains a clue which is not obvious from the schema diagram: <code>microclimate_data.logger</code> has a foreign key which points to <code>survey_data.site</code>. knowing this, let’s pull out all the ingrediants we may want to work with:</p>
+<p>Lets take a look at the <a href="https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png"><code>microclimate_data</code> schema diagram</a>, we can browse to see which tables and columns we want. We can also consult the table or column metadata for the <code>microclimate_data</code> schema. This schema is pretty simple compared to the <code>survey_data</code> schema, with only a handful of tables: <code>logger</code>, <code>sensor</code>, and a number of time-series tables with names <code>ts_*</code> (e.g.&nbsp;<code>ts_temperature</code>). In this tutorial we will focus on temperature data, but the same workflow applies for data of other sensor types (e.g.&nbsp;relative humidity).</p>
+<p>Our column metadata also contains a clue which is not obvious from the schema diagram: <code>microclimate_data.logger</code> has a foreign key which points to <code>survey_data.site</code>. knowing this, let’s pull out all the ingredients we may want to work with:</p>
 <section id="point-to-tables-of-interest-1" class="level3">
 <h3 class="anchored" data-anchor-id="point-to-tables-of-interest-1">Point to tables of interest</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pointers for all tables of interest</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>db_ts01 <span class="op">=</span> dbcon.table(<span class="st">'time_series_01_raw'</span>, database<span class="op">=</span><span class="st">'microclimate_data'</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>db_sensor <span class="op">=</span> dbcon.table(<span class="st">'sensor'</span>, database<span class="op">=</span><span class="st">'microclimate_data'</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>db_logger <span class="op">=</span> dbcon.table(<span class="st">'logger'</span>, database<span class="op">=</span><span class="st">'microclimate_data'</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>db_site <span class="op">=</span> dbcon.table(<span class="st">'site'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>db_region <span class="op">=</span> dbcon.table(<span class="st">'region'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>db_country <span class="op">=</span> dbcon.table(<span class="st">'country'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pointers for all tables of interest</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">## observation tables</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>db_ts_temp <span class="op">=</span> dbcon.table(<span class="st">'ts_temperature'</span>, database<span class="op">=</span><span class="st">'microclimate_data'</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">## lookup tables</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>db_sensor <span class="op">=</span> dbcon.table(<span class="st">'sensor'</span>, database<span class="op">=</span><span class="st">'microclimate_data'</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>db_logger <span class="op">=</span> dbcon.table(<span class="st">'logger'</span>, database<span class="op">=</span><span class="st">'microclimate_data'</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>db_site <span class="op">=</span> dbcon.table(<span class="st">'site'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>db_region <span class="op">=</span> dbcon.table(<span class="st">'region'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>db_country <span class="op">=</span> dbcon.table(<span class="st">'country'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="explore-the-data-1" class="level3">
 <h3 class="anchored" data-anchor-id="explore-the-data-1">Explore the data</h3>
-<p>While we could dive right into the time-series data to see what is there, this may mean loading lots of observations without knowing exatly what we are looking for. Instead, let’s begin by exploring the support tables <code>logger</code> and <code>sensor</code>, to see what context we can bring without doing any heavy lifting yet.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recursive joins</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pa_logger <span class="op">=</span> (</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    db_logger</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    .inner_join(db_site, db_logger.site_id <span class="op">==</span> db_site.site_id)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    .left_join(db_region, db_site.region_id <span class="op">==</span> db_region.region_id)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    .left_join(db_country, db_region.country_id <span class="op">==</span> db_country.country_id)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(_.country <span class="op">==</span> <span class="st">'panama'</span>)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Looking at <code>pa_logger</code>, we see the Panama microclimate loggers for a number of sites, as well as for a number of microhabitats (“soil”, “water”, “sun”, “shade”). For our sake, let’s consider the “sun” and “shade” series only. Building on our code above:</p>
+<p>While we could dive right into the time-series data to see what is there, this may mean loading lots of observations without knowing exactly what we are looking for. Instead, let’s begin by exploring the lookup tables <code>logger</code> and <code>sensor</code>, to see what context we can bring without doing any heavy lifting yet.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recursive joins</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pa_ss_logger <span class="op">=</span> (</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pa_logger <span class="op">=</span> (</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    db_logger</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    .inner_join(db_site, db_logger.site_id <span class="op">==</span> db_site.site_id)</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    .left_join(db_region, db_site.region_id <span class="op">==</span> db_region.region_id)</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    .left_join(db_country, db_region.country_id <span class="op">==</span> db_country.country_id)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(_.country <span class="op">==</span> <span class="st">'panama'</span>,</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>            _.microhabitat.isin([<span class="st">'sun'</span>,<span class="st">'shade'</span>]))</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(_.country <span class="op">==</span> <span class="st">'panama'</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As we explore the sensor data, we see variables of <code>sensor_type</code> (with values “dew_point_c”, “temperature_c”, “intensity_lux”, and “relative_humidity_percent”) and <code>height_cm</code> (with values “5” and “100”). For our interest, let’s consider temperature time series with sensors located at near-ground-level. Building on our code above:</p>
+<p>Looking at <code>pa_logger</code>, we see the Panama microclimate loggers for a number of sites, as well as for a number of microhabitats (“soil”, “water”, “sun”, “shade”). For our sake, let’s consider the “sun” and “shade” series only. Building on our code above:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recursive joins</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sensors_of_interest <span class="op">=</span> (</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    db_sensor</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    .left_join(db_logger, db_sensor.logger_id <span class="op">==</span> db_logger.logger_id)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    .inner_join(db_site, db_logger.site_id <span class="op">==</span> db_site.site_id)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    .left_join(db_region, db_site.region_id <span class="op">==</span> db_region.region_id)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    .left_join(db_country, db_region.country_id <span class="op">==</span> db_country.country_id)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(_.country <span class="op">==</span> <span class="st">'panama'</span>,</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>            _.microhabitat.isin([<span class="st">'sun'</span>,<span class="st">'shade'</span>]),</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>            _.sensor_type <span class="op">==</span> <span class="st">'temperature_c'</span>,</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>            _.height_cm <span class="op">==</span> <span class="dv">5</span>)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>pa_ss_logger <span class="op">=</span> (</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    db_logger</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    .left_join(db_site, db_logger.site_id <span class="op">==</span> db_site.site_id)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    .left_join(db_region, db_site.region_id <span class="op">==</span> db_region.region_id)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    .left_join(db_country, db_region.country_id <span class="op">==</span> db_country.country_id)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(_.country <span class="op">==</span> <span class="st">'panama'</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>            _.microhabitat.isin([<span class="st">'sun'</span>,<span class="st">'shade'</span>]))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As we explore the sensor data, we see variables of <code>sensor_type</code> (with values “dew_point”, “temperature”, “illuminance”, and “relative_humidity”) and <code>height_cm</code> (with values “5” and “100”). For our interest, let’s consider temperature time series with sensors located at near-ground-level. Building on our code above:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recursive joins</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>sensors_of_interest <span class="op">=</span> (</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    db_sensor</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    .left_join(db_logger, db_sensor.logger_id <span class="op">==</span> db_logger.logger_id)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    .left_join(db_site, db_logger.site_id <span class="op">==</span> db_site.site_id)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    .left_join(db_region, db_site.region_id <span class="op">==</span> db_region.region_id)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    .left_join(db_country, db_region.country_id <span class="op">==</span> db_country.country_id)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(_.country <span class="op">==</span> <span class="st">'panama'</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>            _.microhabitat.isin([<span class="st">'sun'</span>,<span class="st">'shade'</span>]),</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>            _.sensor_type <span class="op">==</span> <span class="st">'temperature'</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>            _.height_cm <span class="op">==</span> <span class="dv">5</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="filter-and-pull-associated-time-series-data-1" class="level2">
 <h2 class="anchored" data-anchor-id="filter-and-pull-associated-time-series-data-1">Filter and pull associated time series data</h2>
-<p>Each sensor in <code>sensors_of_interest</code> has an associated time series, with values in the <code>time_series_01_raw</code> table. Let’s pull data which correspond to the <code>sensor_id</code>s in our list, filtering to the date range of interest.</p>
-<p><strong><em>NOTE ON TIMESTAMPS:</em></strong> The <code>timestamptz</code> columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the local time and timezone of the observations. When we filter our data to 2023, we need to specify the local timezone to be clear about where our data of interest begins and ends. The <code>region</code> table provides a local <code>region.time_zone</code>, which we can refer to in our filter.</p>
+<p>Each sensor in <code>sensors_of_interest</code> has an associated time series in our database, the table in which it is stored corresponds to values of <code>sensor_type</code>. For example, all time series from sensors with <code>sensor_type == 'temperature'</code> are stored in the corresponding <code>ts_temperature</code> table. Let’s pull temperature data which correspond to the <code>sensor_id</code>s in our list, filtering to the date range of interest.</p>
+<p><strong><em>NOTE ON TIMESTAMPS:</em></strong> The <code>timestamp_utc</code> columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the time <em>in UTC</em> of the observations. When we filter our data to 2023, we may wish to specify the filter with start and end times in the local timezone to be clear about where our data of interest begins and ends. The <code>region</code> table provides a local <code>region.time_zone</code>, which we can refer to in our filter. If we want our data in local time, we will need to convert it to the regional timezone after pulling.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>patz <span class="op">=</span> sensors_of_interest[<span class="st">'time_zone'</span>].unique()[<span class="dv">0</span>]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>start_datetime <span class="op">=</span> pd.to_datetime(<span class="st">"2023-01-01 00:00:00"</span>).tz_localize(patz)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>end_datetime <span class="op">=</span> pd.to_datetime(<span class="st">"2024-01-01 00:00:00"</span>).tz_localize(patz)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>ts_of_interest_long <span class="op">=</span> (</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    db_ts01</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(_.sensor_id.isin(sensors_of_interest[<span class="st">'sensor_id'</span>].astype(<span class="bu">str</span>).tolist()),</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>            _.timestamptz <span class="op">&gt;=</span> start_datetime,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>            _.timestamptz <span class="op">&lt;</span> end_datetime)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull local time zone</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>local_tz <span class="op">=</span> sensors_of_interest[<span class="st">'time_zone'</span>].unique()[<span class="dv">0</span>]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>local_tz <span class="op">=</span> <span class="st">"Pacific/Honolulu"</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># specify window of interest in local time, converted to utc for querying</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>start_datetime <span class="op">=</span> pd.to_datetime(<span class="st">"2023-01-01 00:00:00"</span>).tz_localize(local_tz).tz_convert(<span class="st">"UTC"</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>end_datetime <span class="op">=</span> pd.to_datetime(<span class="st">"2024-01-01 00:00:00"</span>).tz_localize(local_tz).tz_convert(<span class="st">"UTC"</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># filter and pull</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>ts_of_interest_long <span class="op">=</span> (</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    db_ts_temp</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(_.sensor_id.isin(sensors_of_interest[<span class="st">'sensor_id'</span>].astype(<span class="bu">str</span>).tolist()),</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>            _.timestamp_utc <span class="op">&gt;=</span> start_datetime,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>            _.timestamp_utc <span class="op">&lt;</span> end_datetime)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    .to_pandas()</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to local timezone</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>ts_of_interest_long[<span class="st">'timestamp_local'</span>] <span class="op">=</span> ts_of_interest_long[<span class="st">'timestamp_utc'</span>].dt.tz_localize(<span class="st">"UTC"</span>).dt.tz_convert(local_tz)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>ts_of_interest_long.head(<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                              sensor_id  ...           timestamp_local
+0  1e412c83-f3ba-453c-a70f-c2df54a0d5d6  ... 2023-01-01 00:00:00-10:00
+1  1e412c83-f3ba-453c-a70f-c2df54a0d5d6  ... 2023-01-01 00:30:00-10:00
+2  1e412c83-f3ba-453c-a70f-c2df54a0d5d6  ... 2023-01-01 01:00:00-10:00
+3  1e412c83-f3ba-453c-a70f-c2df54a0d5d6  ... 2023-01-01 01:30:00-10:00
+4  1e412c83-f3ba-453c-a70f-c2df54a0d5d6  ... 2023-01-01 02:00:00-10:00
+5  1e412c83-f3ba-453c-a70f-c2df54a0d5d6  ... 2023-01-01 02:30:00-10:00
+
+[6 rows x 4 columns]</code></pre>
+</div>
 </div>
 </section>
 <section id="pivot-wider-1" class="level2">
 <h2 class="anchored" data-anchor-id="pivot-wider-1">Pivot wider</h2>
 <p>We have our data! Though depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the <code>pd.pivot()</code> function to rearrange our data to a wide format, with a few options regarding how we name the columns:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column names from sensor_id</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ts_of_interest_id <span class="op">=</span> ts_of_interest_long.pivot(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">'timestamptz'</span>,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span><span class="st">'sensor_id'</span>,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">'value'</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># descriptive column names</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>ts_of_interest_desc <span class="op">=</span> (</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    sensors_of_interest[[<span class="st">'sensor_id'</span>, <span class="st">'site_microclimate'</span>, <span class="st">'microhabitat'</span>]]</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    .merge(ts_of_interest_long, on<span class="op">=</span><span class="st">'sensor_id'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    .drop(columns<span class="op">=</span>[<span class="st">'sensor_id'</span>])</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">'timestamptz'</span>,</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[<span class="st">'site_microclimate'</span>, <span class="st">'microhabitat'</span>],</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span><span class="st">'value'</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column names from sensor_id</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ts_of_interest_id <span class="op">=</span> ts_of_interest_long.pivot(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">'timestamp_local'</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span><span class="st">'sensor_id'</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">'temperature_c_01_raw'</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># descriptive column names</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>ts_of_interest_desc <span class="op">=</span> (</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    sensors_of_interest[[<span class="st">'sensor_id'</span>, <span class="st">'site_microclimate'</span>, <span class="st">'microhabitat'</span>]]</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    .merge(ts_of_interest_long, on<span class="op">=</span><span class="st">'sensor_id'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    .drop(columns<span class="op">=</span>[<span class="st">'sensor_id'</span>])</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">'timestamp_local'</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[<span class="st">'site_microclimate'</span>, <span class="st">'microhabitat'</span>],</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span><span class="st">'temperature_c_01_raw'</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These data are ready to be analyzed and visualized!</p>
 </section>
 <section id="disconnect-1" class="level2">
 <h2 class="anchored" data-anchor-id="disconnect-1">Disconnect</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># close connection</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># close connection</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </div>
