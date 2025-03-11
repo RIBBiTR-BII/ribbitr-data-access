@@ -7,6 +7,12 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-03-11
+
+### Changed
+
+- survey_data.environmental.soil_moisture_m3_m3 <- survey_data.environmental.soil_humidity_m3m3
+
 ## 2025-02-27
 
 ### Changed
