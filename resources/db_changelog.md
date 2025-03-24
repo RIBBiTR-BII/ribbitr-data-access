@@ -7,6 +7,35 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-03-24
+
+### Added
+- Novel data
+  - Brazil
+    - Capture, environmental, and eDNA collection data through 2024
+  - Pennsylvania
+    - eDNA collection data through 2024
+  - Sierra Nevada
+    - Capture, visual and environmental data through 2024
+    - Bd qPCR results through 2024
+- table survey_data.edna for tracking edna field sampling
+  - survey_data.survey.detection_type = "edna"
+- tracking and name resolving of conflicting sample names in survey_data.sample
+  - conflicting names are given a new, unique "sample_name", while the old/conflicted name is tracked in "sample_name_conflict"
+- CITES taxonomy status added to survey_data.taxonomy with new columns:
+  - cites_id
+  - cites_appendix
+
+### Changed
+
+- survey_data transect location columns renamed for consistency and clarity:
+  - capture.capture_transect_m <- capture.capture_trx_loc
+  - ves.ves_transect_m <- ves.detection_location
+- air pressure in survey_data.environmental table changed from psi to mbar (SI)
+  - dropped column "pressure_psi"
+  - added column "air_pressure_mbar"
+- survey_data.environmental.soil_moisture_m3_m3 <- survey_data.environmental.soil_humidity_m3m3
+
 ## 2025-03-11
 
 ### Changed
