@@ -7,9 +7,19 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-04-02
+
+## Added
+
+- New tables in survey_data schema:
+  - site_history -- for tracking site treatments and human interventions which may be historically relevant, as context for interpretation and modeling efforts
+  - mucosome_results -- results from mucosome-Bd-inhibition assays
+  - bd_isolates -- history of Bd strains isolated and used in cross-RIBBiTR studies
+
 ## 2025-03-24
 
 ### Added
+
 - Novel data
   - Brazil
     - Capture, environmental, and eDNA collection data through 2024
