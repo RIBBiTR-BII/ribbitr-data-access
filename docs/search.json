@@ -1922,5 +1922,236 @@
       "Database updates",
       "Database Changelog"
     ]
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#presentation-overview",
+    "href": "presentations/db_updates_2024-04.html#presentation-overview",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Presentation Overview",
+    "text": "Presentation Overview\n\nDatabase overview\n\nWhy a database?\nWhat is a database?\nHow to make the most of a database?\n\nData in our Community\nClosing the loop"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#why-a-database",
+    "href": "presentations/db_updates_2024-04.html#why-a-database",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Why a Database?",
+    "text": "Why a Database?\nRIBBiTR Research Goals\nRIBBiTR Project Proposal\n\nQ1: How does the history of disturbance differ across systems?\nQ2: How have changes at different levels of biological organization shaped overall system responses?\nQ3: What are the mechanisms contributing to resilience and are they shared across systems?\nQ4: How is resilience modulated by multiple interacting stressors?\n\nSpanning, time scales, spacial scales, biological levels."
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#why-a-database-1",
+    "href": "presentations/db_updates_2024-04.html#why-a-database-1",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Why a Database?",
+    "text": "Why a Database?\nRIBBiTR Community Goals\nRIBBiTR Project Proposal & RIBBiTR Pre-Collab Agreement\n\nAdvance understanding of resilience by developing, applying, and sharing a novel framework for the study of resilience\nGrow our collaborative network\nTrain next generation of transdisciplinary scientists\nFollow and advance Open Science and Team Science"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#why-a-database-2",
+    "href": "presentations/db_updates_2024-04.html#why-a-database-2",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Why a Database?",
+    "text": "Why a Database?\nRIBBiTR Data Goals\nRIBBiTR Data Plan & RIBBiTR Pre-Collab Agreement\n\nCollect/generate, standardize, & preserve project data, including: genetic, pathogen, host, environment, acoustic, model, and curricula data\nShare RIBBiTR data openly within RIBBiTR team, publishing with consent and invitations to collaborate\nAnalyze & interpret data collaboratively to communicate context"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#why-a-database-3",
+    "href": "presentations/db_updates_2024-04.html#why-a-database-3",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Why a Database?",
+    "text": "Why a Database?\nWant data sharing solution which are:\n\nEmpowering in exploring and testing our understanding of amphibian resilience to Bd\nRobust, avoiding competing versions, decaying integrity, etc.\nAccessible for people with different trainings and ways of knowing\n\nDatabases are one part of such a solution"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#what-is-a-database",
+    "href": "presentations/db_updates_2024-04.html#what-is-a-database",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "What is a Database?",
+    "text": "What is a Database?\n\nA relational database"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#what-is-a-database-1",
+    "href": "presentations/db_updates_2024-04.html#what-is-a-database-1",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "What is a Database",
+    "text": "What is a Database\n\nA relational database in SQL"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#what-is-a-database-2",
+    "href": "presentations/db_updates_2024-04.html#what-is-a-database-2",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "What is a Database?",
+    "text": "What is a Database?\n\nA relational database in context"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#make-the-most-of-a-database",
+    "href": "presentations/db_updates_2024-04.html#make-the-most-of-a-database",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Make the most of a Database",
+    "text": "Make the most of a Database\n\nA relational database as part of a cycle"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#make-the-most-of-a-database-1",
+    "href": "presentations/db_updates_2024-04.html#make-the-most-of-a-database-1",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Make the most of a Database",
+    "text": "Make the most of a Database\n\nA relational database as part of a complex addaptive system"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#data-in-our-community",
+    "href": "presentations/db_updates_2024-04.html#data-in-our-community",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Data in our community",
+    "text": "Data in our community"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#data-in-our-community-1",
+    "href": "presentations/db_updates_2024-04.html#data-in-our-community-1",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Data in our community",
+    "text": "Data in our community"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#data-in-our-community-2",
+    "href": "presentations/db_updates_2024-04.html#data-in-our-community-2",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Data in our community",
+    "text": "Data in our community\n\nWhat emotions come up for you when you read the word ‘data’?"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#closing-the-loop",
+    "href": "presentations/db_updates_2024-04.html#closing-the-loop",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Closing the loop",
+    "text": "Closing the loop"
+  },
+  {
+    "objectID": "presentations/db_updates_2024-04.html#lets-practice-together",
+    "href": "presentations/db_updates_2024-04.html#lets-practice-together",
+    "title": "RIBBiTR Database: Collaboration and Context",
+    "section": "Let’s practice together!",
+    "text": "Let’s practice together!"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#presentation-overview",
+    "href": "presentations/db_updates_2025-04.html#presentation-overview",
+    "title": "RIBBiTR Database Updates",
+    "section": "Presentation Overview",
+    "text": "Presentation Overview\n\nDatabase overview\n\nWhy a database?\nWhat is a database?\nHow to make the most of a database?\n\nData in our Community\nClosing the loop"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#databases-in-collaborative-research",
+    "href": "presentations/db_updates_2025-04.html#databases-in-collaborative-research",
+    "title": "RIBBiTR Database Updates",
+    "section": "Databases in collaborative research",
+    "text": "Databases in collaborative research\n\nInformation cycle, from field to database and (hopefully) back…"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#why-a-database",
+    "href": "presentations/db_updates_2025-04.html#why-a-database",
+    "title": "RIBBiTR Database Updates",
+    "section": "Why a Database?",
+    "text": "Why a Database?\nRIBBiTR Research Goals\nRIBBiTR Project Proposal\n\nQ1: How does the history of disturbance differ across systems?\nQ2: How have changes at different levels of biological organization shaped overall system responses?\nQ3: What are the mechanisms contributing to resilience and are they shared across systems?\nQ4: How is resilience modulated by multiple interacting stressors?\n\nSpanning, time scales, spacial scales, biological levels."
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#why-a-database-1",
+    "href": "presentations/db_updates_2025-04.html#why-a-database-1",
+    "title": "RIBBiTR Database Updates",
+    "section": "Why a Database?",
+    "text": "Why a Database?\nRIBBiTR Community Goals\nRIBBiTR Project Proposal & RIBBiTR Pre-Collab Agreement\n\nAdvance understanding of resilience by developing, applying, and sharing a novel framework for the study of resilience\nGrow our collaborative network\nTrain next generation of transdisciplinary scientists\nFollow and advance Open Science and Team Science"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#why-a-database-2",
+    "href": "presentations/db_updates_2025-04.html#why-a-database-2",
+    "title": "RIBBiTR Database Updates",
+    "section": "Why a Database?",
+    "text": "Why a Database?\nRIBBiTR Data Goals\nRIBBiTR Data Plan & RIBBiTR Pre-Collab Agreement\n\nCollect/generate, standardize, & preserve project data, including: genetic, pathogen, host, environment, acoustic, model, and curricula data\nShare RIBBiTR data openly within RIBBiTR team, publishing with consent and invitations to collaborate\nAnalyze & interpret data collaboratively to communicate context"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#why-a-database-3",
+    "href": "presentations/db_updates_2025-04.html#why-a-database-3",
+    "title": "RIBBiTR Database Updates",
+    "section": "Why a Database?",
+    "text": "Why a Database?\nWant data sharing solution which are:\n\nEmpowering in exploring and testing our understanding of amphibian resilience to Bd\nRobust, avoiding competing versions, decaying integrity, etc.\nAccessible for people with different trainings and ways of knowing\n\nDatabases are one part of such a solution"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#what-is-a-database",
+    "href": "presentations/db_updates_2025-04.html#what-is-a-database",
+    "title": "RIBBiTR Database Updates",
+    "section": "What is a Database?",
+    "text": "What is a Database?\n\nA relational database"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#what-is-a-database-1",
+    "href": "presentations/db_updates_2025-04.html#what-is-a-database-1",
+    "title": "RIBBiTR Database Updates",
+    "section": "What is a Database",
+    "text": "What is a Database\n\nA relational database in SQL"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#what-is-a-database-2",
+    "href": "presentations/db_updates_2025-04.html#what-is-a-database-2",
+    "title": "RIBBiTR Database Updates",
+    "section": "What is a Database?",
+    "text": "What is a Database?\n\nA relational database in context"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#make-the-most-of-a-database",
+    "href": "presentations/db_updates_2025-04.html#make-the-most-of-a-database",
+    "title": "RIBBiTR Database Updates",
+    "section": "Make the most of a Database",
+    "text": "Make the most of a Database\n\nA relational database as part of a cycle"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#make-the-most-of-a-database-1",
+    "href": "presentations/db_updates_2025-04.html#make-the-most-of-a-database-1",
+    "title": "RIBBiTR Database Updates",
+    "section": "Make the most of a Database",
+    "text": "Make the most of a Database\n\nA relational database as part of a complex addaptive system"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#data-in-our-community",
+    "href": "presentations/db_updates_2025-04.html#data-in-our-community",
+    "title": "RIBBiTR Database Updates",
+    "section": "Data in our community",
+    "text": "Data in our community"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#data-in-our-community-1",
+    "href": "presentations/db_updates_2025-04.html#data-in-our-community-1",
+    "title": "RIBBiTR Database Updates",
+    "section": "Data in our community",
+    "text": "Data in our community"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#data-in-our-community-2",
+    "href": "presentations/db_updates_2025-04.html#data-in-our-community-2",
+    "title": "RIBBiTR Database Updates",
+    "section": "Data in our community",
+    "text": "Data in our community\n\nWhat emotions come up for you when you read the word ‘data’?"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#closing-the-loop",
+    "href": "presentations/db_updates_2025-04.html#closing-the-loop",
+    "title": "RIBBiTR Database Updates",
+    "section": "Closing the loop",
+    "text": "Closing the loop"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#lets-practice-together",
+    "href": "presentations/db_updates_2025-04.html#lets-practice-together",
+    "title": "RIBBiTR Database Updates",
+    "section": "Let’s practice together!",
+    "text": "Let’s practice together!"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#databases-in-collaborative-research-1",
+    "href": "presentations/db_updates_2025-04.html#databases-in-collaborative-research-1",
+    "title": "RIBBiTR Database Updates",
+    "section": "Databases in collaborative research",
+    "text": "Databases in collaborative research\n\nBut critical context is lost along the way!"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#databases-in-collaborative-research-2",
+    "href": "presentations/db_updates_2025-04.html#databases-in-collaborative-research-2",
+    "title": "RIBBiTR Database Updates",
+    "section": "Databases in collaborative research",
+    "text": "Databases in collaborative research\n\nTransmission of context at each step is key to acting with informed, relevant insight."
   }
 ]
