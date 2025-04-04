@@ -1,0 +1,219 @@
+---
+title: "7. Database Refresher"
+author: "Cob Staines"
+date: today
+toc: true
+format:
+  html: 
+    code-line-numbers: false
+  pdf:
+    code-line-numbers: false
+    geometry: 
+      - top=30mm
+      - left=30mm
+---
+
+*This tutorial is available as a [.qmd on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series).*
+
+# Motivation
+- Refresh ourselves on how to connect, browse, join, pull, and organize data
+- Demonstrate linking data from different datasets
+
+# R
+Let's run through another realistic data scenario:
+
+Suppose we want to explore a hypothesis that temperature is related to Bd load. Let's collect data from the RIBBiTR database to use in testing our hypothesis.
+
+## Setup
+
+```{r, message=FALSE}
+# minimal packages for RIBBiTR DB data discovery
+librarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
+
+# establish database connection
+dbcon <- hopToDB("ribbitr")
+
+# load table metadata
+mdt <- tbl(dbcon, Id("public", "all_tables")) %>%
+  filter(table_schema == "survey_data") %>%
+  collect()
+
+# load column metadata
+mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
+  filter(table_schema == "survey_data") %>%
+  collect()
+```
+
+## Data discovery and pulling
+
+Looking at the database schema, we determine that the observation tables of interest are: `bd_qpcr_results", "capture", and "environmental". Let's creat pointers to these tables plus the related supporting tables:
+
+### Point to support tables
+
+```{r}
+# pointers for all tables of interest
+db_bdqpcr = tbl(dbcon, Id("survey_data", "bd_qpcr_results"))
+db_sample = tbl(dbcon, Id("survey_data", "sample"))
+db_capture = tbl(dbcon, Id("survey_data", "capture"))
+db_env = tbl(dbcon, Id("survey_data", "environmental"))
+db_survey = tbl(dbcon, Id("survey_data", "survey"))
+db_visit = tbl(dbcon, Id("survey_data", "visit"))
+db_site = tbl(dbcon, Id("survey_data", "site"))
+db_region = tbl(dbcon, Id("survey_data", "region"))
+db_country = tbl(dbcon, Id("survey_data", "country"))
+
+# we may also want these lookup tables
+db_lab = tbl(dbcon, Id("survey_data", "lab"))
+db_taxa = tbl(dbcon, Id("survey_data", "taxonomy"))
+
+```
+
+### Join capture with support tables
+
+```{r}
+# we can also see which columns come from specified tables, for context
+colnames(db_capture)
+
+# left join supporting tables
+db_capture_country = db_capture %>%
+  left_join(db_survey, by = "survey_id") %>%
+  left_join(db_visit, by = "visit_id") %>%
+  left_join(db_site, by = "site_id") %>%
+  left_join(db_region, by = "region_id") %>%
+  left_join(db_country, by = "country_id")
+
+# see what columns are available
+colnames(db_capture_country)
+
+```
+
+### Join bd_qpcr_results with capture
+
+```{r}
+# link bd results and capture
+db_bd_country = db_bdqpcr %>%
+  left_join(db_sample, by = "sample_id") %>%
+  left_join(db_capture, by = "capture_id") %>%
+  left_join(db_survey, by = "survey_id") %>%
+  left_join(db_visit, by = "visit_id") %>%
+  left_join(db_site, by = "site_id") %>%
+  left_join(db_region, by = "region_id") %>%
+  left_join(db_country, by = "country_id") %>%
+  filter(!is.na(capture_id))
+
+# or, more simply
+db_bd_country = db_bdqpcr %>%
+  inner_join(db_sample, by = "sample_id") %>%
+  inner_join(db_capture_country, by = "capture_id")
+
+colnames(db_bd_country)
+```
+### Join with environmental observations
+
+Aggregate and join at the visit level
+
+```{r}
+colnames(db_env)
+
+db_env_visit = db_env %>%
+  left_join(db_survey, by = "survey_id") %>%
+  left_join(db_visit, by = "visit_id") %>%
+  group_by(visit_id) %>%
+  summarise(env_n = n(),
+            air_temp_c_mean = mean(air_temp_c, na.rm = TRUE),
+            water_temp_c_mean = mean(water_temp_c, na.rm = TRUE))
+
+db_bd_env = db_bd_country %>%
+  left_join(db_env_visit, by = "visit_id") %>%
+  select(sample_name_bd,
+         detected,
+         average_target_quant,
+         taxon_capture,
+         svl_mm,
+         body_mass_g,
+         life_stage,
+         substrate_temp_c,
+         air_temp_c_mean,
+         water_temp_c_mean,
+         env_n,
+         microhabitat_type,
+         time_of_capture,
+         date,
+         site,
+         region,
+         country,
+         visit_lab,
+         extraction_lab,
+         qpcr_lab)
+```
+
+### filtering
+
+```{r}
+db_bd_env %>%
+  count()
+
+db_filtered = db_bd_env %>%
+  filter(life_stage == "adult",
+         !is.na(substrate_temp_c))
+
+db_filtered %>%
+  count()
+
+# count by region/country
+summary_bd_region = db_filtered %>%
+  group_by(country, region) %>%
+  count() %>%
+  collect() %>%
+  arrange(country, region)
+
+# count by year
+summary_bd_year = db_filtered %>%
+  mutate(year = year(date)) %>%
+  group_by(year) %>%
+  count() %>%
+  collect() %>%
+  arrange(year)
+```
+
+
+### collect (pull) these data
+
+```{r}
+data_final = db_filtered %>%
+  collect()
+
+```
+
+### explore taxa
+
+```{r}
+taxa_relevant = db_filtered %>%
+  group_by(taxon_capture) %>%
+  summarise(taxa_count = n()) %>%
+  left_join(db_taxa, by = c("taxon_capture" = "taxon_id")) %>%
+  collect() %>%
+  arrange(desc(taxa_count))
+
+taxa_final = taxa_relevant %>%
+  filter(taxa_count >= 50)
+
+data_final = db_filtered %>%
+  filter(taxon_capture %in% taxa_final$taxon_capture) %>%
+  collect()
+
+```
+
+### identify collaborators
+
+```{r}
+labs = unique(c(data_final$visit_lab,
+              data_final$extraction_lab,
+              data_final$qpcr_lab))
+
+colnames(db_lab)
+
+labs_relevant = db_lab %>%
+  filter(lab_id %in% labs) %>%
+  collect()
+```
