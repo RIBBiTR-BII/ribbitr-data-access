@@ -10,7 +10,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.5.57">
 
-  <title>RIBBiTR Data Access – RIBBiTR Database Updates</title>
+  <title>RIBBiTR Data Access – A quick RIBBiTR Database update</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,7 +325,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">RIBBiTR Database Updates</h1>
+  <h1 class="title">A quick RIBBiTR Database update</h1>
 
 <div class="quarto-title-authors">
 </div>
@@ -334,112 +334,90 @@
 <section id="presentation-overview" class="slide level2">
 <h2>Presentation Overview</h2>
 <ul>
-<li>Database overview
+<li>Data in Collaborative Research</li>
+<li>RIBBiTR Database overview</li>
+<li>Recent database updates</li>
+</ul>
+</section>
+<section id="data-in-collaborative-research" class="slide level2">
+<h2>Data in Collaborative Research</h2>
+
+<img data-src="db_updates_2025-04/layout2_1_cycle.png" alt="Information flows cyclically from frogs to humans, to computers, apps, and databases, and then back to humans and (hopefully) back to frogs" width="600" class="r-stretch quarto-figure-center"><p class="caption">Information cycles from field to database and (hopefully) back…</p></section>
+<section id="data-in-collaborative-research-1" class="slide level2">
+<h2>Data in Collaborative Research</h2>
+
+<img data-src="db_updates_2025-04/layout2_2_insight.png" alt="Insight generation is the primary component of the displayed cycle." width="600" class="r-stretch quarto-figure-center"><p class="caption">Insight generated from the field through the research process</p></section>
+<section id="data-in-collaborative-research-2" class="slide level2">
+<h2>Data in Collaborative Research</h2>
+
+<img data-src="db_updates_2025-04/layout2_3_action.png" alt="Informed action brings insight back to the field (and frogs), closing the loop." width="600" class="r-stretch quarto-figure-center"><p class="caption">Relevant insights support informed action (e.g.&nbsp;conservation)</p></section>
+<section id="data-in-collaborative-research-3" class="slide level2">
+<h2>Data in Collaborative Research</h2>
+
+<img data-src="db_updates_2025-04/layout2_4_needs.png" alt="Context is lost as we move towards data, and context is needed as we move back toward the field." width="600" class="r-stretch quarto-figure-center"><p class="caption">But critical context is lost along the way!</p></section>
+<section id="data-in-collaborative-research-4" class="slide level2">
+<h2>Data in Collaborative Research</h2>
+
+<img data-src="db_updates_2025-04/layout2_5_context.png" alt="Context can be transmitted through shared experiences, meetings, calls, emails, code and document sharing, and data" width="600" class="r-stretch quarto-figure-center"><p class="caption">Transmission of context at each step is key to supporting locally-relevant, informed action</p></section>
+<section id="data-in-collaborative-research-5" class="slide level2">
+<h2>Data in Collaborative Research</h2>
+
+<img data-src="db_updates_2025-04/layout2_6_feedback.png" alt="Feedback can also be transmitted through shared experiences, conversations, meetings, calls, emails, and code sharing." width="600" class="r-stretch quarto-figure-center"><p class="caption">Feedbacks at each step greatly increase responsiveness within the team</p></section>
+<section id="data-in-collaborative-research-6" class="slide level2">
+<h2>Data in Collaborative Research</h2>
+
+<img data-src="db_updates_2025-04/layout2_7_model.png" alt="Complete model includes both context sharing and feedbacks" width="600" class="r-stretch quarto-figure-center"><p class="caption">Context and feedback enhance data-driven insight generation and informed action</p></section>
+<section id="ribbitr-daabase-overview" class="slide level2">
+<h2>RIBBiTR daabase overview</h2>
+
+<img data-src="db_updates_2025-04/database_datasets.drawio.png" alt="Conceptual diagram linking field and lab datasets with support tables" width="600" class="r-stretch quarto-figure-center"><p class="caption">Conceptual diagram of how disparate datasets connect</p></section>
+<section id="recent-updates" class="slide level2">
+<h2><em>Recent updates</em></h2>
+<h4 id="new-datasets">New datasets</h4>
 <ul>
-<li><em>Why a database?</em></li>
-<li><em>What is a database?</em></li>
-<li><em>How to make the most of a database?</em></li>
+<li>Mucosome results</li>
+<li>AMP GIA results <em>(coming soon!)</em></li>
+<li>Microbiome 16S metadata &amp; sequences <em>(coming soon!)</em></li>
+</ul>
+<h4 id="new-support-tables">New support tables</h4>
+<ul>
+<li>Bd Isolates</li>
+<li>Lab/point of contact</li>
+<li>Site history</li>
+<li>Taxonomy</li>
+</ul>
+</section>
+<section id="recent-updates-1" class="slide level2">
+<h2><em>Recent updates</em></h2>
+<h4 id="data-updates">Data updates</h4>
+<ul>
+<li>Survey data
+<ul>
+<li>Brazil (2022-2024)</li>
+<li>Panama (2024)</li>
+<li>Pennsylvania (2024)</li>
+<li>Sierra Nevada (2024) + Kira PEP (2023)</li>
 </ul></li>
-<li>Data in our Community</li>
-<li>Closing the loop</li>
-</ul>
-</section>
-<section id="databases-in-collaborative-research" class="slide level2">
-<h2>Databases in collaborative research</h2>
-
-<img data-src="db_updates_2025-04/basic_layout2.png" alt="Information flows cyclically from frogs to humans, to computers, apps, and databases, and then back to humans and (hopefully) frogs" width="600" class="r-stretch quarto-figure-center"><p class="caption">Information cycle, from field to database and (hopefully) back…</p></section>
-<section id="databases-in-collaborative-research-1" class="slide level2">
-<h2>Databases in collaborative research</h2>
-
-<img data-src="db_updates_2025-04/need_layout2.png" alt="Context is lost as we move towards the database, and context is needed as we move back toward the field." width="600" class="r-stretch quarto-figure-center"><p class="caption">But critical context is lost along the way!</p></section>
-<section id="databases-in-collaborative-research-2" class="slide level2">
-<h2>Databases in collaborative research</h2>
-
-<img data-src="db_updates_2025-04/context_layout2.png" alt="Context can be transmitted through shared experiences, conversations, meetings, calls, emails, and code sharing." width="600" class="r-stretch quarto-figure-center"><p class="caption">Transmission of context at each step is key to acting with informed, relevant insight.</p></section>
-<section id="why-a-database" class="slide level2">
-<h2>Why a Database?</h2>
-<h4 id="ribbitr-research-goals">RIBBiTR Research Goals</h4>
-<p><a href="https://drive.google.com/file/d/18WJC0Rdm-DIKS-c7TLA1N_M_NZVuigz0/view">RIBBiTR Project Proposal</a></p>
+<li>Bd qPCR Results
 <ul>
-<li><p><strong>Q1:</strong> How does the history of disturbance differ <strong>across systems</strong>?</p></li>
-<li><p><strong>Q2:</strong> How have changes <strong>at different levels</strong> of biological organization shaped overall system responses?</p></li>
-<li><p><strong>Q3:</strong> What are the mechanisms contributing to resilience and are they shared <strong>across systems</strong>?</p></li>
-<li><p><strong>Q4:</strong> How is resilience modulated by multiple <strong>interacting</strong> stressors?</p></li>
+<li>Sierra Nevada 2022-2024</li>
+</ul></li>
 </ul>
-<p><em>Spanning, time scales, spacial scales, biological levels.</em></p>
 </section>
-<section id="why-a-database-1" class="slide level2">
-<h2>Why a Database?</h2>
-<h4 id="ribbitr-community-goals">RIBBiTR Community Goals</h4>
-<p><a href="https://drive.google.com/file/d/18WJC0Rdm-DIKS-c7TLA1N_M_NZVuigz0/view">RIBBiTR Project Proposal</a> &amp; <a href="https://docs.google.com/document/d/1m1EEuUH3ioVVXtFkDaWFHITddPcmputEhZxfW_omtrI/edit?usp=sharing">RIBBiTR Pre-Collab Agreement</a></p>
+<section id="recent-updates-2" class="slide level2">
+<h2><em>Recent updates</em></h2>
+<h4 id="restructured-data-tables">Restructured data tables</h4>
 <ul>
-<li>Advance understanding of resilience by <strong>developing</strong>, <strong>applying</strong>, and <strong>sharing</strong> a novel framework for the study of resilience</li>
-<li>Grow our <strong>collaborative network</strong></li>
-<li>Train next generation of <strong>transdisciplinary</strong> scientists</li>
-<li>Follow and advance <strong>Open Science</strong> and <strong>Team Science</strong></li>
+<li>Microclimate</li>
+<li>Environmental</li>
+<li>eDNA</li>
 </ul>
 </section>
-<section id="why-a-database-2" class="slide level2">
-<h2>Why a Database?</h2>
-<h4 id="ribbitr-data-goals">RIBBiTR Data Goals</h4>
-<p><a href="https://drive.google.com/file/d/1U14VbNVlMlhSyVm5ACtVpJ2UjaMupB6_/view?usp=sharing">RIBBiTR Data Plan</a> &amp; <a href="https://docs.google.com/document/d/1m1EEuUH3ioVVXtFkDaWFHITddPcmputEhZxfW_omtrI/edit?usp=sharing">RIBBiTR Pre-Collab Agreement</a></p>
-<ul>
-<li><strong>Collect/generate</strong>, <strong>standardize</strong>, &amp; <strong>preserve</strong> project data, including: genetic, pathogen, host, environment, acoustic, model, and curricula data</li>
-<li><strong>Share</strong> RIBBiTR data openly within RIBBiTR team, publishing with <strong>consent</strong> and invitations to <strong>collaborate</strong></li>
-<li>Analyze &amp; interpret data collaboratively to <strong>communicate context</strong></li>
-</ul>
-</section>
-<section id="why-a-database-3" class="slide level2">
-<h2>Why a Database?</h2>
-<p>Want data sharing solution which are:</p>
-<ul>
-<li><strong>Empowering</strong> in exploring and testing our understanding of amphibian resilience to Bd</li>
-<li><strong>Robust</strong>, avoiding competing versions, decaying integrity, etc.</li>
-<li><strong>Accessible</strong> for people with different trainings and ways of knowing</li>
-</ul>
-<h4 id="databases-are-one-part-of-such-a-solution">Databases are one part of such a solution</h4>
-</section>
-<section id="what-is-a-database" class="slide level2">
-<h2>What is a Database?</h2>
+<section id="lets-dive-in" class="slide level2">
+<h2>Let’s dive in!</h2>
+<p><img data-src="db_updates_2025-04/data_frog.jpeg">{fig-alt=“frog saying”data! fig-align=“center” width=“10%”}</p>
 
-<img data-src="db_context_images/relational_database.png" alt="Data tables connected with lines" width="600" class="r-stretch quarto-figure-center"><p class="caption">A relational database</p></section>
-<section id="what-is-a-database-1" class="slide level2">
-<h2>What is a Database</h2>
-
-<img data-src="db_context_images/SQL_relational_database.png" alt="Data tables connected with lines, with a cloud that says SQL" width="600" class="r-stretch quarto-figure-center"><p class="caption">A relational database in SQL</p></section>
-<section id="what-is-a-database-2" class="slide level2">
-<h2>What is a Database?</h2>
-
-<img data-src="db_context_images/linear.png" alt="Database connected to apps, computer, people, and frogs / Bd" width="600" class="r-stretch quarto-figure-center"><p class="caption">A relational database in context</p></section>
-<section id="make-the-most-of-a-database" class="slide level2">
-<h2>Make the most of a Database</h2>
-
-<img data-src="db_context_images/circular.png" alt="Database connected to apps, computer, people, and frogs / Bd, forming a circle" width="600" class="r-stretch quarto-figure-center"><p class="caption">A relational database as part of a cycle</p></section>
-<section id="make-the-most-of-a-database-1" class="slide level2">
-<h2>Make the most of a Database</h2>
-
-<img data-src="db_context_images/circular_connected.png" alt="Database connected to apps, computer, people, and frogs / Bd, forming a circle, with connectors" width="600" class="r-stretch quarto-figure-center"><p class="caption">A relational database as part of a complex addaptive system</p></section>
-<section id="data-in-our-community" class="slide level2">
-<h2>Data in our community</h2>
-
-<img data-src="db_context_images/poll_platforms.png" class="quarto-figure quarto-figure-center r-stretch" alt="What data platforms do you use with RIBBiTR data?" width="600"></section>
-<section id="data-in-our-community-1" class="slide level2">
-<h2>Data in our community</h2>
-
-<img data-src="db_context_images/poll_data_products.png" class="quarto-figure quarto-figure-center r-stretch" alt="What data products interest you in your research?" width="600"></section>
-<section id="data-in-our-community-2" class="slide level2">
-<h2>Data in our community</h2>
-
-<img data-src="db_context_images/poll_emotions_wordcloud.png" alt="What emotions come up for you when you read the word 'data'" width="600" class="r-stretch quarto-figure-center"><p class="caption">What emotions come up for you when you read the word ‘data’?</p></section>
-<section id="closing-the-loop" class="slide level2">
-<h2>Closing the loop</h2>
-
-<img data-src="db_context_images/circular_connected.png" class="quarto-figure quarto-figure-center r-stretch" alt="Database connected to apps, computer, people, and frogs / Bd, forming a circle, with connectors" width="600"></section>
-<section id="lets-practice-together" class="slide level2">
-<h2>Let’s practice together!</h2>
-
-
-<img data-src="db_context_images/circular_connected.png" class="quarto-figure quarto-figure-center r-stretch" alt="Database connected to apps, computer, people, and frogs / Bd, forming a circle, with connectors" width="600"><div class="quarto-auto-generated-content">
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>

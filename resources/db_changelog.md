@@ -41,15 +41,14 @@ editor: source
 - survey_data transect location columns renamed for consistency and clarity:
   - capture.capture_transect_m <- capture.capture_trx_loc
   - ves.ves_transect_m <- ves.detection_location
-- air pressure in survey_data.environmental table changed from psi to mbar (SI)
-  - dropped column "pressure_psi"
-  - added column "air_pressure_mbar"
-- survey_data.environmental.soil_moisture_m3_m3 <- survey_data.environmental.soil_humidity_m3m3
 
 ## 2025-03-11
 
 ### Changed
 
+- air pressure in survey_data.environmental table changed from psi to mbar (SI)
+  - dropped column "pressure_psi"
+  - added column "air_pressure_mbar"
 - survey_data.environmental.soil_moisture_m3_m3 <- survey_data.environmental.soil_humidity_m3m3
 
 ## 2025-02-27
