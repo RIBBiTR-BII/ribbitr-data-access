@@ -16,15 +16,28 @@ format:
 *This tutorial is available as a [.qmd on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access/tree/main/tutorial_series).*
 
 # Motivation
+
 - Refresh ourselves on how to connect, browse, join, pull, and organize data
 - Demonstrate linking data from different datasets
 
-# R
-Let's run through another realistic data scenario:
+## Resources
+To navigate and query the data we need to test our hypothesis, will use the following resources:
 
-Suppose we want to explore a hypothesis that temperature is related to Bd load. Let's collect data from the RIBBiTR database to use in testing our hypothesis.
+- **RIBBiTR Database** - a digital collection of field and lab data from across the RIBBiTR project, hosted on the web and accessible (with a login) via a database client (e.g. DBeaver) or database backend (e.g. dbplyr for R, ibis for Python). This database includes:
+  - Data tables - information about field and lab observations
+  - Metadata tables - information about how these data are collected, stored, and represented
+- [**RIBBiTR Data Access Center**](https://github.com/RIBBiTR-BII/ribbitr-data-access/) - A Github pages website (this one!) for RIBBiTR data access resources, including:
+  - Tutorials
+  - Schema Diagrams
+    - [survey_data](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_survey_data.png)
+    - [microclimate_data](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png)
+  - [Database Changelog](https://ribbitr-bii.github.io/ribbitr-data-access/resources/db_changelog.html)
+- [**ribbitrrr (R package)**](https://github.com/RIBBiTR-BII/ribbitrrr) - An R package with a handful of scripts for facilitated interaction with the RIBBiTR database.
 
-## Setup
+## Scenario
+Suppose we want to explore a hypothesis that temperature is related to Bd load. Let's explore and collect data from the RIBBiTR database to use in testing our hypothesis.
+
+## R Setup
 
 ```{r, message=FALSE}
 # minimal packages for RIBBiTR DB data discovery
@@ -44,14 +57,20 @@ mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
   collect()
 ```
 
-## Data discovery and pulling
+## Data discovery
 
-Looking at the database schema, we determine that the observation tables of interest are: `bd_qpcr_results", "capture", and "environmental". Let's creat pointers to these tables plus the related supporting tables:
+The `ribbitrrr:hopToDB()` function used to establish our database connection now supports browsing in the RStudio connections panel, to preview data.
 
-### Point to support tables
+The metadata we downloaded also provides important definitions and context to guide us through these data. Check out `mdt` and `mdc` to get an idea.
 
+Taking a look at the database schema for [survey_data](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_survey_data.png), we might determine that our observation tables of interest are: "bd_qpcr_results", "capture", and "environmental". Let's create "pointers" to these tables, plus the related supporting tables:
+
+### Table pointers
+
+Supported with the R package `dbplyr`, you can think of these table pointers as addresses, an object which points R to where the actual data table is stored on the database, but which you can interact with similar to a data table (with some nuances...)
 ```{r}
 # pointers for all tables of interest
+# format var_name = tbl(dbcon, Id(schema_name, table_name))
 db_bdqpcr = tbl(dbcon, Id("survey_data", "bd_qpcr_results"))
 db_sample = tbl(dbcon, Id("survey_data", "sample"))
 db_capture = tbl(dbcon, Id("survey_data", "capture"))
@@ -62,17 +81,26 @@ db_site = tbl(dbcon, Id("survey_data", "site"))
 db_region = tbl(dbcon, Id("survey_data", "region"))
 db_country = tbl(dbcon, Id("survey_data", "country"))
 
-# we may also want these lookup tables
+# we will also use the following lookup tables
 db_lab = tbl(dbcon, Id("survey_data", "lab"))
 db_taxa = tbl(dbcon, Id("survey_data", "taxonomy"))
 
 ```
 
-### Join capture with support tables
-
+### Starting from Captures
+Let's begin with our central observation table "capture", with corresponding table pointer `db_capture`. We can always `collect()` or `pull()` the data from the database when we are ready, but there is a lot we can do with the table pointer prior to collecting data to explore them, whittling down our query, to avoid pulling unnecesarily large datasets every time we run a code block:
 ```{r}
-# we can also see which columns come from specified tables, for context
+# # to pull data, use...
+# data_capture = db_capture %>%
+#   collect()
+# #... but can we be smarter about how we do this?
+
+# see what columns come from specified tables using the pointer, just like a data table
 colnames(db_capture)
+
+# we can count the rows of this table
+db_capture %>%
+  count()
 
 # left join supporting tables
 db_capture_country = db_capture %>%
@@ -82,47 +110,53 @@ db_capture_country = db_capture %>%
   left_join(db_region, by = "region_id") %>%
   left_join(db_country, by = "country_id")
 
-# see what columns are available
+# see what columns are available in the joined table pointer
 colnames(db_capture_country)
 
 ```
 
-### Join bd_qpcr_results with capture
+### Combining Bd qPCR results with Captures
 
 ```{r}
-# link bd results and capture
+# Two ways we can build on our query abore:
+
+# 1) copy the full code ...
 db_bd_country = db_bdqpcr %>%
   left_join(db_sample, by = "sample_id") %>%
-  left_join(db_capture, by = "capture_id") %>%
+  left_join(db_capture, by = "capture_id") %>%  # left_join bd results and capture
   left_join(db_survey, by = "survey_id") %>%
   left_join(db_visit, by = "visit_id") %>%
   left_join(db_site, by = "site_id") %>%
   left_join(db_region, by = "region_id") %>%
   left_join(db_country, by = "country_id") %>%
-  filter(!is.na(capture_id))
+  filter(!is.na(capture_id)) # filter to drop any results with no capture
 
-# or, more simply
+# ... or 2) build on the `db_capture_country` pointer we defined above
 db_bd_country = db_bdqpcr %>%
-  inner_join(db_sample, by = "sample_id") %>%
-  inner_join(db_capture_country, by = "capture_id")
+  left_join(db_sample, by = "sample_id") %>%
+  inner_join(db_capture_country, by = "capture_id")  # inner join to include only rows which align between tables
 
+# see what columns our `db_bd_country` table pointer has
 colnames(db_bd_country)
 ```
 ### Join with environmental observations
 
-Aggregate and join at the visit level
+We want to include environmental observations like water and air temperature, found in the `environmental` table. To align these with the capture data, let's aggregate and join at the visit level:
 
 ```{r}
+# view environmental table columns
 colnames(db_env)
 
+# join with survey and visit tables, 
 db_env_visit = db_env %>%
   left_join(db_survey, by = "survey_id") %>%
   left_join(db_visit, by = "visit_id") %>%
-  group_by(visit_id) %>%
+  group_by(visit_id) %>%  # aggregate to a single value per visit
   summarise(env_n = n(),
             air_temp_c_mean = mean(air_temp_c, na.rm = TRUE),
             water_temp_c_mean = mean(water_temp_c, na.rm = TRUE))
 
+# left_join db_bd_country with db_env_visit, select desired columns
 db_bd_env = db_bd_country %>%
   left_join(db_env_visit, by = "visit_id") %>%
   select(sample_name_bd,
@@ -131,6 +165,7 @@ db_bd_env = db_bd_country %>%
          taxon_capture,
          svl_mm,
          body_mass_g,
+         sex,
          life_stage,
          substrate_temp_c,
          air_temp_c_mean,
@@ -147,73 +182,116 @@ db_bd_env = db_bd_country %>%
          qpcr_lab)
 ```
 
-### filtering
+### Exploring and filtering
 
 ```{r}
+# count the number of rows in our data table so far
 db_bd_env %>%
   count()
 
-db_filtered = db_bd_env %>%
+# group by region & country, and count each combination
+summary_bd_region = db_bd_env %>%
+  group_by(life_stage) %>%
+  count() %>%
+  collect()
+
+# filter to adult life stage (dropping all others)...
+db_adult = db_bd_env %>%
   filter(life_stage == "adult",
          !is.na(substrate_temp_c))
 
-db_filtered %>%
+# ... and count again
+db_adult %>%
   count()
 
-# count by region/country
-summary_bd_region = db_filtered %>%
+# group by region & country, and count each combination
+summary_bd_region = db_adult %>%
   group_by(country, region) %>%
   count() %>%
   collect() %>%
   arrange(country, region)
 
-# count by year
-summary_bd_year = db_filtered %>%
+# define new variable `year`, group by year, count by year
+summary_bd_year = db_adult %>%
   mutate(year = year(date)) %>%
   group_by(year) %>%
   count() %>%
   collect() %>%
   arrange(year)
 ```
-
-
-### collect (pull) these data
-
+## Data pulling
+### Collect these data!
+Now that we are happy with these data, or at least want to take a closer look at them, lets collect them from the database.
 ```{r}
-data_final = db_filtered %>%
+# take a look at our SQL "shopping list":
+db_adult_query = sql_render(db_adult)
+
+# take our shopping list to the store, return with the data we want
+data_adult = db_adult %>%
   collect()
 
+# peek in the bag to see what you got :)
+head(data_adult)
 ```
 
-### explore taxa
+### Additional exploration: Taxonomy
 
+We can continue using our table pointer "shopping list" to pull in other data. For example, suppose we want some information on the taxa in our dataset:
 ```{r}
-taxa_relevant = db_filtered %>%
+# count distinct taxa
+taxa_relevant = db_adult %>%
   group_by(taxon_capture) %>%
   summarise(taxa_count = n()) %>%
   left_join(db_taxa, by = c("taxon_capture" = "taxon_id")) %>%
   collect() %>%
   arrange(desc(taxa_count))
 
-taxa_final = taxa_relevant %>%
+# filter to taxa with more that 50 counts
+taxa_gt50 = taxa_relevant %>%
   filter(taxa_count >= 50)
 
-data_final = db_filtered %>%
-  filter(taxon_capture %in% taxa_final$taxon_capture) %>%
+# filter our data to those taxa in our list
+db_adult_gt50 = db_adult %>%
+  filter(taxon_capture %in% taxa_gt50$taxon_capture)
+
+# collect these newly filtered data
+data_adult_gt50 = db_adult_gt50 %>%
   collect()
+```
+
+### Get query metadata
+Want to refine the column metadata to include columns for your recently queried data only?
+```{r}
+# use the ribbitrrr::get_query_metadata() function
+metadata_adult_gt50 = ribbitrrr::get_query_metadata(dbcon, db_adult_gt50)
 
 ```
 
-### identify collaborators
+### Additional exploration: Collaborators!
 
 ```{r}
-labs = unique(c(data_final$visit_lab,
-              data_final$extraction_lab,
-              data_final$qpcr_lab))
+# create a list of unique labs associated with your data
+labs_associated = unique(c(data_adult_gt50$visit_lab,
+              data_adult_gt50$extraction_lab,
+              data_adult_gt50$qpcr_lab))
 
+# look at columns in the labs table for context
 colnames(db_lab)
 
-labs_relevant = db_lab %>%
-  filter(lab_id %in% labs) %>%
+# filter to 
+collaborators = db_lab %>%
+  filter(lab_id %in% labs_associated) %>%
   collect()
 ```
+
+###
+
+## Disconnect
+When we are done, we can disconnect from the database to reduce server load. You can also disconnect using the connections panel.
+```{r}
+dbDisconnect(dbcon)
+```
+
+<div style="text-align: center;">
+[\<- 6. Microclimate Workflow](06_microclimate_workflow.html) \|
+</div>

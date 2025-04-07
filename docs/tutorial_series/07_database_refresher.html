@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-04-04">
+<meta name="dcterms.date" content="2025-04-07">
 
 <title>7. Database Refresher – RIBBiTR Data Access</title>
 <style>
@@ -261,21 +261,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a></li>
-  <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r">R</a>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a>
   <ul class="collapse">
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#data-discovery-and-pulling" id="toc-data-discovery-and-pulling" class="nav-link" data-scroll-target="#data-discovery-and-pulling">Data discovery and pulling</a>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
+  <li><a href="#scenario" id="toc-scenario" class="nav-link" data-scroll-target="#scenario">Scenario</a></li>
+  <li><a href="#r-setup" id="toc-r-setup" class="nav-link" data-scroll-target="#r-setup">R Setup</a></li>
+  <li><a href="#data-discovery" id="toc-data-discovery" class="nav-link" data-scroll-target="#data-discovery">Data discovery</a>
   <ul class="collapse">
-  <li><a href="#point-to-support-tables" id="toc-point-to-support-tables" class="nav-link" data-scroll-target="#point-to-support-tables">Point to support tables</a></li>
-  <li><a href="#join-capture-with-support-tables" id="toc-join-capture-with-support-tables" class="nav-link" data-scroll-target="#join-capture-with-support-tables">Join capture with support tables</a></li>
-  <li><a href="#join-bd_qpcr_results-with-capture" id="toc-join-bd_qpcr_results-with-capture" class="nav-link" data-scroll-target="#join-bd_qpcr_results-with-capture">Join bd_qpcr_results with capture</a></li>
+  <li><a href="#table-pointers" id="toc-table-pointers" class="nav-link" data-scroll-target="#table-pointers">Table pointers</a></li>
+  <li><a href="#starting-from-captures" id="toc-starting-from-captures" class="nav-link" data-scroll-target="#starting-from-captures">Starting from Captures</a></li>
+  <li><a href="#combining-bd-qpcr-results-with-captures" id="toc-combining-bd-qpcr-results-with-captures" class="nav-link" data-scroll-target="#combining-bd-qpcr-results-with-captures">Combining Bd qPCR results with Captures</a></li>
   <li><a href="#join-with-environmental-observations" id="toc-join-with-environmental-observations" class="nav-link" data-scroll-target="#join-with-environmental-observations">Join with environmental observations</a></li>
-  <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">filtering</a></li>
-  <li><a href="#collect-pull-these-data" id="toc-collect-pull-these-data" class="nav-link" data-scroll-target="#collect-pull-these-data">collect (pull) these data</a></li>
-  <li><a href="#explore-taxa" id="toc-explore-taxa" class="nav-link" data-scroll-target="#explore-taxa">explore taxa</a></li>
-  <li><a href="#identify-collaborators" id="toc-identify-collaborators" class="nav-link" data-scroll-target="#identify-collaborators">identify collaborators</a></li>
+  <li><a href="#exploring-and-filtering" id="toc-exploring-and-filtering" class="nav-link" data-scroll-target="#exploring-and-filtering">Exploring and filtering</a></li>
   </ul></li>
+  <li><a href="#data-pulling" id="toc-data-pulling" class="nav-link" data-scroll-target="#data-pulling">Data pulling</a>
+  <ul class="collapse">
+  <li><a href="#collect-these-data" id="toc-collect-these-data" class="nav-link" data-scroll-target="#collect-these-data">Collect these data!</a></li>
+  <li><a href="#additional-exploration-taxonomy" id="toc-additional-exploration-taxonomy" class="nav-link" data-scroll-target="#additional-exploration-taxonomy">Additional exploration: Taxonomy</a></li>
+  <li><a href="#get-query-metadata" id="toc-get-query-metadata" class="nav-link" data-scroll-target="#get-query-metadata">Get query metadata</a></li>
+  <li><a href="#additional-exploration-collaborators" id="toc-additional-exploration-collaborators" class="nav-link" data-scroll-target="#additional-exploration-collaborators">Additional exploration: Collaborators!</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  </ul></li>
+  <li><a href="#disconnect" id="toc-disconnect" class="nav-link" data-scroll-target="#disconnect">Disconnect</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="07_database_refresher.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -302,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 4, 2025</p>
+      <p class="date">April 7, 2025</p>
     </div>
   </div>
   
@@ -321,13 +328,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Refresh ourselves on how to connect, browse, join, pull, and organize data</li>
 <li>Demonstrate linking data from different datasets</li>
 </ul>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<p>To navigate and query the data we need to test our hypothesis, will use the following resources:</p>
+<ul>
+<li><strong>RIBBiTR Database</strong> - a digital collection of field and lab data from across the RIBBiTR project, hosted on the web and accessible (with a login) via a database client (e.g.&nbsp;DBeaver) or database backend (e.g.&nbsp;dbplyr for R, ibis for Python). This database includes:
+<ul>
+<li>Data tables - information about field and lab observations</li>
+<li>Metadata tables - information about how these data are collected, stored, and represented</li>
+</ul></li>
+<li><a href="https://github.com/RIBBiTR-BII/ribbitr-data-access/"><strong>RIBBiTR Data Access Center</strong></a> - A Github pages website (this one!) for RIBBiTR data access resources, including:
+<ul>
+<li>Tutorials</li>
+<li>Schema Diagrams
+<ul>
+<li><a href="https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_survey_data.png">survey_data</a></li>
+<li><a href="https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_microclimate_data.png">microclimate_data</a></li>
+</ul></li>
+<li><a href="https://ribbitr-bii.github.io/ribbitr-data-access/resources/db_changelog.html">Database Changelog</a></li>
+</ul></li>
+<li><a href="https://github.com/RIBBiTR-BII/ribbitrrr"><strong>ribbitrrr (R package)</strong></a> - An R package with a handful of scripts for facilitated interaction with the RIBBiTR database.</li>
+</ul>
 </section>
-<section id="r" class="level1">
-<h1>R</h1>
-<p>Let’s run through another realistic data scenario:</p>
-<p>Suppose we want to explore a hypothesis that temperature is related to Bd load. Let’s collect data from the RIBBiTR database to use in testing our hypothesis.</p>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<section id="scenario" class="level2">
+<h2 class="anchored" data-anchor-id="scenario">Scenario</h2>
+<p>Suppose we want to explore a hypothesis that temperature is related to Bd load. Let’s explore and collect data from the RIBBiTR database to use in testing our hypothesis.</p>
+</section>
+<section id="r-setup" class="level2">
+<h2 class="anchored" data-anchor-id="r-setup">R Setup</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for RIBBiTR DB data discovery</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR<span class="sc">-</span>BII<span class="sc">/</span>ribbitrrr)</span>
@@ -348,33 +376,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="data-discovery-and-pulling" class="level2">
-<h2 class="anchored" data-anchor-id="data-discovery-and-pulling">Data discovery and pulling</h2>
-<p>Looking at the database schema, we determine that the observation tables of interest are: `bd_qpcr_results”, “capture”, and “environmental”. Let’s creat pointers to these tables plus the related supporting tables:</p>
-<section id="point-to-support-tables" class="level3">
-<h3 class="anchored" data-anchor-id="point-to-support-tables">Point to support tables</h3>
+<section id="data-discovery" class="level2">
+<h2 class="anchored" data-anchor-id="data-discovery">Data discovery</h2>
+<p>The <code>ribbitrrr:hopToDB()</code> function used to establish our database connection now supports browsing in the RStudio connections panel, to preview data.</p>
+<p>The metadata we downloaded also provides important definitions and context to guide us through these data. Check out <code>mdt</code> and <code>mdc</code> to get an idea.</p>
+<p>Taking a look at the database schema for <a href="https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_survey_data.png">survey_data</a>, we might determine that our observation tables of interest are: “bd_qpcr_results”, “capture”, and “environmental”. Let’s create “pointers” to these tables, plus the related supporting tables:</p>
+<section id="table-pointers" class="level3">
+<h3 class="anchored" data-anchor-id="table-pointers">Table pointers</h3>
+<p>Supported with the R package <code>dbplyr</code>, you can think of these table pointers as addresses, an object which points R to where the actual data table is stored on the database, but which you can interact with similar to a data table (with some nuances…)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pointers for all tables of interest</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>db_bdqpcr <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"bd_qpcr_results"</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>db_sample <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"sample"</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>db_capture <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"capture"</span>))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>db_env <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"environmental"</span>))</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>db_survey <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"survey"</span>))</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>db_visit <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"visit"</span>))</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>db_site <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"site"</span>))</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>db_region <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"region"</span>))</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>db_country <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"country"</span>))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># we may also want these lookup tables</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>db_lab <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"lab"</span>))</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>db_taxa <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"taxonomy"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># format var_name = tbl(dbcon, Id(schema_name, table_name))</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>db_bdqpcr <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"bd_qpcr_results"</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>db_sample <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"sample"</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>db_capture <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"capture"</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>db_env <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"environmental"</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>db_survey <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"survey"</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>db_visit <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"visit"</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>db_site <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"site"</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>db_region <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"region"</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>db_country <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"country"</span>))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># we will also use the following lookup tables</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>db_lab <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"lab"</span>))</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>db_taxa <span class="ot">=</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"taxonomy"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="join-capture-with-support-tables" class="level3">
-<h3 class="anchored" data-anchor-id="join-capture-with-support-tables">Join capture with support tables</h3>
+<section id="starting-from-captures" class="level3">
+<h3 class="anchored" data-anchor-id="starting-from-captures">Starting from Captures</h3>
+<p>Let’s begin with our central observation table “capture”, with corresponding table pointer <code>db_capture</code>. We can always <code>collect()</code> or <code>pull()</code> the data from the database when we are ready, but there is a lot we can do with the table pointer prior to collecting data to explore them, whittling down our query, to avoid pulling unnecesarily large datasets every time we run a code block:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can also see which columns come from specified tables, for context</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_capture)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # to pull data, use...</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># data_capture = db_capture %&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   collect()</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># #... but can we be smarter about how we do this?</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns come from specified tables using the pointer, just like a data table</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_capture)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "taxon_capture"         "time_of_capture"       "capture_transect_m"   
  [4] "microhabitat_type"     "body_temp_c"           "substrate_temp_c"     
@@ -391,16 +429,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [37] "microhabitat_wet"      "capture_utm_zone"      "capture_latitude"     
 [40] "capture_longitude"    </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># left join supporting tables</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>db_capture_country <span class="ot">=</span> db_capture <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_survey, <span class="at">by =</span> <span class="st">"survey_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_site, <span class="at">by =</span> <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_region, <span class="at">by =</span> <span class="st">"region_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_country, <span class="at">by =</span> <span class="st">"country_id"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns are available</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_capture_country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can count the rows of this table</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>db_capture <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 1]
+# Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
+        n
+  &lt;int64&gt;
+1   80280</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># left join supporting tables</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>db_capture_country <span class="ot">=</span> db_capture <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_survey, <span class="at">by =</span> <span class="st">"survey_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_site, <span class="at">by =</span> <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_region, <span class="at">by =</span> <span class="st">"region_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_country, <span class="at">by =</span> <span class="st">"country_id"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns are available in the joined table pointer</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_capture_country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "taxon_capture"         "time_of_capture"       "capture_transect_m"   
  [4] "microhabitat_type"     "body_temp_c"           "substrate_temp_c"     
@@ -433,26 +481,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="join-bd_qpcr_results-with-capture" class="level3">
-<h3 class="anchored" data-anchor-id="join-bd_qpcr_results-with-capture">Join bd_qpcr_results with capture</h3>
+<section id="combining-bd-qpcr-results-with-captures" class="level3">
+<h3 class="anchored" data-anchor-id="combining-bd-qpcr-results-with-captures">Combining Bd qPCR results with Captures</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># link bd results and capture</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>db_bd_country <span class="ot">=</span> db_bdqpcr <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_sample, <span class="at">by =</span> <span class="st">"sample_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_capture, <span class="at">by =</span> <span class="st">"capture_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_survey, <span class="at">by =</span> <span class="st">"survey_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_site, <span class="at">by =</span> <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_region, <span class="at">by =</span> <span class="st">"region_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_country, <span class="at">by =</span> <span class="st">"country_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(capture_id))</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># or, more simply</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>db_bd_country <span class="ot">=</span> db_bdqpcr <span class="sc">%&gt;%</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(db_sample, <span class="at">by =</span> <span class="st">"sample_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(db_capture_country, <span class="at">by =</span> <span class="st">"capture_id"</span>)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_bd_country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two ways we can build on our query abore:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) copy the full code ...</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>db_bd_country <span class="ot">=</span> db_bdqpcr <span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_sample, <span class="at">by =</span> <span class="st">"sample_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_capture, <span class="at">by =</span> <span class="st">"capture_id"</span>) <span class="sc">%&gt;%</span>  <span class="co"># left_join bd results and capture</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_survey, <span class="at">by =</span> <span class="st">"survey_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_site, <span class="at">by =</span> <span class="st">"site_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_region, <span class="at">by =</span> <span class="st">"region_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_country, <span class="at">by =</span> <span class="st">"country_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(capture_id)) <span class="co"># filter to drop any results with no capture</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ... or 2) build on the `db_capture_country` pointer we defined above</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>db_bd_country <span class="ot">=</span> db_bdqpcr <span class="sc">%&gt;%</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_sample, <span class="at">by =</span> <span class="st">"sample_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(db_capture_country, <span class="at">by =</span> <span class="st">"capture_id"</span>)  <span class="co"># inner join to include only rows which align between tables</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns our `db_bd_country` table pointer has</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_bd_country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] "result_id"                    "sample_id"                   
   [3] "sample_name_bd"               "detected"                    
@@ -517,9 +568,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="join-with-environmental-observations" class="level3">
 <h3 class="anchored" data-anchor-id="join-with-environmental-observations">Join with environmental observations</h3>
-<p>Aggregate and join at the visit level</p>
+<p>We want to include environmental observations like water and air temperature, found in the <code>environmental</code> table. To align these with the capture data, let’s aggregate and join at the visit level:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_env)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view environmental table columns</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_env)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "environmental_id"             "survey_id"                   
  [3] "wind_speed_m_s"               "air_temp_c"                  
@@ -548,43 +600,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [49] "environmental_elevation_m"    "environmental_latitude"      
 [51] "environmental_longitude"      "air_pressure_mbar"           </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>db_env_visit <span class="ot">=</span> db_env <span class="sc">%&gt;%</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_survey, <span class="at">by =</span> <span class="st">"survey_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(visit_id) <span class="sc">%&gt;%</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">env_n =</span> <span class="fu">n</span>(),</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">air_temp_c_mean =</span> <span class="fu">mean</span>(air_temp_c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">water_temp_c_mean =</span> <span class="fu">mean</span>(water_temp_c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>db_bd_env <span class="ot">=</span> db_bd_country <span class="sc">%&gt;%</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_env_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sample_name_bd,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>         detected,</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>         average_target_quant,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>         taxon_capture,</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>         svl_mm,</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>         body_mass_g,</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>         substrate_temp_c,</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>         air_temp_c_mean,</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>         water_temp_c_mean,</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>         env_n,</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>         microhabitat_type,</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>         time_of_capture,</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>         date,</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>         site,</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>         region,</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>         country,</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>         visit_lab,</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>         extraction_lab,</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>         qpcr_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># join with survey and visit tables, </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>db_env_visit <span class="ot">=</span> db_env <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_survey, <span class="at">by =</span> <span class="st">"survey_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(visit_id) <span class="sc">%&gt;%</span>  <span class="co"># aggregate to a single value per visit</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">env_n =</span> <span class="fu">n</span>(),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">air_temp_c_mean =</span> <span class="fu">mean</span>(air_temp_c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">water_temp_c_mean =</span> <span class="fu">mean</span>(water_temp_c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># left_join db_bd_country with db_env_visit, select desired columns</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>db_bd_env <span class="ot">=</span> db_bd_country <span class="sc">%&gt;%</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_env_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sample_name_bd,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>         detected,</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>         average_target_quant,</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>         taxon_capture,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>         svl_mm,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>         body_mass_g,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>         sex,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>         life_stage,</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>         substrate_temp_c,</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>         air_temp_c_mean,</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>         water_temp_c_mean,</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>         env_n,</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>         microhabitat_type,</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>         time_of_capture,</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>         date,</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>         site,</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>         region,</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>         country,</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>         visit_lab,</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>         extraction_lab,</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>         qpcr_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="filtering" class="level3">
-<h3 class="anchored" data-anchor-id="filtering">filtering</h3>
+<section id="exploring-and-filtering" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-and-filtering">Exploring and filtering</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>db_bd_env <span class="sc">%&gt;%</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count the number of rows in our data table so far</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>db_bd_env <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 1]
 # Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
@@ -592,12 +648,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   &lt;int64&gt;
 1   62750</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>db_filtered <span class="ot">=</span> db_bd_env <span class="sc">%&gt;%</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(life_stage <span class="sc">==</span> <span class="st">"adult"</span>,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(substrate_temp_c))</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>db_filtered <span class="sc">%&gt;%</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># group by region &amp; country, and count each combination</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>summary_bd_region <span class="ot">=</span> db_bd_env <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(life_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to adult life stage (dropping all others)...</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>db_adult <span class="ot">=</span> db_bd_env <span class="sc">%&gt;%</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(life_stage <span class="sc">==</span> <span class="st">"adult"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(substrate_temp_c))</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ... and count again</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>db_adult <span class="sc">%&gt;%</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 1]
 # Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
@@ -605,65 +669,123 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   &lt;int64&gt;
 1    8711</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count by region/country</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>summary_bd_region <span class="ot">=</span> db_filtered <span class="sc">%&gt;%</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country, region) <span class="sc">%&gt;%</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(country, region)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># count by year</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>summary_bd_year <span class="ot">=</span> db_filtered <span class="sc">%&gt;%</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">year</span>(date)) <span class="sc">%&gt;%</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="collect-pull-these-data" class="level3">
-<h3 class="anchored" data-anchor-id="collect-pull-these-data">collect (pull) these data</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data_final <span class="ot">=</span> db_filtered <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="explore-taxa" class="level3">
-<h3 class="anchored" data-anchor-id="explore-taxa">explore taxa</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>taxa_relevant <span class="ot">=</span> db_filtered <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(taxon_capture) <span class="sc">%&gt;%</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">taxa_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_taxa, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"taxon_capture"</span> <span class="ot">=</span> <span class="st">"taxon_id"</span>)) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># group by region &amp; country, and count each combination</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>summary_bd_region <span class="ot">=</span> db_adult <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country, region) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(taxa_count))</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(country, region)</span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>taxa_final <span class="ot">=</span> taxa_relevant <span class="sc">%&gt;%</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(taxa_count <span class="sc">&gt;=</span> <span class="dv">50</span>)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>data_final <span class="ot">=</span> db_filtered <span class="sc">%&gt;%</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(taxon_capture <span class="sc">%in%</span> taxa_final<span class="sc">$</span>taxon_capture) <span class="sc">%&gt;%</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># define new variable `year`, group by year, count by year</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>summary_bd_year <span class="ot">=</span> db_adult <span class="sc">%&gt;%</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">year</span>(date)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="identify-collaborators" class="level3">
-<h3 class="anchored" data-anchor-id="identify-collaborators">identify collaborators</h3>
+</section>
+<section id="data-pulling" class="level2">
+<h2 class="anchored" data-anchor-id="data-pulling">Data pulling</h2>
+<section id="collect-these-data" class="level3">
+<h3 class="anchored" data-anchor-id="collect-these-data">Collect these data!</h3>
+<p>Now that we are happy with these data, or at least want to take a closer look at them, lets collect them from the database.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>labs <span class="ot">=</span> <span class="fu">unique</span>(<span class="fu">c</span>(data_final<span class="sc">$</span>visit_lab,</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>              data_final<span class="sc">$</span>extraction_lab,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>              data_final<span class="sc">$</span>qpcr_lab))</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a look at our SQL "shopping list":</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>db_adult_query <span class="ot">=</span> <span class="fu">sql_render</span>(db_adult)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># take our shopping list to the store, return with the data we want</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>data_adult <span class="ot">=</span> db_adult <span class="sc">%&gt;%</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># peek in the bag to see what you got :)</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_adult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 21
+  sample_name_bd  detected average_target_quant taxon_capture svl_mm body_mass_g
+  &lt;chr&gt;           &lt;lgl&gt;                   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;       &lt;dbl&gt;
+1 181015-36-TN05… FALSE                       0 ambystoma_op…   49           4.8
+2 170412-17-VT02… FALSE                       0 rana_sylvati…   48          14  
+3 180204-08-LA02… FALSE                       0 acris_blanch…   21.4         0.7
+4 180709-33-TN04… FALSE                       0 hyla_chrysos…   40           5.1
+5 180403-40-PA12… FALSE                       0 rana_sylvati…   NA          12.8
+6 180514-07-TN04… FALSE                       0 lithobates_s…   54.7        10  
+# ℹ 15 more variables: sex &lt;chr&gt;, life_stage &lt;chr&gt;, substrate_temp_c &lt;dbl&gt;,
+#   air_temp_c_mean &lt;dbl&gt;, water_temp_c_mean &lt;dbl&gt;, env_n &lt;int64&gt;,
+#   microhabitat_type &lt;chr&gt;, time_of_capture &lt;time&gt;, date &lt;date&gt;, site &lt;chr&gt;,
+#   region &lt;chr&gt;, country &lt;chr&gt;, visit_lab &lt;chr&gt;, extraction_lab &lt;chr&gt;,
+#   qpcr_lab &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="additional-exploration-taxonomy" class="level3">
+<h3 class="anchored" data-anchor-id="additional-exploration-taxonomy">Additional exploration: Taxonomy</h3>
+<p>We can continue using our table pointer “shopping list” to pull in other data. For example, suppose we want some information on the taxa in our dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count distinct taxa</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>taxa_relevant <span class="ot">=</span> db_adult <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(taxon_capture) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">taxa_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_taxa, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"taxon_capture"</span> <span class="ot">=</span> <span class="st">"taxon_id"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(taxa_count))</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to taxa with more that 50 counts</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>taxa_gt50 <span class="ot">=</span> taxa_relevant <span class="sc">%&gt;%</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(taxa_count <span class="sc">&gt;=</span> <span class="dv">50</span>)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># filter our data to those taxa in our list</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>db_adult_gt50 <span class="ot">=</span> db_adult <span class="sc">%&gt;%</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(taxon_capture <span class="sc">%in%</span> taxa_gt50<span class="sc">$</span>taxon_capture)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co"># collect these newly filtered data</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>data_adult_gt50 <span class="ot">=</span> db_adult_gt50 <span class="sc">%&gt;%</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="get-query-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="get-query-metadata">Get query metadata</h3>
+<p>Want to refine the column metadata to include columns for your recently queried data only?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the ribbitrrr::get_query_metadata() function</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>metadata_adult_gt50 <span class="ot">=</span> ribbitrrr<span class="sc">::</span><span class="fu">get_query_metadata</span>(dbcon, db_adult_gt50)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="additional-exploration-collaborators" class="level3">
+<h3 class="anchored" data-anchor-id="additional-exploration-collaborators">Additional exploration: Collaborators!</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a list of unique labs associated with your data</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>labs_associated <span class="ot">=</span> <span class="fu">unique</span>(<span class="fu">c</span>(data_adult_gt50<span class="sc">$</span>visit_lab,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>              data_adult_gt50<span class="sc">$</span>extraction_lab,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>              data_adult_gt50<span class="sc">$</span>qpcr_lab))</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># look at columns in the labs table for context</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "lab_id"           "lab_name"         "lab_data_contact"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>labs_relevant <span class="ot">=</span> db_lab <span class="sc">%&gt;%</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lab_id <span class="sc">%in%</span> labs) <span class="sc">%&gt;%</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to </span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>collaborators <span class="ot">=</span> db_lab <span class="sc">%&gt;%</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lab_id <span class="sc">%in%</span> labs_associated) <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+</section>
+</section>
+<section id="disconnect" class="level2">
+<h2 class="anchored" data-anchor-id="disconnect">Disconnect</h2>
+<p>When we are done, we can disconnect from the database to reduce server load. You can also disconnect using the connections panel.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="text-align: center;">
+<p><a href="06_microclimate_workflow.html">&lt;- 6. Microclimate Workflow</a> |</p>
 </div>
 
 
-</section>
 </section>
 </section>
 

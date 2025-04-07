@@ -35,18 +35,6 @@ editor: source
 ![Conceptual diagram of how disparate datasets connect](db_updates_2025-04/database_datasets.drawio.png){fig-alt="Conceptual diagram linking field and lab datasets with support tables" fig-align="center" width="600"}
 
 ## *Recent updates*
-#### New datasets
-  - Mucosome results
-  - AMP GIA results *(coming soon!)*
-  - Microbiome 16S metadata & sequences *(coming soon!)*
-
-#### New support tables
-  - Bd Isolates
-  - Lab/point of contact
-  - Site history
-  - Taxonomy
-
-## *Recent updates*
 #### Data updates
   - Survey data
     - Brazil (2022-2024)
@@ -55,6 +43,16 @@ editor: source
     - Sierra Nevada (2024) + Kira PEP (2023)
   - Bd qPCR Results
     - Sierra Nevada 2022-2024
+    
+## *Recent updates*
+#### New datasets
+  - Mucosome results
+
+#### New support tables
+  - Bd Isolates
+  - Lab/point of contact
+  - Site history
+  - Taxonomy
 
 ## *Recent updates*
 #### Restructured data tables
@@ -62,5 +60,13 @@ editor: source
   - Environmental
   - eDNA
   
-## Let's dive in!
-![](db_updates_2025-04/data_frog.jpeg){fig-alt="frog saying "data! fig-align="center" width="10%"}
+## *Coming soon...*
+  - AMP Growth Inhibition Assay & MALDI results
+  - Bd qPCR restructuring
+  - Microbiome 16S metadata, sequences, and data products
+  - eDNA results (+ SERDP data integration)
+  
+  
+## Pause for questions
+#### Let's dive in!
+![](db_updates_2025-04/data_frog.jpeg){fig-alt="frog saying "data! fig-align="top" width="10%"}

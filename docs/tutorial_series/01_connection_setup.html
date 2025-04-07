@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-04-01">
+<meta name="dcterms.date" content="2025-04-07">
 
 <title>1. Connection Setup – RIBBiTR Data Access</title>
 <style>
@@ -186,6 +186,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">6. Microclimate Workflow</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/07_database_refresher.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7. Database Refresher</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -281,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 1, 2025</p>
+      <p class="date">April 7, 2025</p>
     </div>
   </div>
   
@@ -373,7 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ── R CMD build ─────────────────────────────────────────────────────────────────
-* checking for file ‘/tmp/RtmpR5TyV2/remotes1da2468c26ff5/RIBBiTR-BII-ribbitrrr-ec3d34b/DESCRIPTION’ ... OK
+* checking for file ‘/tmp/RtmpKs9m2T/remotes490b2bae932d/RIBBiTR-BII-ribbitrrr-ec3d34b/DESCRIPTION’ ... OK
 * preparing ‘ribbitrrr’:
 * checking DESCRIPTION meta-information ... OK
 * checking for LF line-endings in source and make files and shell scripts
@@ -407,14 +413,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mdt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
-  table_schema      table_name       column_count table_description
-  &lt;chr&gt;             &lt;chr&gt;                 &lt;int64&gt; &lt;chr&gt;            
-1 microclimate_data metadata_columns           25 &lt;NA&gt;             
-2 microclimate_data metadata_tables             4 &lt;NA&gt;             
-3 microclimate_data logger                      4 &lt;NA&gt;             
-4 microclimate_data sensor                      5 &lt;NA&gt;             
-5 microclimate_data ts_dew_point                3 &lt;NA&gt;             
-6 microclimate_data ts_illuminance              3 &lt;NA&gt;             </code></pre>
+  table_schema      table_name       column_count table_description             
+  &lt;chr&gt;             &lt;chr&gt;                 &lt;int64&gt; &lt;chr&gt;                         
+1 microclimate_data logger                      5 "data logger lookup table (on…
+2 microclimate_data metadata_columns           25 "Column-specific definitions …
+3 microclimate_data metadata_tables             4 "Table-specific definitions a…
+4 microclimate_data sensor                      5 "microclimate sensor lookup t…
+5 microclimate_data ts_dew_point                3 "Dew point time series data t…
+6 microclimate_data ts_illuminance              3 "Illuminance time series data…</code></pre>
 </div>
 </div>
 </section>
@@ -486,12 +492,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mdt <span class="op">=</span> dbcon.table(database <span class="op">=</span> <span class="st">"public"</span>, name <span class="op">=</span> <span class="st">"all_tables"</span>).to_pandas()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>mdt.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        table_schema        table_name  column_count table_description
-0  microclimate_data  metadata_columns            25              None
-1  microclimate_data   metadata_tables             4              None
-2  microclimate_data            logger             4              None
-3  microclimate_data            sensor             5              None
-4  microclimate_data      ts_dew_point             3              None</code></pre>
+<pre><code>        table_schema  ...                                  table_description
+0  microclimate_data  ...  data logger lookup table (one logger contains ...
+1  microclimate_data  ...  Column-specific definitions and metadata ("dat...
+2  microclimate_data  ...  Table-specific definitions and metadata ("data...
+3  microclimate_data  ...                   microclimate sensor lookup table
+4  microclimate_data  ...                   Dew point time series data table
+
+[5 rows x 4 columns]</code></pre>
 </div>
 </div>
 </section>
