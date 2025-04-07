@@ -88,12 +88,12 @@ db_taxa = tbl(dbcon, Id("survey_data", "taxonomy"))
 ```
 
 ### Starting from Captures
-Let's begin with our central observation table "capture", with corresponding table pointer `db_capture`. We can always `collect()` or `pull()` the data from the database when we are ready, but there is a lot we can do with the table pointer prior to collecting data to explore them, whittling down our query, to avoid pulling unnecesarily large datasets every time we run a code block:
+Let's begin with our central observation table "capture", with corresponding table pointer `db_capture`. We can always `collect()` or `pull()` the data from the database when we are ready, but there is a lot we can do with the table pointer prior to collecting data to explore them, whittling down our query, to avoid pulling unnecessarily large datasets every time we run a code block:
 ```{r}
-# # to pull data, use...
-# data_capture = db_capture %>%
-#   collect()
-# #... but can we be smarter about how we do this?
+# to collect data, use...
+data_capture = db_capture %>%
+  collect()
+#... but this is a big query. Can we be smarter about how we do this?
 
 # see what columns come from specified tables using the pointer, just like a data table
 colnames(db_capture)
@@ -118,9 +118,9 @@ colnames(db_capture_country)
 ### Combining Bd qPCR results with Captures
 
 ```{r}
-# Two ways we can build on our query abore:
+# Two ways we can build on our query above:
 
-# 1) copy the full code ...
+# 1) copy the full code, and add to it...
 db_bd_country = db_bdqpcr %>%
   left_join(db_sample, by = "sample_id") %>%
   left_join(db_capture, by = "capture_id") %>%  # left_join bd results and capture
@@ -204,6 +204,7 @@ db_adult = db_bd_env %>%
 db_adult %>%
   count()
 
+# other ways we might want to group and summarize this data to explore it:
 # group by region & country, and count each combination
 summary_bd_region = db_adult %>%
   group_by(country, region) %>%
