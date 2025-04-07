@@ -33,6 +33,8 @@ website:
         contents: 
           - text: "Database in Context"
             href: ./presentations/db_context_presentation.html
+          - text: "Database Refresher 2025"
+            href: ./presentations/db_updates_2025-04.html
             
 
 format:
