@@ -2033,7 +2033,7 @@
     "href": "presentations/db_updates_2025-04.html#presentation-overview",
     "title": "A quick RIBBiTR Database update",
     "section": "Presentation Overview",
-    "text": "Presentation Overview\n\nData in Collaborative Research\nRIBBiTR Database overview\nRecent database updates"
+    "text": "Presentation Overview\n\nCollaborative data management\nRIBBiTR database overview\nRecent database updates"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#databases-in-collaborative-research",
@@ -2385,5 +2385,61 @@
       "RIBBiTR Database Tutorial Series",
       "7. Database Refresher"
     ]
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#relevance",
+    "href": "presentations/db_updates_2025-04.html#relevance",
+    "title": "A quick RIBBiTR Database update",
+    "section": "Relevance",
+    "text": "Relevance\n\n\n\n\n\n\n\n\nData collection\n\nIs our data present in the database?\nIs our data accessible to others in the database?\nHow to give more context to enhance data use?\n\n\n\nData analysis\n\nWhat data are present in the database?\nHow to access these data for analysis?\nHow to find more context for enhanced data use?"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management",
+    "href": "presentations/db_updates_2025-04.html#collaborative-data-management",
+    "title": "A quick RIBBiTR Database update",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-1",
+    "href": "presentations/db_updates_2025-04.html#collaborative-data-management-1",
+    "title": "A quick RIBBiTR Database update",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nInsight generated from the field through the research process"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-2",
+    "href": "presentations/db_updates_2025-04.html#collaborative-data-management-2",
+    "title": "A quick RIBBiTR Database update",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nRelevant insights support informed action (e.g. conservation)"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-3",
+    "href": "presentations/db_updates_2025-04.html#collaborative-data-management-3",
+    "title": "A quick RIBBiTR Database update",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nBut critical context is lost along the way!"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-4",
+    "href": "presentations/db_updates_2025-04.html#collaborative-data-management-4",
+    "title": "A quick RIBBiTR Database update",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-5",
+    "href": "presentations/db_updates_2025-04.html#collaborative-data-management-5",
+    "title": "A quick RIBBiTR Database update",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nFeedbacks at each step greatly increase responsiveness within the team"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-6",
+    "href": "presentations/db_updates_2025-04.html#collaborative-data-management-6",
+    "title": "A quick RIBBiTR Database update",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nContext and feedback enhance data-driven insight generation and informed action"
   }
 ]

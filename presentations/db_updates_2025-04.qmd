@@ -6,67 +6,104 @@ editor: source
 
 ## Presentation Overview
 
-- Data in Collaborative Research
-- RIBBiTR Database overview
-- Recent database updates
+-   Collaborative data management
+-   RIBBiTR database overview
+-   Recent database updates
 
-## Data in Collaborative Research
+## Relevance {background-image="db_updates_2025-04/data_users_1.png" background-size="600" background-position="top"}
+
+<p style="height: 160px;">
+
+</p>
+
+::: {layout-ncol="2"}
+### Data collection
+
+-   Is our data present in the database?
+-   Is our data accessible to others in the database?
+-   How to give more context to enhance data use?
+
+### Data analysis
+
+-   What data are present in the database?
+-   How to access these data for analysis?
+-   How to find more context for enhanced data use?
+:::
+
+## Collaborative Data Management
+
 ![Information cycles from field to database and (hopefully) back...](db_updates_2025-04/layout2_1_cycle.png){fig-alt="Information flows cyclically from frogs to humans, to computers, apps, and databases, and then back to humans and (hopefully) back to frogs" fig-align="center" width="600"}
 
-## Data in Collaborative Research
+## Collaborative Data Management
+
 ![Insight generated from the field through the research process](db_updates_2025-04/layout2_2_insight.png){fig-alt="Insight generation is the primary component of the displayed cycle." fig-align="center" width="600"}
 
-## Data in Collaborative Research
+## Collaborative Data Management
+
 ![Relevant insights support informed action (e.g. conservation)](db_updates_2025-04/layout2_3_action.png){fig-alt="Informed action brings insight back to the field (and frogs), closing the loop." fig-align="center" width="600"}
 
-## Data in Collaborative Research
+## Collaborative Data Management
+
 ![But critical context is lost along the way!](db_updates_2025-04/layout2_4_needs.png){fig-alt="Context is lost as we move towards data, and context is needed as we move back toward the field." fig-align="center" width="600"}
 
-## Data in Collaborative Research
+## Collaborative Data Management
+
 ![Transmission of context at each step is key to supporting locally-relevant, informed action](db_updates_2025-04/layout2_5_context.png){fig-alt="Context can be transmitted through shared experiences, meetings, calls, emails, code and document sharing, and data" fig-align="center" width="600"}
 
-## Data in Collaborative Research
+## Collaborative Data Management
+
 ![Feedbacks at each step greatly increase responsiveness within the team](db_updates_2025-04/layout2_6_feedback.png){fig-alt="Feedback can also be transmitted through shared experiences, conversations, meetings, calls, emails, and code sharing." fig-align="center" width="600"}
 
-## Data in Collaborative Research
+## Collaborative Data Management
+
 ![Context and feedback enhance data-driven insight generation and informed action](db_updates_2025-04/layout2_7_model.png){fig-alt="Complete model includes both context sharing and feedbacks" fig-align="center" width="600"}
 
 ## RIBBiTR daabase overview
+
 ![Conceptual diagram of how disparate datasets connect](db_updates_2025-04/database_datasets.drawio.png){fig-alt="Conceptual diagram linking field and lab datasets with support tables" fig-align="center" width="600"}
 
 ## *Recent updates*
+
 #### Data updates
-  - Survey data
-    - Brazil (2022-2024)
-    - Panama (2024)
-    - Pennsylvania (2024)
-    - Sierra Nevada (2024) + Kira PEP (2023)
-  - Bd qPCR Results
-    - Sierra Nevada 2022-2024
-    
+
+-   Survey data
+    -   Brazil (2022-2024)
+    -   Panama (2024)
+    -   Pennsylvania (2024)
+    -   Sierra Nevada (2024) + Kira PEP (2023)
+-   Bd qPCR Results
+    -   Sierra Nevada 2022-2024
+
 ## *Recent updates*
+
 #### New datasets
-  - Mucosome results
+
+-   Mucosome results
 
 #### New support tables
-  - Bd Isolates
-  - Lab/point of contact
-  - Site history
-  - Taxonomy
+
+-   Bd Isolates
+-   Lab/point of contact
+-   Site history
+-   Taxonomy
 
 ## *Recent updates*
+
 #### Restructured data tables
-  - Microclimate
-  - Environmental
-  - eDNA
-  
+
+-   Microclimate
+-   Environmental
+-   eDNA
+
 ## *Coming soon...*
-  - AMP Growth Inhibition Assay & MALDI results
-  - Bd qPCR restructuring
-  - Microbiome 16S metadata, sequences, and data products
-  - eDNA results (+ SERDP data integration)
-  
-  
+
+-   AMP Growth Inhibition Assay & MALDI results
+-   Bd qPCR restructuring
+-   Microbiome 16S metadata, sequences, and data products
+-   eDNA results (+ SERDP data integration)
+
 ## Pause for questions
+
 #### Let's dive in!
+
 ![](db_updates_2025-04/data_frog.jpeg){fig-alt="frog saying "data! fig-align="top" width="10%"}
