@@ -18,7 +18,7 @@ format:
 # Motivation
 
 - Refresh ourselves on how to connect, browse, join, pull, and organize data using RStudio
-- Demonstrate linking data from different datasets
+- Demonstrate aligning data from different datasets
 
 ## Resources
 To navigate and query the data we need to test our hypothesis, will use the following resources:

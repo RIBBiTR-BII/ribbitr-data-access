@@ -653,7 +653,7 @@
     "href": "tutorial_series/02_data_discovery.html#load-database-metadata-1",
     "title": "2. Data Discovery",
     "section": "Load database metadata",
-    "text": "Load database metadata\n\nData structure: Schemas, tables, columns and rows\nThe RIBBiTR database is organized into “schemas” (think of these as folders), which can contain any number of tables. Each table consists of columns (“variables”) and rows (“entries”).\n\n\nMetadata: Data about data\nWe keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let’s learn what tables are present in the data by loading the table metadata.\n\n\nTable Metadata\n\n# load table \"all_tables\" from schema \"public\"\nmdt = dbcon.table(database = \"public\", name = \"all_tables\").to_pandas()\n\n\nSome basic database commands\nBefore we take a look at the metadata you just pulled, let’s understand the command we just ran.\n\nibis.table() - This function is used to create a “lazy” table from a data source. To specify the source, we modify the database connection dbcon. We specify the schema for the table as public (note ibis calls this “database”), as well as the table name all_tables. A “lazy” table means that the data only pulled when explicitly asked for. See execute() below.\nibis.to_pandas() - the table() function generates a “lazy” table, which is basically a shopping list for the data you want to pull. In order to actually pull the data from the server to your local machine (ie. “do the shopping”) we need to collect the lazy table by chaining the to_pandas() function.\n\nAlso try: Run the code above without to_pandas(), to see what an uncollected lazy table looks like.\nNow let’s take a look at the table metadata to explore what schemas and tables exist.\n\nprint(mdt)\n\n         table_schema  ...                                  table_description\n0   microclimate_data  ...  data logger lookup table (one logger contains ...\n1   microclimate_data  ...  Column-specific definitions and metadata (\"dat...\n2   microclimate_data  ...  Table-specific definitions and metadata (\"data...\n3   microclimate_data  ...                   microclimate sensor lookup table\n4   microclimate_data  ...                   Dew point time series data table\n5   microclimate_data  ...                 Illuminance time series data table\n6   microclimate_data  ...           Relative humidity time series data table\n7   microclimate_data  ...                 Temperature time series data table\n8         survey_data  ...                                               None\n9         survey_data  ...                                               None\n10        survey_data  ...  Table-specific definitions and metadata (\"data...\n11        survey_data  ...         Results from mucosome-Bd-inhibition assays\n12        survey_data  ...                                Region lookup table\n13        survey_data  ...                                               None\n14        survey_data  ...  sample lookup table for tracking sample result...\n15        survey_data  ...                            Field site lookup table\n16        survey_data  ...  Tracking of human interventions, manipulations...\n17        survey_data  ...                          Field survey lookup table\n18        survey_data  ...                              Taxonomy lookup table\n19        survey_data  ...                   Field survey visual observations\n20        survey_data  ...                                               None\n21        survey_data  ...                                               None\n22        survey_data  ...                           Field visit lookup table\n23        survey_data  ...                                               None\n24        survey_data  ...                                               None\n25        survey_data  ...                                               None\n26        survey_data  ...                    Field survey aural observations\n27        survey_data  ...          Isolate Bd strains for use wihtin RIBBiTR\n28        survey_data  ...                        Results from Bd qPCR assays\n29        survey_data  ...                  Field survey capture observations\n30        survey_data  ...  Capture-mark-recapture codes for tracking of m...\n31        survey_data  ...                               Country lookup table\n32        survey_data  ...               eDNA sample collection and filtering\n33        survey_data  ...            Field survey environmental observations\n34        survey_data  ...  laboratory lookup table -- use to identify who...\n35        survey_data  ...  Column-specific definitions and metadata (\"dat...\n\n[36 rows x 4 columns]\n\n\n\n\n\nColumn metadata\nSuppose our interest is in the survey_data schema. Let’s take a closer look at the tables here by collecting metadata on table columns in this schema.\n\n# load table \"all_columns\" from schema \"public\"\nmdc = (\n  dbcon.table(database=\"public\", name=\"all_columns\")\n  .filter(_.table_schema == 'survey_data')\n  .to_pandas()\n)\n\nNotice we used the ibis.filter() command on the lazy table before calling to_pandas(). This effectively revised the shopping list before going to the store, rather than bringing home the entire store and then filtering for what you want in your kitchen. Much less (computationally) expensive!\nLet’s check out the column metadata, and see what you can learn.\n\n# view dataframe\nprint(mdc)\n\n    table_schema        table_name  ... fkey_ref_table fkey_ref_column\n0    survey_data   bd_qpcr_results  ...           None            None\n1    survey_data           capture  ...           None            None\n2    survey_data  metadata_columns  ...           None            None\n3    survey_data  metadata_columns  ...           None            None\n4    survey_data   bd_qpcr_results  ...           None            None\n..           ...               ...  ...            ...             ...\n441  survey_data        bd_isolate  ...           None            None\n442  survey_data        bd_isolate  ...           None            None\n443  survey_data        bd_isolate  ...            lab          lab_id\n444  survey_data  mucosome_results  ...            lab          lab_id\n445  survey_data  mucosome_results  ...     bd_isolate   bd_isolate_id\n\n[446 rows x 25 columns]\n\n# list the columns in our column-metadata table\nmdc.columns\n\nIndex(['table_schema', 'table_name', 'column_name', 'definition', 'units',\n       'accuracy', 'scale', 'format', 'reviewed', 'natural_key', 'primary_key',\n       'foreign_key', 'unique', 'is_nullable', 'data_type',\n       'character_maximum_length', 'numeric_precision', 'datetime_precision',\n       'column_default', 'ordinal_position', 'pg_description', 'key_type',\n       'fkey_ref_schema', 'fkey_ref_table', 'fkey_ref_column'],\n      dtype='object')\n\n\nCurious about what a certain metadata column means? There’s metadata for that (metametadata?)!\n\n# view metadata on metadata columns\nmetameta = mdc[mdc['table_name'] == 'metadata_columns']\nprint(metameta)\n\n    table_schema        table_name  ... fkey_ref_table fkey_ref_column\n2    survey_data  metadata_columns  ...           None            None\n3    survey_data  metadata_columns  ...           None            None\n9    survey_data  metadata_columns  ...           None            None\n34   survey_data  metadata_columns  ...           None            None\n57   survey_data  metadata_columns  ...           None            None\n91   survey_data  metadata_columns  ...           None            None\n246  survey_data  metadata_columns  ...           None            None\n247  survey_data  metadata_columns  ...           None            None\n248  survey_data  metadata_columns  ...           None            None\n304  survey_data  metadata_columns  ...           None            None\n305  survey_data  metadata_columns  ...           None            None\n306  survey_data  metadata_columns  ...           None            None\n307  survey_data  metadata_columns  ...           None            None\n308  survey_data  metadata_columns  ...           None            None\n309  survey_data  metadata_columns  ...           None            None\n310  survey_data  metadata_columns  ...           None            None\n311  survey_data  metadata_columns  ...           None            None\n312  survey_data  metadata_columns  ...           None            None\n313  survey_data  metadata_columns  ...           None            None\n314  survey_data  metadata_columns  ...           None            None\n342  survey_data  metadata_columns  ...           None            None\n348  survey_data  metadata_columns  ...           None            None\n373  survey_data  metadata_columns  ...           None            None\n388  survey_data  metadata_columns  ...           None            None\n389  survey_data  metadata_columns  ...           None            None\n\n[25 rows x 25 columns]\n\n\nA few columns to point out:\n\ndefinition\nunits\ndata_type\nnatural key\n\n(more on keys later)",
+    "text": "Load database metadata\n\nData structure: Schemas, tables, columns and rows\nThe RIBBiTR database is organized into “schemas” (think of these as folders), which can contain any number of tables. Each table consists of columns (“variables”) and rows (“entries”).\n\n\nMetadata: Data about data\nWe keep track of information regarding what tables, and columns exist in the database, and what information they are designed to describe, using table and column metadata. To begin our process of data discovery, let’s learn what tables are present in the data by loading the table metadata.\n\n\nTable Metadata\n\n# load table \"all_tables\" from schema \"public\"\nmdt = dbcon.table(database = \"public\", name = \"all_tables\").to_pandas()\n\n\nSome basic database commands\nBefore we take a look at the metadata you just pulled, let’s understand the command we just ran.\n\nibis.table() - This function is used to create a “lazy” table from a data source. To specify the source, we modify the database connection dbcon. We specify the schema for the table as public (note ibis calls this “database”), as well as the table name all_tables. A “lazy” table means that the data only pulled when explicitly asked for. See execute() below.\nibis.to_pandas() - the table() function generates a “lazy” table, which is basically a shopping list for the data you want to pull. In order to actually pull the data from the server to your local machine (ie. “do the shopping”) we need to collect the lazy table by chaining the to_pandas() function.\n\nAlso try: Run the code above without to_pandas(), to see what an uncollected lazy table looks like.\nNow let’s take a look at the table metadata to explore what schemas and tables exist.\n\nprint(mdt)\n\n         table_schema  ...                                  table_description\n0   microclimate_data  ...  data logger lookup table (one logger contains ...\n1   microclimate_data  ...  Column-specific definitions and metadata (\"dat...\n2   microclimate_data  ...  Table-specific definitions and metadata (\"data...\n3   microclimate_data  ...                   microclimate sensor lookup table\n4   microclimate_data  ...                   Dew point time series data table\n5   microclimate_data  ...                 Illuminance time series data table\n6   microclimate_data  ...           Relative humidity time series data table\n7   microclimate_data  ...                 Temperature time series data table\n8         survey_data  ...                                               None\n9         survey_data  ...                                               None\n10        survey_data  ...  Table-specific definitions and metadata (\"data...\n11        survey_data  ...         Results from mucosome-Bd-inhibition assays\n12        survey_data  ...                                Region lookup table\n13        survey_data  ...                                               None\n14        survey_data  ...  sample lookup table for tracking sample result...\n15        survey_data  ...                            Field site lookup table\n16        survey_data  ...                          Field survey lookup table\n17        survey_data  ...                   Field survey visual observations\n18        survey_data  ...                                               None\n19        survey_data  ...                                               None\n20        survey_data  ...                           Field visit lookup table\n21        survey_data  ...                                               None\n22        survey_data  ...                  Field survey capture observations\n23        survey_data  ...                                               None\n24        survey_data  ...                                               None\n25        survey_data  ...                              Taxonomy lookup table\n26        survey_data  ...                        Results from Bd qPCR assays\n27        survey_data  ...  Tracking of human interventions, manipulations...\n28        survey_data  ...                    Field survey aural observations\n29        survey_data  ...          Isolate Bd strains for use wihtin RIBBiTR\n30        survey_data  ...  Capture-mark-recapture codes for tracking of m...\n31        survey_data  ...                               Country lookup table\n32        survey_data  ...               eDNA sample collection and filtering\n33        survey_data  ...            Field survey environmental observations\n34        survey_data  ...  laboratory lookup table -- use to identify who...\n35        survey_data  ...  Column-specific definitions and metadata (\"dat...\n\n[36 rows x 4 columns]\n\n\n\n\n\nColumn metadata\nSuppose our interest is in the survey_data schema. Let’s take a closer look at the tables here by collecting metadata on table columns in this schema.\n\n# load table \"all_columns\" from schema \"public\"\nmdc = (\n  dbcon.table(database=\"public\", name=\"all_columns\")\n  .filter(_.table_schema == 'survey_data')\n  .to_pandas()\n)\n\nNotice we used the ibis.filter() command on the lazy table before calling to_pandas(). This effectively revised the shopping list before going to the store, rather than bringing home the entire store and then filtering for what you want in your kitchen. Much less (computationally) expensive!\nLet’s check out the column metadata, and see what you can learn.\n\n# view dataframe\nprint(mdc)\n\n    table_schema        table_name  ... fkey_ref_table fkey_ref_column\n0    survey_data           capture  ...           None            None\n1    survey_data  metadata_columns  ...           None            None\n2    survey_data  metadata_columns  ...           None            None\n3    survey_data   bd_qpcr_results  ...           None            None\n4    survey_data  metadata_columns  ...           None            None\n..           ...               ...  ...            ...             ...\n443  survey_data   bd_qpcr_results  ...           None            None\n444  survey_data   bd_qpcr_results  ...           None            None\n445  survey_data   bd_qpcr_results  ...           None            None\n446  survey_data   bd_qpcr_results  ...           None            None\n447  survey_data   bd_qpcr_results  ...           None            None\n\n[448 rows x 25 columns]\n\n# list the columns in our column-metadata table\nmdc.columns\n\nIndex(['table_schema', 'table_name', 'column_name', 'definition', 'units',\n       'accuracy', 'scale', 'format', 'reviewed', 'natural_key', 'primary_key',\n       'foreign_key', 'unique', 'is_nullable', 'data_type',\n       'character_maximum_length', 'numeric_precision', 'datetime_precision',\n       'column_default', 'ordinal_position', 'pg_description', 'key_type',\n       'fkey_ref_schema', 'fkey_ref_table', 'fkey_ref_column'],\n      dtype='object')\n\n\nCurious about what a certain metadata column means? There’s metadata for that (metametadata?)!\n\n# view metadata on metadata columns\nmetameta = mdc[mdc['table_name'] == 'metadata_columns']\nprint(metameta)\n\n    table_schema        table_name  ... fkey_ref_table fkey_ref_column\n1    survey_data  metadata_columns  ...           None            None\n2    survey_data  metadata_columns  ...           None            None\n4    survey_data  metadata_columns  ...           None            None\n20   survey_data  metadata_columns  ...           None            None\n82   survey_data  metadata_columns  ...           None            None\n98   survey_data  metadata_columns  ...           None            None\n236  survey_data  metadata_columns  ...           None            None\n237  survey_data  metadata_columns  ...           None            None\n238  survey_data  metadata_columns  ...           None            None\n293  survey_data  metadata_columns  ...           None            None\n294  survey_data  metadata_columns  ...           None            None\n295  survey_data  metadata_columns  ...           None            None\n296  survey_data  metadata_columns  ...           None            None\n297  survey_data  metadata_columns  ...           None            None\n298  survey_data  metadata_columns  ...           None            None\n299  survey_data  metadata_columns  ...           None            None\n300  survey_data  metadata_columns  ...           None            None\n301  survey_data  metadata_columns  ...           None            None\n325  survey_data  metadata_columns  ...           None            None\n334  survey_data  metadata_columns  ...           None            None\n347  survey_data  metadata_columns  ...           None            None\n348  survey_data  metadata_columns  ...           None            None\n387  survey_data  metadata_columns  ...           None            None\n388  survey_data  metadata_columns  ...           None            None\n427  survey_data  metadata_columns  ...           None            None\n\n[25 rows x 25 columns]\n\n\nA few columns to point out:\n\ndefinition\nunits\ndata_type\nnatural key\n\n(more on keys later)",
     "crumbs": [
       "RIBBiTR Database Tutorial Series",
       "2. Data Discovery"
@@ -2031,9 +2031,9 @@
   {
     "objectID": "presentations/db_updates_2025-04.html#presentation-overview",
     "href": "presentations/db_updates_2025-04.html#presentation-overview",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Management Updates",
     "section": "Presentation Overview",
-    "text": "Presentation Overview\n\nCollaborative data management\nRIBBiTR database overview\nRecent database updates"
+    "text": "Presentation Overview\n\nCollaborative data management model\nRIBBiTR database overview\n2025 database updates"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#databases-in-collaborative-research",
@@ -2206,7 +2206,7 @@
   {
     "objectID": "presentations/db_updates_2025-04.html#ribbitr-daabase-overview",
     "href": "presentations/db_updates_2025-04.html#ribbitr-daabase-overview",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "RIBBiTR daabase overview",
     "text": "RIBBiTR daabase overview\n\nConceptual diagram of how disparate datasets connect"
   },
@@ -2241,21 +2241,21 @@
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-updates",
     "href": "presentations/db_updates_2025-04.html#recent-updates",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Recent updates",
     "text": "Recent updates\nData updates\n\nSurvey data\n\nBrazil (2022-2024)\nPanama (2024)\nPennsylvania (2024)\nSierra Nevada (2024) + Kira PEP (2023)\n\nBd qPCR Results\n\nSierra Nevada 2022-2024"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-updates-1",
     "href": "presentations/db_updates_2025-04.html#recent-updates-1",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Recent updates",
     "text": "Recent updates\nNew datasets\n\nMucosome results\n\nNew support tables\n\nBd Isolates\nLab/point of contact\nSite history\nTaxonomy"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-updates-2",
     "href": "presentations/db_updates_2025-04.html#recent-updates-2",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Recent updates",
     "text": "Recent updates\nRestructured data tables\n\nMicroclimate\nEnvironmental\nBd qPCR results\neDNA"
   },
@@ -2331,14 +2331,14 @@
   {
     "objectID": "presentations/db_updates_2025-04.html#coming-soon",
     "href": "presentations/db_updates_2025-04.html#coming-soon",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Coming soon…",
     "text": "Coming soon…\n\nAMP Growth Inhibition Assay & MALDI results\nBd qPCR restructuring\nMicrobiome 16S metadata, sequences, and data products\neDNA results"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#pause-for-questions",
     "href": "presentations/db_updates_2025-04.html#pause-for-questions",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Pause for questions",
     "text": "Pause for questions\nLet’s dive in!"
   },
@@ -2380,7 +2380,7 @@
     "href": "tutorial_series/07_database_refresher.html#data-pulling",
     "title": "7. Database Refresher",
     "section": "Data pulling",
-    "text": "Data pulling\n\nCollect these data!\nNow that we are happy with these data, or at least want to take a closer look at them, lets collect them from the database.\n\n# take a look at our SQL \"shopping list\":\ndb_adult_query = sql_render(db_adult)\n\n# take our shopping list to the store, return with the data we want\ndata_adult = db_adult %&gt;%\n  collect()\n\n# peek in the bag to see what you got :)\nhead(data_adult)\n\n# A tibble: 6 × 21\n  sample_name_bd detected bd_its1_copies_per_swab taxon_capture          svl_mm\n  &lt;chr&gt;          &lt;lgl&gt;                      &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;\n1 121022_04      FALSE                          0 pristimantis_museosus    11.4\n2 121124_11      FALSE                          0 bolitoglossa_biseriata   40.5\n3 121125_14      FALSE                          0 colostethus_panamansis   21.2\n4 121125_15      FALSE                          0 silverstoneia_flotator   13.4\n5 121125_16      FALSE                          0 colostethus_panamansis   25.2\n6 121125_18      FALSE                          0 silverstoneia_flotator    9.9\n# ℹ 16 more variables: body_mass_g &lt;dbl&gt;, sex &lt;chr&gt;, life_stage &lt;chr&gt;,\n#   substrate_temp_c &lt;dbl&gt;, air_temp_c_mean &lt;dbl&gt;, water_temp_c_mean &lt;dbl&gt;,\n#   env_n &lt;int64&gt;, microhabitat_type &lt;chr&gt;, time_of_capture &lt;time&gt;,\n#   date &lt;date&gt;, site &lt;chr&gt;, region &lt;chr&gt;, country &lt;chr&gt;, visit_lab &lt;chr&gt;,\n#   extraction_lab &lt;chr&gt;, qpcr_lab &lt;chr&gt;\n\n\n\n\nAdditional exploration: Taxonomy\nWe can continue using our table pointer “shopping list” to pull in other data. For example, suppose we want some information on the taxa in our dataset:\n\n# count distinct taxa\ntaxa_relevant = db_adult %&gt;%\n  group_by(taxon_capture) %&gt;%\n  summarise(taxa_count = n()) %&gt;%\n  left_join(db_taxa, by = c(\"taxon_capture\" = \"taxon_id\")) %&gt;%\n  collect() %&gt;%\n  arrange(desc(taxa_count))\n\n# filter to taxa with more that 50 counts\ntaxa_gt50 = taxa_relevant %&gt;%\n  filter(taxa_count &gt;= 50)\n\n# filter our data to those taxa in our list\ndb_adult_gt50 = db_adult %&gt;%\n  filter(taxon_capture %in% taxa_gt50$taxon_capture)\n\n# collect these newly filtered data\ndata_adult_gt50 = db_adult_gt50 %&gt;%\n  collect()\n\n\n\nGet query metadata\nWant to refine the column metadata to include columns for your recently queried data only?\n\n# use the ribbitrrr::get_query_metadata() function\nmetadata_adult_gt50 = ribbitrrr::get_query_metadata(dbcon, db_adult_gt50)\n\n\n\nAdditional exploration: Collaborators!\n\n# create a list of unique labs associated with your data\nlabs_associated = unique(c(data_adult_gt50$visit_lab,\n              data_adult_gt50$extraction_lab,\n              data_adult_gt50$qpcr_lab))\n\n# look at columns in the labs table for context\ncolnames(db_lab)\n\n[1] \"lab_id\"           \"lab_name\"         \"lab_data_contact\"\n\n# filter to \ncollaborators = db_lab %&gt;%\n  filter(lab_id %in% labs_associated) %&gt;%\n  collect()",
+    "text": "Data pulling\n\nCollect these data!\nNow that we are happy with these data, or at least want to take a closer look at them, lets collect them from the database.\n\n# take a look at our SQL \"shopping list\":\ndb_adult_query = sql_render(db_adult)\n\n# take our shopping list to the store, return with the data we want\ndata_adult = db_adult %&gt;%\n  collect()\n\n# peek in the bag to see what you got :)\nhead(data_adult)\n\n# A tibble: 6 × 21\n  sample_name_bd detected bd_its1_copies_per_swab taxon_capture          svl_mm\n  &lt;chr&gt;          &lt;lgl&gt;                      &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;\n1 121124_11      FALSE                          0 bolitoglossa_biseriata   40.5\n2 121125_14      FALSE                          0 colostethus_panamansis   21.2\n3 121125_15      FALSE                          0 silverstoneia_flotator   13.4\n4 121125_16      FALSE                          0 colostethus_panamansis   25.2\n5 121125_18      FALSE                          0 silverstoneia_flotator    9.9\n6 121125_19      FALSE                          0 smilisca_sila            32.4\n# ℹ 16 more variables: body_mass_g &lt;dbl&gt;, sex &lt;chr&gt;, life_stage &lt;chr&gt;,\n#   substrate_temp_c &lt;dbl&gt;, air_temp_c_mean &lt;dbl&gt;, water_temp_c_mean &lt;dbl&gt;,\n#   env_n &lt;int64&gt;, microhabitat_type &lt;chr&gt;, time_of_capture &lt;time&gt;,\n#   date &lt;date&gt;, site &lt;chr&gt;, region &lt;chr&gt;, country &lt;chr&gt;, visit_lab &lt;chr&gt;,\n#   extraction_lab &lt;chr&gt;, qpcr_lab &lt;chr&gt;\n\n\n\n\nAdditional exploration: Taxonomy\nWe can continue using our table pointer “shopping list” to pull in other data. For example, suppose we want some information on the taxa in our dataset:\n\n# count distinct taxa\ntaxa_relevant = db_adult %&gt;%\n  group_by(taxon_capture) %&gt;%\n  summarise(taxa_count = n()) %&gt;%\n  left_join(db_taxa, by = c(\"taxon_capture\" = \"taxon_id\")) %&gt;%\n  collect() %&gt;%\n  arrange(desc(taxa_count))\n\n# filter to taxa with more that 50 counts\ntaxa_gt50 = taxa_relevant %&gt;%\n  filter(taxa_count &gt;= 50)\n\n# filter our data to those taxa in our list\ndb_adult_gt50 = db_adult %&gt;%\n  filter(taxon_capture %in% taxa_gt50$taxon_capture)\n\n# collect these newly filtered data\ndata_adult_gt50 = db_adult_gt50 %&gt;%\n  collect()\n\n\n\nGet query metadata\nWant to refine the column metadata to include columns for your recently queried data only?\n\n# use the ribbitrrr::get_query_metadata() function\nmetadata_adult_gt50 = ribbitrrr::get_query_metadata(dbcon, db_adult_gt50)\n\n\n\nAdditional exploration: Collaborators!\n\n# create a list of unique labs associated with your data\nlabs_associated = unique(c(data_adult_gt50$visit_lab,\n              data_adult_gt50$extraction_lab,\n              data_adult_gt50$qpcr_lab))\n\n# look at columns in the labs table for context\ncolnames(db_lab)\n\n[1] \"lab_id\"           \"lab_name\"         \"lab_data_contact\"\n\n# filter to \ncollaborators = db_lab %&gt;%\n  filter(lab_id %in% labs_associated) %&gt;%\n  collect()",
     "crumbs": [
       "RIBBiTR Database Tutorial Series",
       "7. Database Refresher"
@@ -2389,58 +2389,58 @@
   {
     "objectID": "presentations/db_updates_2025-04.html#relevance",
     "href": "presentations/db_updates_2025-04.html#relevance",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Management Updates",
     "section": "Relevance",
     "text": "Relevance\n\n\n\n\n\n\n\n\nData collection\n\nIs our data present in the database?\nIs our data accessible to others in the database?\nHow to give more context to enhance data use?\n\n\n\nData analysis\n\nWhat data are present in the database?\nHow to access these data for analysis?\nHow to find more context for enhanced data use?"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Collaborative Data Management",
     "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-1",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-1",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nInsight generated from the field through the research process"
+    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-2",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-2",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nRelevant insights support informed action (e.g. conservation)"
+    "text": "Collaborative Data Management\n\nInsight generated from the field through the research process"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-3",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-3",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nBut critical context is lost along the way!"
+    "text": "Collaborative Data Management\n\nRelevant insights support informed action (e.g. conservation)"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-4",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-4",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
+    "text": "Collaborative Data Management\n\nBut critical context is lost along the way!"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-5",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-5",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nFeedbacks at each step greatly increase responsiveness within the team"
+    "text": "Collaborative Data Management\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-6",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-6",
-    "title": "A quick RIBBiTR Database update",
+    "title": "RIBBITR Data Workshop",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nContext and feedback enhance data-driven insight generation and informed action"
+    "text": "Collaborative Data Management\n\nFeedbacks at each step greatly increase responsiveness within the team"
   },
   {
     "objectID": "resources/db_changelog.html#added-changed",
@@ -2474,5 +2474,68 @@
       "Database updates",
       "Database Changelog"
     ]
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#where-do-i-fit-in",
+    "href": "presentations/db_updates_2025-04.html#where-do-i-fit-in",
+    "title": "RIBBITR Data Workshop",
+    "section": "Where do I fit in?",
+    "text": "Where do I fit in?\n\n\n\n\n\n\n\n\nData collection\n\nIs our data present in the database?\nIs our data accessible to others in the database?\nHow to give more context to enhance data use?\n\n\n\nData analysis\n\nWhat data are present in the database?\nHow to access these data for analysis?\nHow to find more context for enhanced data use?"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#workshop-overview",
+    "href": "presentations/db_updates_2025-04.html#workshop-overview",
+    "title": "RIBBITR Data Workshop",
+    "section": "Workshop Overview",
+    "text": "Workshop Overview\n\n\n\n\n\n\nSession 1: Fri. 2-3pm\n\nEngaging Presentation (0.5h)\n“What data where?” walkthrough (.5h)\n\n\n\nSession 2: Sat. 1:30-3pm\n\nCollaborative coding session (1h)\n“Needs & Next Steps” brainstorming (0.5h)"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#presentation-outline",
+    "href": "presentations/db_updates_2025-04.html#presentation-outline",
+    "title": "RIBBITR Data Workshop",
+    "section": "Presentation outline",
+    "text": "Presentation outline\n\nCollaborative data management model\nRIBBiTR database overview\n2025 database updates"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#ribbitr-database-overview",
+    "href": "presentations/db_updates_2025-04.html#ribbitr-database-overview",
+    "title": "RIBBITR Data Workshop",
+    "section": "RIBBiTR database overview",
+    "text": "RIBBiTR database overview\n\nConceptual diagram of how disparate datasets connect"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#database-stats",
+    "href": "presentations/db_updates_2025-04.html#database-stats",
+    "title": "RIBBITR Data Workshop",
+    "section": "Database stats",
+    "text": "Database stats\n[insert very impressive numbers]\n(“ooo” & “ahhh”)"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#engaging-presentation-outline",
+    "href": "presentations/db_updates_2025-04.html#engaging-presentation-outline",
+    "title": "RIBBITR Data Workshop",
+    "section": "Engaging Presentation outline",
+    "text": "Engaging Presentation outline\n\nCollaborative data management model\nRIBBiTR database overview\n2025 database updates"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#where-do-i-fit-in-1",
+    "href": "presentations/db_updates_2025-04.html#where-do-i-fit-in-1",
+    "title": "RIBBITR Data Workshop",
+    "section": "Where do I fit in?",
+    "text": "Where do I fit in?\n\n\nReflect on your role & relationship to RIBBiTR data…\n\nTake a moment to write down a data-related question which could help inform your work."
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-7",
+    "href": "presentations/db_updates_2025-04.html#collaborative-data-management-7",
+    "title": "RIBBITR Data Workshop",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nContext and feedback enhance data-driven insight generation and informed action"
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html#revisiting-our-data-questions",
+    "href": "presentations/db_updates_2025-04.html#revisiting-our-data-questions",
+    "title": "RIBBITR Data Workshop",
+    "section": "Revisiting our data questions",
+    "text": "Revisiting our data questions\nLet’s dive in!"
   }
 ]

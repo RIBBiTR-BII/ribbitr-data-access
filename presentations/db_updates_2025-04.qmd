@@ -1,17 +1,34 @@
 ---
-title: "A quick RIBBiTR Database update"
+title: "RIBBITR Data Workshop"
+author: "Cob Staines"
+date: 2025-04-25
 format: revealjs
 editor: source
+incremental: true
 ---
 
-## Presentation Overview {background-image="db_updates_2025-04/data_frog.jpeg" background-size="400px" background-position="bottom"}
+## Workshop Overview
 
--   Collaborative data management
--   RIBBiTR database overview
--   Recent database updates
+::: {layout-ncol="2"}
 
+### Session 1: Fri. 2-3pm
 
-## Relevance {background-image="db_updates_2025-04/data_users_1.png" background-size="70%" background-position="center"}
+- Engaging Presentation (0.5h)
+- *"What data where?"* walkthrough (.5h)
+
+### Session 2: Sat. 1:30-3pm
+
+-   Collaborative coding session (1h)
+-   "Needs & Next Steps" brainstorming (0.5h)
+
+:::
+
+## Engaging Presentation outline {background-image="db_updates_2025-04/data_frog.jpeg" background-size="400px" background-position="bottom right"}
+  -   Collaborative data management model
+  -   RIBBiTR database overview
+  -   2025 database updates
+
+## Where do I fit in? {background-image="db_updates_2025-04/data_users_1.png" background-size="70%" background-position="center"}
 
 <p style="height: 160px;">
 
@@ -31,9 +48,23 @@ editor: source
 -   How to find more context for enhanced data use?
 :::
 
+## Where do I fit in? {background-image="db_updates_2025-04/data_users_1.png" background-size="70%" background-position="center"}
+
+<p style="height: 180px;">
+
+</p>
+
+#### Reflect on your role & relationship to RIBBiTR data...
+
+- Take a moment to write down a data-related question which could help inform your work.
+
 ## Collaborative Data Management
 
 ![Information cycles from field to database and (hopefully) back...](db_updates_2025-04/layout2_1_cycle.png){fig-alt="Information flows cyclically from frogs to humans, to computers, apps, and databases, and then back to humans and (hopefully) back to frogs" fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![Information cycles from field to database and (hopefully) back...](db_updates_2025-04/layout2_1_labeled.png){fig-alt="Information flows cyclically from frogs to humans, to computers, apps, and databases, and then back to humans and (hopefully) back to frogs" fig-align="center" width="600"}
 
 ## Collaborative Data Management
 
@@ -59,9 +90,15 @@ editor: source
 
 ![Context and feedback enhance data-driven insight generation and informed action](db_updates_2025-04/layout2_7_model.png){fig-alt="Complete model includes both context sharing and feedbacks" fig-align="center" width="600"}
 
-## RIBBiTR daabase overview
+## RIBBiTR database overview
 
 ![Conceptual diagram of how disparate datasets connect](db_updates_2025-04/database_datasets.drawio.png){fig-alt="Conceptual diagram linking field and lab datasets with support tables" fig-align="center" width="600"}
+
+## Database stats
+
+**[insert very impressive numbers]**
+
+*("ooo" & "ahhh")*
 
 ## *Recent updates*
 
@@ -104,6 +141,6 @@ editor: source
 -   Microbiome 16S metadata, sequences, and data products
 -   eDNA results
 
-## Pause for questions {background-image="db_updates_2025-04/data_frog.jpeg" background-size="1000px" background-position="bottom"}
+## Revisiting our data questions {background-image="db_updates_2025-04/data_frog.jpeg" background-size="800px" background-position="bottom"}
 
 #### Let's dive in!
