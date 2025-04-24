@@ -30,7 +30,9 @@ use_condaenv("ribbitr")
 ::: panel-tabset
 # R
 
-Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing R/RStudio. If you aren't yet familiar with R/Rstudio, check out this quick [Getting Started tutorial by POSIT](https://docs.posit.co/ide/user/ide/get-started/).
+In this quick tutorial we will (re)orient ourselves to connecting to the RIBBiTR database using R/RStudio. If you aren't yet familiar with R/Rstudio, check out this quick [Getting Started tutorial by POSIT](https://docs.posit.co/ide/user/ide/get-started/).
+
+Specifically, we will be setting up a database connection using the `ribbitrrr::hopToDB()` function (from the [ribbitrrr](https://github.com/RIBBiTR-BII/ribbitrrr) R package). If you would prefer to write your own connection script in R, check out the [DBI](https://dbi.r-dbi.org/) R-package.
 
 ## Store & access your database connection parameters
 
@@ -59,6 +61,10 @@ ribbitr.password = "[YOUR-PASSWORD-HERE]"
 ```
 
 Save and close .Renviron, and restart RStudio.
+
+::: {.callout-tip title="YAML login credentials"}
+The function `ribbitrrr::hopToDB()` also supports passing a YAML file which contains your login credentials. If using this method, take care not to share this credentials file publicly when sharing code or pushing to github.
+:::
 
 ## Establish database connection
 
@@ -104,17 +110,21 @@ Now, using the `ribbitrrr:hopToDB()` function, let's establish a connection!
 dbcon <- hopToDB("ribbitr")
 ```
 
-`hopToDB()` returns a database connection object (`dbcon`). Keep track of this, you will call it to explore and pull data later.
+`hopToDB()` returns a database connection object (`dbcon`). Keep track of this connection object, we will call it to explore and pull data later.
 
 ## Begin using your connection!
 
-Try out your connection by loading table metadata from the database
+Try out your connection by loading table metadata from the database:
 
 ```{r}
 mdt <- tbl(dbcon, Id("public", "all_tables")) %>%
   collect()
 head(mdt)
 ```
+::: {.callout-tip title="Connection browsing in RStudio"}
+By default the `ribbitrrr::hopToDB()` function displays a browsable database interface in the `Connections` panel upon establishing a new connection. In this panel you can view all accessible table, column names and data types, as well as preview the data for context. Try it out!
+:::
+
 
 ## Disconnect
 It is good practice to close your database connection, to let the server know it can stop listening for you (otherwise it will continue to use server resources in anticipation of your). You can think of this as saying goodbye at the end of a phone call.
@@ -124,10 +134,11 @@ It is good practice to close your database connection, to let the server know it
 dbDisconnect(dbcon)
 ```
 
-## Also try
 
+::: {.callout-tip title="Also try..."}
 -   For those managing multiple database connections, the `hopToDB()` function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute "ribbitr" in the .Renviron example above with your own keywords to juggle multiple logins.
--   Your login credentials can also be accessed explicitly anytime using `Sys.getenv("ribbitr.dbname")`, etc. In most cases the `hopToDB()` function is all you will need, however.
+-   Login credentials saved to .Renviron can also be accessed explicitly anytime using `Sys.getenv("ribbitr.dbname")`, etc. In most cases the `ribbitrrr::hopToDB()` function is all you will need.
+:::
 
 # Python
 
@@ -156,7 +167,9 @@ ribbitr = {
 
 Save `dbconfig.py`.
 
+::: {.callout-note}
 Be sure to add `dbconfig.py` to your local `.gitignore` file if you are using git/github, so you don't accidentally publish you login credentials!
+:::
 
 ## Establish database connection
 
@@ -181,7 +194,7 @@ Now, using the `ibis.postgres.connect()` function, let’s establish a connectio
 dbcon = ibis.postgres.connect(**dbconfig.ribbitr)
 ```
 
-`ibis.postgres.connect()` returns a database connection object (`dbcon`). Keep track of this, you will call it to explore and pull data later.
+`ibis.postgres.connect()` returns a database connection object (`dbcon`). Keep track of this connection object, we will call it to explore and pull data later.
 
 ## Begin using your connection
 
@@ -201,10 +214,11 @@ It is good practice to close your database connection, to let the server know it
 dbcon.disconnect()
 ```
 
-## Also try
-
+::: {.callout-tip title="Also try..."}
 -   For those managing multiple database connections, this method allows you to store and fetch various sets of login credentials with a single keyword. Just substitute "ribbitr" in the `dbconfig.py` file with your own keywords and call them as needed!
 -   If you will be connecting to the database from different python projects, you may want to save your `dbconfig.py` file to a more general location. In this case, include the following lines in each of your project files:
+:::
+
 
 ```{python, eval=FALSE}
 import sys
@@ -213,7 +227,7 @@ import dbconfig
 ```
 
 # DBeaver
-Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing DBeaver. DBeaver is a free, universal database tool which provides a great visual platform and robust backend for interacting with databases. [Download DBeaver](https://dbeaver.io/) and install to get started with the tutorial.
+In this tutorial we will (re)orient ourselves to connecting to the RIBBiTR database useing DBeaver. DBeaver is a free, universal database tool which provides a great visual platform and robust backend for interacting with databases. [Download DBeaver](https://dbeaver.io/) and install to get started with the tutorial.
 
 ## Set up and test your connection.
 1) Open DBeaver.

@@ -17,7 +17,7 @@ format:
 
 # Motivation
 
-- Refresh ourselves on how to connect, browse, join, pull, and organize data
+- Refresh ourselves on how to connect, browse, join, pull, and organize data using RStudio
 - Demonstrate linking data from different datasets
 
 ## Resources
@@ -161,7 +161,7 @@ db_bd_env = db_bd_country %>%
   left_join(db_env_visit, by = "visit_id") %>%
   select(sample_name_bd,
          detected,
-         average_target_quant,
+         bd_its1_copies_per_swab,
          taxon_capture,
          svl_mm,
          body_mass_g,

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-04-07">
+<meta name="dcterms.date" content="2025-04-24">
 
 <title>1. Connection Setup – RIBBiTR Data Access</title>
 <style>
@@ -249,6 +249,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Database in Context</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././presentations/db_updates_2025-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Refresher 2025</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -287,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 7, 2025</p>
+      <p class="date">April 24, 2025</p>
     </div>
   </div>
   
@@ -310,7 +316,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">DBeaver</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p>Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing R/RStudio. If you aren’t yet familiar with R/Rstudio, check out this quick <a href="https://docs.posit.co/ide/user/ide/get-started/">Getting Started tutorial by POSIT</a>.</p>
+<p>In this quick tutorial we will (re)orient ourselves to connecting to the RIBBiTR database using R/RStudio. If you aren’t yet familiar with R/Rstudio, check out this quick <a href="https://docs.posit.co/ide/user/ide/get-started/">Getting Started tutorial by POSIT</a>.</p>
+<p>Specifically, we will be setting up a database connection using the <code>ribbitrrr::hopToDB()</code> function (from the <a href="https://github.com/RIBBiTR-BII/ribbitrrr">ribbitrrr</a> R package). If you would prefer to write your own connection script in R, check out the <a href="https://dbi.r-dbi.org/">DBI</a> R-package.</p>
 <section id="store-access-your-database-connection-parameters" class="level2">
 <h2 class="anchored" data-anchor-id="store-access-your-database-connection-parameters">Store &amp; access your database connection parameters</h2>
 <section id="access-your-local-.renviron-file" class="level3">
@@ -335,6 +342,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ribbitr.password <span class="ot">=</span> <span class="st">"[YOUR-PASSWORD-HERE]"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Save and close .Renviron, and restart RStudio.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="YAML login credentials">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+YAML login credentials
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The function <code>ribbitrrr::hopToDB()</code> also supports passing a YAML file which contains your login credentials. If using this method, take care not to share this credentials file publicly when sharing code or pushing to github.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="establish-database-connection" class="level2">
@@ -379,12 +399,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ── R CMD build ─────────────────────────────────────────────────────────────────
-* checking for file ‘/tmp/RtmpKs9m2T/remotes490b2bae932d/RIBBiTR-BII-ribbitrrr-ec3d34b/DESCRIPTION’ ... OK
+* checking for file ‘/tmp/RtmpkFr06r/remotes236025c226e9a/RIBBiTR-BII-ribbitrrr-b9439e2/DESCRIPTION’ ... OK
 * preparing ‘ribbitrrr’:
 * checking DESCRIPTION meta-information ... OK
 * checking for LF line-endings in source and make files and shell scripts
 * checking for empty or unneeded directories
-* building ‘ribbitrrr_0.0.2.0.tar.gz’</code></pre>
+* building ‘ribbitrrr_0.0.2.2.tar.gz’</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for establishing RIBBiTR DB connection</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR<span class="sc">-</span>BII<span class="sc">/</span>ribbitrrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -401,12 +421,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Connecting to 'ribbitr'... Success!</code></pre>
 </div>
 </div>
-<p><code>hopToDB()</code> returns a database connection object (<code>dbcon</code>). Keep track of this, you will call it to explore and pull data later.</p>
+<p><code>hopToDB()</code> returns a database connection object (<code>dbcon</code>). Keep track of this connection object, we will call it to explore and pull data later.</p>
 </section>
 </section>
 <section id="begin-using-your-connection" class="level2">
 <h2 class="anchored" data-anchor-id="begin-using-your-connection">Begin using your connection!</h2>
-<p>Try out your connection by loading table metadata from the database</p>
+<p>Try out your connection by loading table metadata from the database:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mdt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_tables"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
@@ -423,6 +443,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 6 microclimate_data ts_illuminance              3 "Illuminance time series data…</code></pre>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Connection browsing in RStudio">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Connection browsing in RStudio
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By default the <code>ribbitrrr::hopToDB()</code> function displays a browsable database interface in the <code>Connections</code> panel upon establishing a new connection. In this panel you can view all accessible table, column names and data types, as well as preview the data for context. Try it out!</p>
+</div>
+</div>
 </section>
 <section id="disconnect" class="level2">
 <h2 class="anchored" data-anchor-id="disconnect">Disconnect</h2>
@@ -431,13 +464,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># disconnect from database</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(dbcon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="also-try" class="level2">
-<h2 class="anchored" data-anchor-id="also-try">Also try</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Also try...">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Also try…
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
 <li>For those managing multiple database connections, the <code>hopToDB()</code> function allows you to store and fetch various sets of login credentials with a single keyword. Just substitute “ribbitr” in the .Renviron example above with your own keywords to juggle multiple logins.</li>
-<li>Your login credentials can also be accessed explicitly anytime using <code>Sys.getenv("ribbitr.dbname")</code>, etc. In most cases the <code>hopToDB()</code> function is all you will need, however.</li>
+<li>Login credentials saved to .Renviron can also be accessed explicitly anytime using <code>Sys.getenv("ribbitr.dbname")</code>, etc. In most cases the <code>ribbitrrr::hopToDB()</code> function is all you will need.</li>
 </ul>
+</div>
+</div>
 </section>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
@@ -460,7 +502,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Save <code>dbconfig.py</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Be sure to add <code>dbconfig.py</code> to your local <code>.gitignore</code> file if you are using git/github, so you don’t accidentally publish you login credentials!</p>
+</div>
+</div>
 </section>
 </section>
 <section id="establish-database-connection-1" class="level2">
@@ -482,7 +536,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># establish database connection</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dbcon <span class="op">=</span> ibis.postgres.<span class="ex">connect</span>(<span class="op">**</span>dbconfig.ribbitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><code>ibis.postgres.connect()</code> returns a database connection object (<code>dbcon</code>). Keep track of this, you will call it to explore and pull data later.</p>
+<p><code>ibis.postgres.connect()</code> returns a database connection object (<code>dbcon</code>). Keep track of this connection object, we will call it to explore and pull data later.</p>
 </section>
 </section>
 <section id="begin-using-your-connection-1" class="level2">
@@ -510,13 +564,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># close the connection</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="also-try-1" class="level2">
-<h2 class="anchored" data-anchor-id="also-try-1">Also try</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Also try...">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Also try…
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
 <li>For those managing multiple database connections, this method allows you to store and fetch various sets of login credentials with a single keyword. Just substitute “ribbitr” in the <code>dbconfig.py</code> file with your own keywords and call them as needed!</li>
 <li>If you will be connecting to the database from different python projects, you may want to save your <code>dbconfig.py</code> file to a more general location. In this case, include the following lines in each of your project files:</li>
 </ul>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">"/path/to/dbconfig/dir/"</span>)</span>
@@ -525,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<p>Here is a quick tutorial to (re)orient ourselves to connecting to the RIBBiTR database useing DBeaver. DBeaver is a free, universal database tool which provides a great visual platform and robust backend for interacting with databases. <a href="https://dbeaver.io/">Download DBeaver</a> and install to get started with the tutorial.</p>
+<p>In this tutorial we will (re)orient ourselves to connecting to the RIBBiTR database useing DBeaver. DBeaver is a free, universal database tool which provides a great visual platform and robust backend for interacting with databases. <a href="https://dbeaver.io/">Download DBeaver</a> and install to get started with the tutorial.</p>
 <section id="set-up-and-test-your-connection." class="level2">
 <h2 class="anchored" data-anchor-id="set-up-and-test-your-connection.">Set up and test your connection.</h2>
 <ol type="1">

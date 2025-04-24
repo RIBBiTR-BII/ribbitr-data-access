@@ -4,13 +4,14 @@ format: revealjs
 editor: source
 ---
 
-## Presentation Overview
+## Presentation Overview {background-image="db_updates_2025-04/data_frog.jpeg" background-size="400px" background-position="bottom"}
 
 -   Collaborative data management
 -   RIBBiTR database overview
 -   Recent database updates
 
-## Relevance {background-image="db_updates_2025-04/data_users_1.png" background-size="600" background-position="top"}
+
+## Relevance {background-image="db_updates_2025-04/data_users_1.png" background-size="70%" background-position="center"}
 
 <p style="height: 160px;">
 
@@ -93,6 +94,7 @@ editor: source
 
 -   Microclimate
 -   Environmental
+-   Bd qPCR results
 -   eDNA
 
 ## *Coming soon...*
@@ -100,10 +102,8 @@ editor: source
 -   AMP Growth Inhibition Assay & MALDI results
 -   Bd qPCR restructuring
 -   Microbiome 16S metadata, sequences, and data products
--   eDNA results (+ SERDP data integration)
+-   eDNA results
 
-## Pause for questions
+## Pause for questions {background-image="db_updates_2025-04/data_frog.jpeg" background-size="1000px" background-position="bottom"}
 
 #### Let's dive in!
-
-![](db_updates_2025-04/data_frog.jpeg){fig-alt="frog saying "data! fig-align="top" width="10%"}

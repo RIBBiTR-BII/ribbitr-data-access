@@ -7,16 +7,33 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-04-22
+
+## Added & Changed
+
+- Added/renamed and redefined columns in table `survey_data.bd_qpcr_results`
+  - Added `its1_copies_per_standard_unit` to explicitly state copy number assumption when converting from zoospore to ITS1
+  - `cycle_quant` <- `average_ct`
+  - `target_quant` <- `average_target_quant`: estimated start target quantity in qPCR well
+  - `target_quant_per_swab`: estimated start quantity on swab, corrected for extraction volumes and dilutions
+  - `bd_its1_copies_per_swab`: estimated number of ITS1 copies per swab, corrected for extraction volumes, dilutions, and standard target type
+
+## 2025-04-11
+
+### Added
+
+- New column `survey_data.taxonomy.iucn_status` with values pulled from IUCN
+
 ## 2025-04-02
 
 ## Added
 
 - New tables in survey_data schema:
-  - site_history -- for tracking site treatments and human interventions which may be historically relevant, as context for interpretation and modeling efforts
-  - mucosome_results -- results from mucosome-Bd-inhibition assays
-  - bd_isolates -- history of Bd strains isolated and used in cross-RIBBiTR studies
+  - `site_history` -- for tracking site treatments and human interventions which may be historically relevant, as context for interpretation and modeling efforts
+  - `mucosome_results` -- results from mucosome-Bd-inhibition assays
+  - `bd_isolates` -- history of Bd strains isolated and used in cross-RIBBiTR studies
 
-## 2025-03-24
+## 2025-03-11
 
 ### Added
 
@@ -28,38 +45,38 @@ editor: source
   - Sierra Nevada
     - Capture, visual and environmental data through 2024
     - Bd qPCR results through 2024
-- table survey_data.edna for tracking edna field sampling
-  - survey_data.survey.detection_type = "edna"
+- table `survey_data.edna` for tracking edna field sampling
+  - `survey_data.survey.detection_type` = "edna"
 - tracking and name resolving of conflicting sample names in survey_data.sample
-  - conflicting names are given a new, unique "sample_name", while the old/conflicted name is tracked in "sample_name_conflict"
+  - conflicting names are given a new, unique `sample_name`, while the old/conflicted name is tracked in `sample_name_conflict`
 - CITES taxonomy status added to survey_data.taxonomy with new columns:
-  - cites_id
-  - cites_appendix
+  - `cites_id`
+  - `cites_appendix`
 
 ### Changed
 
-- survey_data transect location columns renamed for consistency and clarity:
-  - capture.capture_transect_m <- capture.capture_trx_loc
-  - ves.ves_transect_m <- ves.detection_location
+- `survey_data` transect location columns renamed for consistency and clarity:
+  - `capture.capture_transect_m` <- `capture.capture_trx_loc`
+  - `ves.ves_transect_m` <- `ves.detection_location`
 
 ## 2025-03-11
 
 ### Changed
 
 - air pressure in survey_data.environmental table changed from psi to mbar (SI)
-  - dropped column "pressure_psi"
-  - added column "air_pressure_mbar"
-- survey_data.environmental.soil_moisture_m3_m3 <- survey_data.environmental.soil_humidity_m3m3
+  - dropped column `pressure_psi`
+  - added column `air_pressure_mbar`
+- `survey_data.environmental.soil_moisture_m3_m3` <- `survey_data.environmental.soil_humidity_m3m3`
 
 ## 2025-02-27
 
 ### Changed
 
-- microclimate.time_series table split into 4 tables consistent with measurement type:
-  - microclimate.ts_temperature
-  - microclimate.ts_dew_point
-  - microclimate.ts_relative_humidity
-  - microclimate.ts_illuminance
+- `microclimate.time_series` table split into 4 tables consistent with measurement type:
+  - `microclimate.ts_temperature`
+  - `microclimate.ts_dew_point`
+  - `microclimate.ts_relative_humidity`
+  - `microclimate.ts_illuminance`
 
 ## 2025-02-18
 
@@ -68,19 +85,19 @@ editor: source
 - Brazil sites, transects restructured to be consistent across projects
   - consolidated sites "b2w" and "b2t" into "t2" with transects "water" and "land" (region boraceia)
   - consolidated sites "a2w" and "a2t" into "s2" with transects "water" and "land" (region santa_virginia)
-  - old site names can be found under survey_data.site.site_name_alt
+  - old site names can be found under `survey_data.site.site_name_alt`
 
 ## 2025-02-17
 
 ### Added
 
-- columns to survey_data.taxonomy table
-  - ribbitr_target_species (bool)
-  - development_mode (char) - distinguish between species with "aquatic larva" as a development stage and those which are "direct developers"
+- columns to `survey_data.taxonomy` table
+  - `ribbitr_target_species` (bool)
+  - `development_mode`(char) - distinguish between species with "aquatic larva" as a development stage and those which are "direct developers"
 
 ### Changed
 
-- Sierra Nevada sites now have drainage (hydrological basin) information in survey_data.site.geographical_area
+- Sierra Nevada sites now have drainage (hydrological basin) information in `survey_data.site.geographical_area`
 - Sierra nevada survey data species distinction
   - distinguished between Rana muscosa and Rana sierrae using drainage basin
 
@@ -89,88 +106,88 @@ editor: source
 ### Added
 
 - Kira PEP data incorporated into RIBBiTR survey_data tables
-  - (survey_data.visit.visit_lab == km_pep)
+  - `survey_data.visit.visit_lab` == "km_pep"
 
 ## 2025-02-11
 
 ### Added
 
-- survey_data.visit.project -- to describe between different initiatives
-- survey_data.site.geographical_area -- supplementary grouping variable
-- survey_data.site.geographical_area_type  -- descriptor of grouping variable
+- `survey_data.visit.project` -- to describe between different initiatives
+- `survey_data.site.geographical_area` -- supplementary grouping variable
+- `survey_data.site.geographical_area_type`  -- descriptor of grouping variable
 
 ### Changed
 
-- updated data from Brazil Landscapes project (survey_data.visit.project == landscapes) including
-  - life stage
-  - transect
-  - qpcr_plate
-  - region
-- updated data from Brazil Santa Virginia project (survey_data.visit.project == pce_santa_virginia) including
-  - dropped bd_qpcr_results for possibly cross-contaminated samples
-  - life stage
-  - sex
-  - capture status
-  - qpcr_plate
-  - site
+- updated data from Brazil Landscapes project (`survey_data.visit.project` == "landscapes") including
+  - `life_stage`
+  - `transect`
+  - `qpcr_plate`
+  - `region`
+- updated data from Brazil Santa Virginia project (`survey_data.visit.project` == "pce_santa_virginia") including
+  - NA quantities bd_qpcr_results for possibly cross-contaminated samples
+  - `life_stage`
+  - `sex`
+  - `capture_status`
+  - `qpcr_plate`
+  - `site`
 
 ## 2025-01-27
 
 ### Changed
 
 - reconcile microhabitat column names
-  - survey_data.capture.microhabitat_detailed <- survey_data.capture.microhabitat_moredetail
-  - survey_data.ves.microhabitat_detailed <- survey_data.ves.microhab_moredetail
-  - survey_data.ves.microhabitat_type <- survey_data.ves.microhab
-- bd_qpcr_results column name change
-  - survey_data.bd_qpcr_results.replicate_detected <- survey_data.db_qpcr_results.replicate_results
+  - `survey_data.capture.microhabitat_detailed` <- `survey_data.capture.microhabitat_moredetail`
+  - `survey_data.ves.microhabitat_detailed` <- `survey_data.ves.microhab_moredetail`
+  - `survey_data.ves.microhabitat_type` <- `survey_data.ves.microhab`
+- `bd_qpcr_results` column name change
+  - `survey_data.bd_qpcr_results.replicate_detected` <- `survey_data.db_qpcr_results.replicate_results`
 
 ## 2025-01-13
 
 ### Added
 
-- table: survey_data.taxonomy
+- table: `survey_data.taxonomy`
   - lookup table for all taxonomy columns which includes corresponding taxon reference IDs in external taxonomy databases (AmphibiaWeb, ITIS, NCBI, GBIF, IUCN), taxon hierarchies and ranks, and other metadata to support analysis accross taxa.
-- table: survey_data.lab
+- table: `survey_data.lab`
   - lookup table for labs corresponding to project data, as well and contacts for consulting, interpreting and seeking permission to use these data for analysis and publication.
-- column: survey_data.visit.visit_lab
+- column: `survey_data.visit.visit_lab`
   - column to track which lab is responsible for field visit data
   
 ### Changed
 - column names changed from "species" to "taxon" to reflect that some data reflect taxa at higher ranks than species (genus, etc.)
-  - survey_data.aural.taxon_aural <- survey_data.aural.species_aural
-  - survey_data.capture.taxon_capture <- survey_data.capture.species_capture
-  - survey_data.cmr.taxon_cmr <- survey_data.cmr.species_cmr
-  - survey_data.ves.taxon_ves <- survey_data.ves.species_ves
+  - `survey_data.aural.taxon_aural` <- `survey_data.aural.species_aural`
+  - `survey_data.capture.taxon_capture` <- `survey_data.capture.species_capture`
+  - `survey_data.cmr.taxon_cmr` <- `survey_data.cmr.species_cmr`
+  - `survey_data.ves.taxon_ves` <- `survey_data.ves.species_ves`
 
 ## 2025-01-03
 
 ### Changed
 
 - lat/lon coordinates calculated for all spatial data
-  - site table
+  - `survey_data.site` table
     - renamed:
-      - site_utme <- utme
-      - site_utmn <- utmn
-      - site_utm_zone <- utm_zone
-      - site_elevation_m <- elevation_m
+      - `site_utme` <- `utme`
+      - `site_utmn` <- `utmn`
+      - `site_utm_zone` <- `utm_zone`
+      - `site_elevation_m` <- `elevation_m`
     - new columns:
-      - site_latitude
-      - site_longitude
+      - `site_latitude`
+      - `site_longitude`
   - environmental table
     - renamed:
-      - environmental_utme <- sample_location_utme
-      - environmental_utmn <- sample_location_utmn
-      - environmental_utm_zone <- sample_location_utm_zone
-      - environmental_elevation_m <- sample_location_elevation_m
+      - `environmental_utme` <- `sample_location_utme`
+      - `environmental_utmn` <- `sample_location_utmn`
+      - `environmental_utm_zone` <- `sample_location_utm_zone`
+      - `environmental_elevation_m` <- `sample_location_elevation_m`
     - new columns:
-        - environmental_latitude
-        - environmental_longitude
+        - `environmental_latitude`
+        - `environmental_longitude`
   - capture table
     - new columns:
-      - capture_utm_zone
-      - capture_latitude
-      - capture_longitude
+      - `capture_utm_zone`
+      - `capture_latitude`
+      - `capture_longitude`
 
 ## 2024-12-13
 
