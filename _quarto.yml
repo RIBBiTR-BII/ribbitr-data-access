@@ -19,7 +19,7 @@ website:
           - ./tutorial_series/05_bd_capture_workflow.qmd
           - ./tutorial_series/06_microclimate_workflow.qmd
           - ./tutorial_series/07_database_refresher.qmd
-      - section: "Database updates"
+      - section: "Database Resources"
         contents: 
           - section: "Schema Diagrams"
             contents:

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-04-07">
+<meta name="dcterms.date" content="2025-04-24">
 
 <title>6. Microclimate Workflow – RIBBiTR Data Access</title>
 <style>
@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Database updates</span></a>
+ <span class="menu-text">Database Resources</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -249,6 +249,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Database in Context</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././presentations/db_updates_2025-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Refresher 2025</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -287,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 7, 2025</p>
+      <p class="date">April 24, 2025</p>
     </div>
   </div>
   
@@ -329,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load column metadata</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"metadata_columns"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_columns"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>

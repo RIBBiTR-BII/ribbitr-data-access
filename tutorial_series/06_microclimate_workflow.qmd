@@ -48,7 +48,7 @@ mdt <- tbl(dbcon, Id("public", "all_tables")) %>%
   collect()
 
 # load column metadata
-mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
+mdc <- tbl(dbcon, Id("public", "all_columns")) %>%
   collect()
 ```
 

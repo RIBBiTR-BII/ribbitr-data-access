@@ -47,7 +47,7 @@ mdt <- tbl(dbcon, Id("public", "all_tables")) %>%
   collect()
 
 # load column metadata
-mdc <- tbl(dbcon, Id("survey_data", "metadata_columns")) %>%
+mdc <- tbl(dbcon, Id("public", "all_columns")) %>%
   filter(table_schema == "survey_data") %>%
   collect()
 ```
@@ -113,9 +113,10 @@ data_bd_capture_2015 = data_bd_capture %>%
          sample_id,
          sample_name_bd,
          detected,
-         average_ct,
-         average_target_quant,
+         cycle_quant,
+         target_quant,
          target_quant_per_swab,
+         bd_its1_copies_per_swab,
          comments_capture,
          comments_qpcr,
          date,
@@ -254,9 +255,10 @@ data_bd_capture_2015 = (
     "sample_id",
     "sample_name_bd",
     "detected",
-    "average_ct",
-    "average_target_quant",
+    "cycle_quant",
+    "target_quant",
     "target_quant_per_swab",
+    "bd_its1_copies_per_swab",
     "comments_capture",
     "comments_qpcr",
     "date",

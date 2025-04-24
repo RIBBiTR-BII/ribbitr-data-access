@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-04-07">
+<meta name="dcterms.date" content="2025-04-24">
 
 <title>3. Data Pulling – RIBBiTR Data Access</title>
 <style>
@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Database updates</span></a>
+ <span class="menu-text">Database Resources</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -249,6 +249,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Database in Context</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././presentations/db_updates_2025-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Refresher 2025</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -287,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 7, 2025</p>
+      <p class="date">April 24, 2025</p>
     </div>
   </div>
   
@@ -379,12 +385,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 6 × 5
   taxon_ves          count_ves life_stage sex   survey_id                       
   &lt;chr&gt;                  &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;                           
-1 pseudacris_regilla         1 adult      &lt;NA&gt;  5032be22-1091-4f97-b0ab-e2c4e44…
-2 pseudacris_regilla         1 adult      &lt;NA&gt;  97b2d63c-1d58-4829-8735-c2b95b0…
-3 pseudacris_regilla         1 adult      &lt;NA&gt;  185ed419-3cf7-48d8-80b2-d128868…
-4 pseudacris_regilla        14 adult      &lt;NA&gt;  a3730ce1-e172-418a-a634-769b184…
-5 rana_muscosa               1 adult      &lt;NA&gt;  bb18f750-d1ab-47b1-84ef-67c090d…
-6 rana_muscosa              25 adult      &lt;NA&gt;  353490f8-3b60-4ae2-b257-723b195…</code></pre>
+1 thamnophis_elegans         4 adult      &lt;NA&gt;  b08ea21b-1b43-457c-80f9-79e5229…
+2 rana_sierrae               2 adult      &lt;NA&gt;  be0263cb-ba57-59b3-a58a-4e54b35…
+3 thamnophis_elegans         1 adult      &lt;NA&gt;  aa82047b-53ff-521b-a4d0-c27ca43…
+4 rana_sierrae               3 adult      &lt;NA&gt;  d21d76d3-32c2-54a3-aa59-25b4d8e…
+5 rana_sierrae               3 adult      &lt;NA&gt;  96c482d1-838c-54ab-9d77-58bae2d…
+6 rana_sierrae               1 adult      &lt;NA&gt;  08f54a99-5626-528a-9346-0f9efa2…</code></pre>
 </div>
 </div>
 <p>Great! The above script is an example of how we can efficiently pull the data of interest without having to pull excess data.</p>
@@ -420,19 +426,19 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(db_ves_adult_sql)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           taxon_ves count_ves life_stage  sex
-1 pseudacris_regilla         1      adult &lt;NA&gt;
-2 pseudacris_regilla         1      adult &lt;NA&gt;
-3 pseudacris_regilla         1      adult &lt;NA&gt;
-4 pseudacris_regilla        14      adult &lt;NA&gt;
-5       rana_muscosa         1      adult &lt;NA&gt;
-6       rana_muscosa        25      adult &lt;NA&gt;
+1 thamnophis_elegans         4      adult &lt;NA&gt;
+2       rana_sierrae         2      adult &lt;NA&gt;
+3 thamnophis_elegans         1      adult &lt;NA&gt;
+4       rana_sierrae         3      adult &lt;NA&gt;
+5       rana_sierrae         3      adult &lt;NA&gt;
+6       rana_sierrae         1      adult &lt;NA&gt;
                              survey_id
-1 5032be22-1091-4f97-b0ab-e2c4e4414c07
-2 97b2d63c-1d58-4829-8735-c2b95b019651
-3 185ed419-3cf7-48d8-80b2-d1288681e55d
-4 a3730ce1-e172-418a-a634-769b184455ed
-5 bb18f750-d1ab-47b1-84ef-67c090d73da8
-6 353490f8-3b60-4ae2-b257-723b195d32ad</code></pre>
+1 b08ea21b-1b43-457c-80f9-79e522993fcd
+2 be0263cb-ba57-59b3-a58a-4e54b35c3968
+3 aa82047b-53ff-521b-a4d0-c27ca4327b62
+4 d21d76d3-32c2-54a3-aa59-25b4d8ef8fca
+5 96c482d1-838c-54ab-9d77-58bae2dae3bd
+6 08f54a99-5626-528a-9346-0f9efa23fabe</code></pre>
 </div>
 </div>
 <p>On close inspection we see that this is identical to the db_ves_adult_sql above. Now you have two ways to access the same data!</p>
@@ -542,11 +548,11 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>db_ves_adult.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            taxon_ves  count_ves  ...   sex                             survey_id
-0  pseudacris_regilla        1.0  ...  None  5032be22-1091-4f97-b0ab-e2c4e4414c07
-1  pseudacris_regilla        1.0  ...  None  97b2d63c-1d58-4829-8735-c2b95b019651
-2  pseudacris_regilla        1.0  ...  None  185ed419-3cf7-48d8-80b2-d1288681e55d
-3  pseudacris_regilla       14.0  ...  None  a3730ce1-e172-418a-a634-769b184455ed
-4        rana_muscosa        1.0  ...  None  bb18f750-d1ab-47b1-84ef-67c090d73da8
+0  thamnophis_elegans        4.0  ...  None  b08ea21b-1b43-457c-80f9-79e522993fcd
+1        rana_sierrae        2.0  ...  None  be0263cb-ba57-59b3-a58a-4e54b35c3968
+2  thamnophis_elegans        1.0  ...  None  aa82047b-53ff-521b-a4d0-c27ca4327b62
+3        rana_sierrae        3.0  ...  None  d21d76d3-32c2-54a3-aa59-25b4d8ef8fca
+4        rana_sierrae        3.0  ...  None  96c482d1-838c-54ab-9d77-58bae2dae3bd
 
 [5 rows x 5 columns]</code></pre>
 </div>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-04-07">
+<meta name="dcterms.date" content="2025-04-24">
 
 <title>5. Bd-Capture Workflow – RIBBiTR Data Access</title>
 <style>
@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Database updates</span></a>
+ <span class="menu-text">Database Resources</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -249,6 +249,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Database in Context</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././presentations/db_updates_2025-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Refresher 2025</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -287,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 7, 2025</p>
+      <p class="date">April 24, 2025</p>
     </div>
   </div>
   
@@ -329,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load column metadata</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"survey_data"</span>, <span class="st">"metadata_columns"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mdc <span class="ot">&lt;-</span> <span class="fu">tbl</span>(dbcon, <span class="fu">Id</span>(<span class="st">"public"</span>, <span class="st">"all_columns"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(table_schema <span class="sc">==</span> <span class="st">"survey_data"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -369,83 +375,83 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns are available</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data_bd_capture)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  [1] "result_id"                    "sample_id"                   
-  [3] "sample_name_bd"               "detected"                    
-  [5] "replicate"                    "replicate_count"             
-  [7] "replicate_detected"           "average_ct"                  
-  [9] "average_target_quant"         "total_qpcr_volume_uL"        
- [11] "qpcr_dilution_factor"         "volume_template_dna_uL"      
- [13] "extract_volume_uL"            "target_quant_per_swab"       
- [15] "average_its1_copies_per_swab" "swab_type"                   
- [17] "standard_target_type"         "standard"                    
- [19] "master_mix"                   "extraction_plate_name"       
- [21] "extraction_date"              "extraction_kit"              
- [23] "extraction_lab"               "qpcr_plate_name"             
- [25] "qpcr_well"                    "qpcr_plate_run"              
- [27] "qpcr_date"                    "qpcr_machine"                
- [29] "qpcr_lab"                     "comments_qpcr"               
- [31] "sample_name"                  "sample_type"                 
- [33] "capture_id"                   "sample_name_conflict"        
- [35] "taxon_capture"                "time_of_capture"             
- [37] "capture_transect_m"           "microhabitat_type"           
- [39] "body_temp_c"                  "substrate_temp_c"            
- [41] "svl_mm"                       "body_mass_g"                 
- [43] "life_stage"                   "sex"                         
- [45] "capture_animal_state"         "comments_capture"            
- [47] "photo"                        "photo_id"                    
- [49] "microhabitat_detailed"        "body_and_bag_mass_g"         
- [51] "bag_mass_g"                   "marked"                      
- [53] "capture_utme"                 "capture_utmn"                
- [55] "capture_type"                 "observer_capture"            
- [57] "bag_id"                       "processor"                   
- [59] "cmr_id"                       "microhabitat_notes"          
- [61] "tail_length_mm"               "bucket"                      
- [63] "inside_outside_serdp"         "temp_gun"                    
- [65] "clearcut"                     "number_of_mites"             
- [67] "flir"                         "tad_stage"                   
- [69] "survey_id"                    "microhabitat_wet"            
- [71] "capture_utm_zone"             "capture_latitude"            
- [73] "capture_longitude"            "start_time"                  
- [75] "end_time"                     "detection_type"              
- [77] "duration_minutes"             "observers_survey"            
- [79] "comments_survey"              "description"                 
- [81] "survey_quality"               "transect"                    
- [83] "number_observers"             "visit_id"                    
- [85] "start_timestamp_utc"          "end_timestamp_utc"           
- [87] "date"                         "time_of_day"                 
- [89] "campaign"                     "visit_status"                
- [91] "comments_visit"               "site_id"                     
- [93] "visit_lab"                    "project"                     
- [95] "site"                         "site_utm_zone"               
- [97] "site_utme"                    "site_utmn"                   
- [99] "area_sqr_m"                   "site_code"                   
-[101] "site_elevation_m"             "depth_m"                     
-[103] "topo"                         "wilderness"                  
-[105] "site_comments"                "region_id"                   
-[107] "site_name_alt"                "site_latitude"               
-[109] "site_longitude"               "geographic_area"             
-[111] "geographic_area_type"         "region"                      
-[113] "country_id"                   "time_zone"                   
-[115] "country"                      "iso_country_code"            </code></pre>
+<pre><code>  [1] "result_id"                     "sample_id"                    
+  [3] "sample_name_bd"                "detected"                     
+  [5] "replicates"                    "replicate_id"                 
+  [7] "cycle_quant"                   "target_quant"                 
+  [9] "total_qpcr_volume_uL"          "qpcr_dilution_factor"         
+ [11] "template_dna_volume_uL"        "extract_volume_uL"            
+ [13] "target_quant_per_swab"         "bd_its1_copies_per_swab"      
+ [15] "swab_type"                     "standard_target_type"         
+ [17] "standard"                      "master_mix"                   
+ [19] "extraction_plate_name"         "extraction_date"              
+ [21] "extraction_kit"                "extraction_lab"               
+ [23] "qpcr_plate_name"               "qpcr_well"                    
+ [25] "qpcr_date"                     "qpcr_machine"                 
+ [27] "qpcr_lab"                      "comments_qpcr"                
+ [29] "its1_copies_per_standard_unit" "singular_sample_results"      
+ [31] "sample_name"                   "sample_type"                  
+ [33] "capture_id"                    "sample_name_conflict"         
+ [35] "taxon_capture"                 "time_of_capture"              
+ [37] "capture_transect_m"            "microhabitat_type"            
+ [39] "body_temp_c"                   "substrate_temp_c"             
+ [41] "svl_mm"                        "body_mass_g"                  
+ [43] "life_stage"                    "sex"                          
+ [45] "capture_animal_state"          "comments_capture"             
+ [47] "photo"                         "photo_id"                     
+ [49] "microhabitat_detailed"         "body_and_bag_mass_g"          
+ [51] "bag_mass_g"                    "marked"                       
+ [53] "capture_utme"                  "capture_utmn"                 
+ [55] "capture_type"                  "observer_capture"             
+ [57] "bag_id"                        "processor"                    
+ [59] "cmr_id"                        "microhabitat_notes"           
+ [61] "tail_length_mm"                "bucket"                       
+ [63] "inside_outside_serdp"          "temp_gun"                     
+ [65] "clearcut"                      "number_of_mites"              
+ [67] "flir"                          "tad_stage"                    
+ [69] "survey_id"                     "microhabitat_wet"             
+ [71] "capture_utm_zone"              "capture_latitude"             
+ [73] "capture_longitude"             "start_time"                   
+ [75] "end_time"                      "detection_type"               
+ [77] "duration_minutes"              "observers_survey"             
+ [79] "comments_survey"               "description"                  
+ [81] "survey_quality"                "transect"                     
+ [83] "number_observers"              "visit_id"                     
+ [85] "start_timestamp_utc"           "end_timestamp_utc"            
+ [87] "date"                          "time_of_day"                  
+ [89] "campaign"                      "visit_status"                 
+ [91] "comments_visit"                "site_id"                      
+ [93] "visit_lab"                     "project"                      
+ [95] "site"                          "site_utm_zone"                
+ [97] "site_utme"                     "site_utmn"                    
+ [99] "area_sqr_m"                    "site_code"                    
+[101] "site_elevation_m"              "depth_m"                      
+[103] "topo"                          "wilderness"                   
+[105] "site_comments"                 "region_id"                    
+[107] "site_name_alt"                 "site_latitude"                
+[109] "site_longitude"                "geographic_area"              
+[111] "geographic_area_type"          "region"                       
+[113] "country_id"                    "time_zone"                    
+[115] "country"                       "iso_country_code"             </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can also see which columns come from specified tables, for context</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_bdqpcr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "result_id"                    "sample_id"                   
- [3] "sample_name_bd"               "detected"                    
- [5] "replicate"                    "replicate_count"             
- [7] "replicate_detected"           "average_ct"                  
- [9] "average_target_quant"         "total_qpcr_volume_uL"        
-[11] "qpcr_dilution_factor"         "volume_template_dna_uL"      
-[13] "extract_volume_uL"            "target_quant_per_swab"       
-[15] "average_its1_copies_per_swab" "swab_type"                   
-[17] "standard_target_type"         "standard"                    
-[19] "master_mix"                   "extraction_plate_name"       
-[21] "extraction_date"              "extraction_kit"              
-[23] "extraction_lab"               "qpcr_plate_name"             
-[25] "qpcr_well"                    "qpcr_plate_run"              
-[27] "qpcr_date"                    "qpcr_machine"                
-[29] "qpcr_lab"                     "comments_qpcr"               </code></pre>
+<pre><code> [1] "result_id"                     "sample_id"                    
+ [3] "sample_name_bd"                "detected"                     
+ [5] "replicates"                    "replicate_id"                 
+ [7] "cycle_quant"                   "target_quant"                 
+ [9] "total_qpcr_volume_uL"          "qpcr_dilution_factor"         
+[11] "template_dna_volume_uL"        "extract_volume_uL"            
+[13] "target_quant_per_swab"         "bd_its1_copies_per_swab"      
+[15] "swab_type"                     "standard_target_type"         
+[17] "standard"                      "master_mix"                   
+[19] "extraction_plate_name"         "extraction_date"              
+[21] "extraction_kit"                "extraction_lab"               
+[23] "qpcr_plate_name"               "qpcr_well"                    
+[25] "qpcr_date"                     "qpcr_machine"                 
+[27] "qpcr_lab"                      "comments_qpcr"                
+[29] "its1_copies_per_standard_unit" "singular_sample_results"      </code></pre>
 </div>
 </div>
 </section>
@@ -467,15 +473,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>         sample_id,</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>         sample_name_bd,</span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>         detected,</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>         average_ct,</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>         average_target_quant,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>         cycle_quant,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>         target_quant,</span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>         target_quant_per_swab,</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>         comments_capture,</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>         comments_qpcr,</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>         date,</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>         site,</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>         region,</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>         country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>         bd_its1_copies_per_swab,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>         comments_capture,</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>         comments_qpcr,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>         date,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>         site,</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>         region,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>         country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="explore-of-filtered-observations-by-life-stage-then-filter-again" class="level3">
@@ -488,21 +495,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(row_count)) <span class="sc">%&gt;%</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 12 × 2
+<pre><code># A tibble: 10 × 2
    life_stage    row_count
    &lt;chr&gt;           &lt;int64&gt;
- 1 adult             32301
+ 1 adult             32992
  2 juvenile           4158
- 3 tadpole            2639
- 4 subadult           1550
- 5 &lt;NA&gt;                734
+ 3 tadpole            2731
+ 4 subadult           1857
+ 5 &lt;NA&gt;               1102
  6 metamorph           429
  7 larva               417
- 8 unknown             367
- 9 larvae              218
-10 metamorphosed        28
-11 eggmass               7
-12 Unknown               1</code></pre>
+ 8 larvae              218
+ 9 metamorphosed        28
+10 eggmass               7</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015_life <span class="ot">&lt;-</span> data_bd_capture_2015 <span class="sc">%&gt;%</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(life_stage <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"juvenile"</span>,</span>
@@ -528,9 +533,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "sample_id",
   "sample_name_bd",
   "detected",
-  "average_ct",
-  "average_target_quant",
+  "cycle_quant",
+  "target_quant",
   "target_quant_per_swab",
+  "bd_its1_copies_per_swab",
   "comments_capture",
   "comments_qpcr",
   "date",
@@ -653,19 +659,19 @@ WHERE
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_bd_capture_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 19
+<pre><code># A tibble: 6 × 20
   capture_id        taxon_capture life_stage svl_mm body_mass_g survey_id cmr_id
   &lt;chr&gt;             &lt;chr&gt;         &lt;chr&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt; 
-1 1dc9fa0d-13bd-4d… rana_sierrae  adult          47          12 bd398b88… 0ba8e…
-2 26089c8a-50bd-43… rana_sierrae  adult          63          40 04c974ef… &lt;NA&gt;  
-3 d9d1ba1b-7c53-47… rana_sylvati… adult          48          14 87b52157… &lt;NA&gt;  
-4 d77ac0d1-e4a0-51… hylodes_phyl… adult          NA          NA ff6add20… &lt;NA&gt;  
-5 75cbebdb-663c-46… rana_sierrae  adult          54          15 1ff0ec2e… a68f1…
-6 9c2be8d0-665e-4d… rana_muscosa  adult          51          17 57d19e16… fad92…
-# ℹ 12 more variables: sample_id &lt;chr&gt;, sample_name_bd &lt;chr&gt;, detected &lt;lgl&gt;,
-#   average_ct &lt;dbl&gt;, average_target_quant &lt;dbl&gt;, target_quant_per_swab &lt;dbl&gt;,
-#   comments_capture &lt;chr&gt;, comments_qpcr &lt;chr&gt;, date &lt;date&gt;, site &lt;chr&gt;,
-#   region &lt;chr&gt;, country &lt;chr&gt;</code></pre>
+1 e7d61c9f-2090-48… lithobates_w… juvenile     25.2         2.4 50aa7c4d… &lt;NA&gt;  
+2 fc49145f-0c00-46… rhinella_mar… adult        24           3.7 50aa7c4d… &lt;NA&gt;  
+3 fd2c1dff-71e9-4c… silverstonei… adult        11.9         0.1 ae493222… &lt;NA&gt;  
+4 0bc7c564-f209-4c… craugastor_c… adult        39.6         5.9 ae493222… &lt;NA&gt;  
+5 cb14c647-106d-44… silverstonei… adult        15.5         0.4 ae493222… &lt;NA&gt;  
+6 b658b4e2-4065-40… colostethus_… juvenile     19           0.7 3e89868c… &lt;NA&gt;  
+# ℹ 13 more variables: sample_id &lt;chr&gt;, sample_name_bd &lt;chr&gt;, detected &lt;lgl&gt;,
+#   cycle_quant &lt;dbl&gt;, target_quant &lt;dbl&gt;, target_quant_per_swab &lt;dbl&gt;,
+#   bd_its1_copies_per_swab &lt;dbl&gt;, comments_capture &lt;chr&gt;, comments_qpcr &lt;chr&gt;,
+#   date &lt;date&gt;, site &lt;chr&gt;, region &lt;chr&gt;, country &lt;chr&gt;</code></pre>
 </div>
 </div>
 <p>These data are ready to be analyzed and visualized!</p>
@@ -741,12 +747,12 @@ WHERE
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns are available</span></span>
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>data_bd_capture.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['result_id', 'sample_id', 'sample_name_bd', 'detected', 'replicate', 'replicate_count', 'replicate_detected', 'average_ct', 'average_target_quant', 'total_qpcr_volume_uL', 'qpcr_dilution_factor', 'volume_template_dna_uL', 'extract_volume_uL', 'target_quant_per_swab', 'average_its1_copies_per_swab', 'swab_type', 'standard_target_type', 'standard', 'master_mix', 'extraction_plate_name', 'extraction_date', 'extraction_kit', 'extraction_lab', 'qpcr_plate_name', 'qpcr_well', 'qpcr_plate_run', 'qpcr_date', 'qpcr_machine', 'qpcr_lab', 'comments_qpcr', 'sample_name', 'sample_type', 'capture_id', 'sample_name_conflict', 'taxon_capture', 'time_of_capture', 'capture_transect_m', 'microhabitat_type', 'body_temp_c', 'substrate_temp_c', 'svl_mm', 'body_mass_g', 'life_stage', 'sex', 'capture_animal_state', 'comments_capture', 'photo', 'photo_id', 'microhabitat_detailed', 'body_and_bag_mass_g', 'bag_mass_g', 'marked', 'capture_utme', 'capture_utmn', 'capture_type', 'observer_capture', 'bag_id', 'processor', 'cmr_id', 'microhabitat_notes', 'tail_length_mm', 'bucket', 'inside_outside_serdp', 'temp_gun', 'clearcut', 'number_of_mites', 'flir', 'tad_stage', 'survey_id', 'microhabitat_wet', 'capture_utm_zone', 'capture_latitude', 'capture_longitude', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp_utc', 'end_timestamp_utc', 'date', 'time_of_day', 'campaign', 'visit_status', 'comments_visit', 'visit_id_right', 'site_id', 'visit_lab', 'project', 'site', 'site_utm_zone', 'site_utme', 'site_utmn', 'area_sqr_m', 'site_code', 'site_elevation_m', 'depth_m', 'topo', 'wilderness', 'site_comments', 'site_id_right', 'region_id', 'site_name_alt', 'site_latitude', 'site_longitude', 'geographic_area', 'geographic_area_type', 'region', 'region_id_right', 'country_id', 'time_zone', 'country', 'country_id_right', 'iso_country_code']</code></pre>
+<pre><code>['result_id', 'sample_id', 'sample_name_bd', 'detected', 'replicates', 'replicate_id', 'cycle_quant', 'target_quant', 'total_qpcr_volume_uL', 'qpcr_dilution_factor', 'template_dna_volume_uL', 'extract_volume_uL', 'target_quant_per_swab', 'bd_its1_copies_per_swab', 'swab_type', 'standard_target_type', 'standard', 'master_mix', 'extraction_plate_name', 'extraction_date', 'extraction_kit', 'extraction_lab', 'qpcr_plate_name', 'qpcr_well', 'qpcr_date', 'qpcr_machine', 'qpcr_lab', 'comments_qpcr', 'its1_copies_per_standard_unit', 'singular_sample_results', 'sample_name', 'sample_type', 'capture_id', 'sample_name_conflict', 'taxon_capture', 'time_of_capture', 'capture_transect_m', 'microhabitat_type', 'body_temp_c', 'substrate_temp_c', 'svl_mm', 'body_mass_g', 'life_stage', 'sex', 'capture_animal_state', 'comments_capture', 'photo', 'photo_id', 'microhabitat_detailed', 'body_and_bag_mass_g', 'bag_mass_g', 'marked', 'capture_utme', 'capture_utmn', 'capture_type', 'observer_capture', 'bag_id', 'processor', 'cmr_id', 'microhabitat_notes', 'tail_length_mm', 'bucket', 'inside_outside_serdp', 'temp_gun', 'clearcut', 'number_of_mites', 'flir', 'tad_stage', 'survey_id', 'microhabitat_wet', 'capture_utm_zone', 'capture_latitude', 'capture_longitude', 'start_time', 'end_time', 'detection_type', 'duration_minutes', 'observers_survey', 'comments_survey', 'description', 'survey_quality', 'transect', 'number_observers', 'survey_id_right', 'visit_id', 'start_timestamp_utc', 'end_timestamp_utc', 'date', 'time_of_day', 'campaign', 'visit_status', 'comments_visit', 'visit_id_right', 'site_id', 'visit_lab', 'project', 'site', 'site_utm_zone', 'site_utme', 'site_utmn', 'area_sqr_m', 'site_code', 'site_elevation_m', 'depth_m', 'topo', 'wilderness', 'site_comments', 'site_id_right', 'region_id', 'site_name_alt', 'site_latitude', 'site_longitude', 'geographic_area', 'geographic_area_type', 'region', 'region_id_right', 'country_id', 'time_zone', 'country', 'country_id_right', 'iso_country_code']</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can also see which columns come from specified tables, for context</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>db_bdqpcr.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['result_id', 'sample_id', 'sample_name_bd', 'detected', 'replicate', 'replicate_count', 'replicate_detected', 'average_ct', 'average_target_quant', 'total_qpcr_volume_uL', 'qpcr_dilution_factor', 'volume_template_dna_uL', 'extract_volume_uL', 'target_quant_per_swab', 'average_its1_copies_per_swab', 'swab_type', 'standard_target_type', 'standard', 'master_mix', 'extraction_plate_name', 'extraction_date', 'extraction_kit', 'extraction_lab', 'qpcr_plate_name', 'qpcr_well', 'qpcr_plate_run', 'qpcr_date', 'qpcr_machine', 'qpcr_lab', 'comments_qpcr']</code></pre>
+<pre><code>['result_id', 'sample_id', 'sample_name_bd', 'detected', 'replicates', 'replicate_id', 'cycle_quant', 'target_quant', 'total_qpcr_volume_uL', 'qpcr_dilution_factor', 'template_dna_volume_uL', 'extract_volume_uL', 'target_quant_per_swab', 'bd_its1_copies_per_swab', 'swab_type', 'standard_target_type', 'standard', 'master_mix', 'extraction_plate_name', 'extraction_date', 'extraction_kit', 'extraction_lab', 'qpcr_plate_name', 'qpcr_well', 'qpcr_date', 'qpcr_machine', 'qpcr_lab', 'comments_qpcr', 'its1_copies_per_standard_unit', 'singular_sample_results']</code></pre>
 </div>
 </div>
 </section>
@@ -768,17 +774,18 @@ WHERE
 <span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sample_id"</span>,</span>
 <span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sample_name_bd"</span>,</span>
 <span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"detected"</span>,</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"average_ct"</span>,</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"average_target_quant"</span>,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cycle_quant"</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"target_quant"</span>,</span>
 <span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"target_quant_per_swab"</span>,</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"comments_capture"</span>,</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"comments_qpcr"</span>,</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>,</span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"site"</span>,</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"region"</span>,</span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"country"</span></span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bd_its1_copies_per_swab"</span>,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"comments_capture"</span>,</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"comments_qpcr"</span>,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"site"</span>,</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"region"</span>,</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"country"</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="explore-of-filtered-observations-by-life-stage-then-filter-again-1" class="level3">
@@ -795,19 +802,17 @@ WHERE
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       life_stage  row_count
-0           adult      32301
-1        juvenile       4158
-2         tadpole       2639
-3        subadult       1550
-4            None        734
-5       metamorph        429
-6           larva        417
-7         unknown        367
-8          larvae        218
-9   metamorphosed         28
-10        eggmass          7
-11        Unknown          1</code></pre>
+<pre><code>      life_stage  row_count
+0          adult      32992
+1       juvenile       4158
+2        tadpole       2731
+3       subadult       1857
+4           None       1102
+5      metamorph        429
+6          larva        417
+7         larvae        218
+8  metamorphosed         28
+9        eggmass          7</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to desired life stages</span></span>
@@ -823,7 +828,7 @@ WHERE
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect our SQL "shopping list"</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015_life.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>'SELECT "t16"."capture_id", "t16"."taxon_capture", "t16"."life_stage", "t16"."svl_mm", "t16"."body_mass_g", "t16"."survey_id", "t16"."cmr_id", "t16"."sample_id", "t16"."sample_name_bd", "t16"."detected", "t16"."average_ct", "t16"."average_target_quant", "t16"."target_quant_per_swab", "t16"."comments_capture", "t16"."comments_qpcr", "t16"."date", "t16"."site", "t16"."region", "t16"."country" FROM (SELECT "t8"."result_id", "t8"."sample_id", "t8"."sample_name_bd", "t8"."detected", "t8"."replicate", "t8"."replicate_count", "t8"."replicate_detected", "t8"."average_ct", "t8"."average_target_quant", "t8"."total_qpcr_volume_uL", "t8"."qpcr_dilution_factor", "t8"."volume_template_dna_uL", "t8"."extract_volume_uL", "t8"."target_quant_per_swab", "t8"."average_its1_copies_per_swab", "t8"."swab_type", "t8"."standard_target_type", "t8"."standard", "t8"."master_mix", "t8"."extraction_plate_name", "t8"."extraction_date", "t8"."extraction_kit", "t8"."extraction_lab", "t8"."qpcr_plate_name", "t8"."qpcr_well", "t8"."qpcr_plate_run", "t8"."qpcr_date", "t8"."qpcr_machine", "t8"."qpcr_lab", "t8"."comments_qpcr", "t9"."sample_name", "t9"."sample_type", "t9"."capture_id", "t9"."sample_name_conflict", "t10"."taxon_capture", "t10"."time_of_capture", "t10"."capture_transect_m", "t10"."microhabitat_type", "t10"."body_temp_c", "t10"."substrate_temp_c", "t10"."svl_mm", "t10"."body_mass_g", "t10"."life_stage", "t10"."sex", "t10"."capture_animal_state", "t10"."comments_capture", "t10"."photo", "t10"."photo_id", "t10"."microhabitat_detailed", "t10"."body_and_bag_mass_g", "t10"."bag_mass_g", "t10"."marked", "t10"."capture_utme", "t10"."capture_utmn", "t10"."capture_type", "t10"."observer_capture", "t10"."bag_id", "t10"."processor", "t10"."cmr_id", "t10"."microhabitat_notes", "t10"."tail_length_mm", "t10"."bucket", "t10"."inside_outside_serdp", "t10"."temp_gun", "t10"."clearcut", "t10"."number_of_mites", "t10"."flir", "t10"."tad_stage", "t10"."survey_id", "t10"."microhabitat_wet", "t10"."capture_utm_zone", "t10"."capture_latitude", "t10"."capture_longitude", "t11"."start_time", "t11"."end_time", "t11"."detection_type", "t11"."duration_minutes", "t11"."observers_survey", "t11"."comments_survey", "t11"."description", "t11"."survey_quality", "t11"."transect", "t11"."number_observers", "t11"."survey_id" AS "survey_id_right", "t11"."visit_id", "t11"."start_timestamp_utc", "t11"."end_timestamp_utc", "t12"."date", "t12"."time_of_day", "t12"."campaign", "t12"."visit_status", "t12"."comments_visit", "t12"."visit_id" AS "visit_id_right", "t12"."site_id", "t12"."visit_lab", "t12"."project", "t13"."site", "t13"."site_utm_zone", "t13"."site_utme", "t13"."site_utmn", "t13"."area_sqr_m", "t13"."site_code", "t13"."site_elevation_m", "t13"."depth_m", "t13"."topo", "t13"."wilderness", "t13"."site_comments", "t13"."site_id" AS "site_id_right", "t13"."region_id", "t13"."site_name_alt", "t13"."site_latitude", "t13"."site_longitude", "t13"."geographic_area", "t13"."geographic_area_type", "t14"."region", "t14"."region_id" AS "region_id_right", "t14"."country_id", "t14"."time_zone", "t15"."country", "t15"."country_id" AS "country_id_right", "t15"."iso_country_code" FROM "survey_data"."bd_qpcr_results" AS "t8" INNER JOIN "survey_data"."sample" AS "t9" ON "t8"."sample_id" = "t9"."sample_id" INNER JOIN "survey_data"."capture" AS "t10" ON "t9"."capture_id" = "t10"."capture_id" LEFT OUTER JOIN "survey_data"."survey" AS "t11" ON "t10"."survey_id" = "t11"."survey_id" LEFT OUTER JOIN "survey_data"."visit" AS "t12" ON "t11"."visit_id" = "t12"."visit_id" LEFT OUTER JOIN "survey_data"."site" AS "t13" ON "t12"."site_id" = "t13"."site_id" LEFT OUTER JOIN "survey_data"."region" AS "t14" ON "t13"."region_id" = "t14"."region_id" LEFT OUTER JOIN "survey_data"."country" AS "t15" ON "t14"."country_id" = "t15"."country_id") AS "t16" WHERE "t16"."date" &gt;= \'2015-01-01\' AND "t16"."life_stage" IN (\'juvenile\', \'subadult\', \'adult\') AND "t16"."life_stage" IS NOT NULL'</code></pre>
+<pre><code>'SELECT "t16"."capture_id", "t16"."taxon_capture", "t16"."life_stage", "t16"."svl_mm", "t16"."body_mass_g", "t16"."survey_id", "t16"."cmr_id", "t16"."sample_id", "t16"."sample_name_bd", "t16"."detected", "t16"."cycle_quant", "t16"."target_quant", "t16"."target_quant_per_swab", "t16"."bd_its1_copies_per_swab", "t16"."comments_capture", "t16"."comments_qpcr", "t16"."date", "t16"."site", "t16"."region", "t16"."country" FROM (SELECT "t8"."result_id", "t8"."sample_id", "t8"."sample_name_bd", "t8"."detected", "t8"."replicates", "t8"."replicate_id", "t8"."cycle_quant", "t8"."target_quant", "t8"."total_qpcr_volume_uL", "t8"."qpcr_dilution_factor", "t8"."template_dna_volume_uL", "t8"."extract_volume_uL", "t8"."target_quant_per_swab", "t8"."bd_its1_copies_per_swab", "t8"."swab_type", "t8"."standard_target_type", "t8"."standard", "t8"."master_mix", "t8"."extraction_plate_name", "t8"."extraction_date", "t8"."extraction_kit", "t8"."extraction_lab", "t8"."qpcr_plate_name", "t8"."qpcr_well", "t8"."qpcr_date", "t8"."qpcr_machine", "t8"."qpcr_lab", "t8"."comments_qpcr", "t8"."its1_copies_per_standard_unit", "t8"."singular_sample_results", "t9"."sample_name", "t9"."sample_type", "t9"."capture_id", "t9"."sample_name_conflict", "t10"."taxon_capture", "t10"."time_of_capture", "t10"."capture_transect_m", "t10"."microhabitat_type", "t10"."body_temp_c", "t10"."substrate_temp_c", "t10"."svl_mm", "t10"."body_mass_g", "t10"."life_stage", "t10"."sex", "t10"."capture_animal_state", "t10"."comments_capture", "t10"."photo", "t10"."photo_id", "t10"."microhabitat_detailed", "t10"."body_and_bag_mass_g", "t10"."bag_mass_g", "t10"."marked", "t10"."capture_utme", "t10"."capture_utmn", "t10"."capture_type", "t10"."observer_capture", "t10"."bag_id", "t10"."processor", "t10"."cmr_id", "t10"."microhabitat_notes", "t10"."tail_length_mm", "t10"."bucket", "t10"."inside_outside_serdp", "t10"."temp_gun", "t10"."clearcut", "t10"."number_of_mites", "t10"."flir", "t10"."tad_stage", "t10"."survey_id", "t10"."microhabitat_wet", "t10"."capture_utm_zone", "t10"."capture_latitude", "t10"."capture_longitude", "t11"."start_time", "t11"."end_time", "t11"."detection_type", "t11"."duration_minutes", "t11"."observers_survey", "t11"."comments_survey", "t11"."description", "t11"."survey_quality", "t11"."transect", "t11"."number_observers", "t11"."survey_id" AS "survey_id_right", "t11"."visit_id", "t11"."start_timestamp_utc", "t11"."end_timestamp_utc", "t12"."date", "t12"."time_of_day", "t12"."campaign", "t12"."visit_status", "t12"."comments_visit", "t12"."visit_id" AS "visit_id_right", "t12"."site_id", "t12"."visit_lab", "t12"."project", "t13"."site", "t13"."site_utm_zone", "t13"."site_utme", "t13"."site_utmn", "t13"."area_sqr_m", "t13"."site_code", "t13"."site_elevation_m", "t13"."depth_m", "t13"."topo", "t13"."wilderness", "t13"."site_comments", "t13"."site_id" AS "site_id_right", "t13"."region_id", "t13"."site_name_alt", "t13"."site_latitude", "t13"."site_longitude", "t13"."geographic_area", "t13"."geographic_area_type", "t14"."region", "t14"."region_id" AS "region_id_right", "t14"."country_id", "t14"."time_zone", "t15"."country", "t15"."country_id" AS "country_id_right", "t15"."iso_country_code" FROM "survey_data"."bd_qpcr_results" AS "t8" INNER JOIN "survey_data"."sample" AS "t9" ON "t8"."sample_id" = "t9"."sample_id" INNER JOIN "survey_data"."capture" AS "t10" ON "t9"."capture_id" = "t10"."capture_id" LEFT OUTER JOIN "survey_data"."survey" AS "t11" ON "t10"."survey_id" = "t11"."survey_id" LEFT OUTER JOIN "survey_data"."visit" AS "t12" ON "t11"."visit_id" = "t12"."visit_id" LEFT OUTER JOIN "survey_data"."site" AS "t13" ON "t12"."site_id" = "t13"."site_id" LEFT OUTER JOIN "survey_data"."region" AS "t14" ON "t13"."region_id" = "t14"."region_id" LEFT OUTER JOIN "survey_data"."country" AS "t15" ON "t14"."country_id" = "t15"."country_id") AS "t16" WHERE "t16"."date" &gt;= \'2015-01-01\' AND "t16"."life_stage" IN (\'juvenile\', \'subadult\', \'adult\') AND "t16"."life_stage" IS NOT NULL'</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull data</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>data_bd_capture_final <span class="op">=</span> data_bd_capture_2015_life.to_pandas()</span>
@@ -832,13 +837,13 @@ WHERE
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>data_bd_capture_final.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                             capture_id  ... country
-0  1dc9fa0d-13bd-4d95-8594-10bb15e58d65  ...     usa
-1  26089c8a-50bd-43d3-8660-8895bdf21467  ...     usa
-2  d9d1ba1b-7c53-470b-9f6d-7db851d4c932  ...     usa
-3  d77ac0d1-e4a0-516a-b7d4-e86048daf755  ...  brazil
-4  75cbebdb-663c-46bd-a9ca-653893d6e8cd  ...     usa
+0  56423d81-b958-49ef-8a68-0dcf86ec6c4f  ...  panama
+1  b52072ba-1d39-481e-a996-a6d45ef0a54c  ...  panama
+2  ec14ee72-2590-4dea-8151-3f8a8939b0cb  ...  panama
+3  52baa107-dc96-4c2e-9063-86d9e31d6622  ...  panama
+4  2a9fa388-46c8-47d9-9152-b8bd0f9c4ec5  ...  panama
 
-[5 rows x 19 columns]</code></pre>
+[5 rows x 20 columns]</code></pre>
 </div>
 </div>
 <p>These data are ready to be analyzed and visualized!</p>
