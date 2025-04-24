@@ -9,7 +9,7 @@ editor: source
 
 ## 2025-04-22
 
-## Added & Changed
+### Added & Changed
 
 - Added/renamed and redefined columns in table `survey_data.bd_qpcr_results`
   - Added `its1_copies_per_standard_unit` to explicitly state copy number assumption when converting from zoospore to ITS1
@@ -26,7 +26,7 @@ editor: source
 
 ## 2025-04-02
 
-## Added
+### Added
 
 - New tables in survey_data schema:
   - `site_history` -- for tracking site treatments and human interventions which may be historically relevant, as context for interpretation and modeling efforts
