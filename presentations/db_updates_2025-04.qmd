@@ -1,7 +1,6 @@
 ---
-title: "RIBBITR Data Workshop"
+title: "RIBBITR Data Workshop PLE 2025"
 author: "Cob Staines"
-date: 2025-04-25
 format: revealjs
 editor: source
 incremental: true
@@ -14,12 +13,12 @@ incremental: true
 ### Session 1: Fri. 2-3pm
 
 - Engaging Presentation (0.5h)
-- *"What data where?"* walkthrough (.5h)
+- *"What data where?"* walkthrough (0.5h)
 
 ### Session 2: Sat. 1:30-3pm
 
 -   Collaborative coding session (1h)
--   "Needs & Next Steps" brainstorming (0.5h)
+-   *"Data needs & next steps"* brainstorm (0.5h)
 
 :::
 
@@ -28,7 +27,7 @@ incremental: true
   -   RIBBiTR database overview
   -   2025 database updates
 
-## Where do I fit in? {background-image="db_updates_2025-04/data_users_1.png" background-size="70%" background-position="center"}
+## Guiding Questions {background-image="db_updates_2025-04/data_users_1.png" background-size="70%" background-position="center"}
 
 <p style="height: 160px;">
 
@@ -48,15 +47,15 @@ incremental: true
 -   How to find more context for enhanced data use?
 :::
 
-## Where do I fit in? {background-image="db_updates_2025-04/data_users_1.png" background-size="70%" background-position="center"}
+## Guiding Questions {background-image="db_updates_2025-04/data_users_1.png" background-size="70%" background-position="center"}
 
 <p style="height: 180px;">
 
 </p>
 
-#### Reflect on your role & relationship to RIBBiTR data...
+#### Reflect on your roles & relationships with RIBBiTR data...
 
-- Take a moment to write down a data-related question which could help inform your work.
+- Take a moment to write down a data-related question which might help advance your work to address.
 
 ## Collaborative Data Management
 
@@ -96,13 +95,29 @@ incremental: true
 
 ## Database stats
 
-**[insert very impressive numbers]**
+Over 2000 site visits since October 2021!
 
-*("ooo" & "ahhh")*
+| Survey type  | count  |
+|--------|--------|
+| aural | 125   |
+| capture  | 1516   |
+| eDNA   | 84   |
+| environmental | 1728   |
+| visual | 1224   |
 
-## *Recent updates*
 
-#### Data updates
+## Database stats
+
+![Individual captures by taxon and region since the start of RIBBiTR](db_updates_2025-04/taxa_histogram.png){fig-alt="Histogram of taxa, colored by region" fig-align="center" width="600"}
+
+## Database stats
+
+![Samples by sample type collected since the start of RIBBiTR](db_updates_2025-04/sample_histogram_combined.png){fig-alt="Histogram of samples, colored by region" fig-align="center" width="600"}
+
+
+## *Recent database updates*
+
+#### Updated datasets
 
 -   Survey data
     -   Brazil (2022-2024)
@@ -112,7 +127,7 @@ incremental: true
 -   Bd qPCR Results
     -   Sierra Nevada 2022-2024
 
-## *Recent updates*
+## *Recent database updates*
 
 #### New datasets
 
@@ -125,7 +140,7 @@ incremental: true
 -   Site history
 -   Taxonomy
 
-## *Recent updates*
+## *Recent database updates*
 
 #### Restructured data tables
 
@@ -141,6 +156,8 @@ incremental: true
 -   Microbiome 16S metadata, sequences, and data products
 -   eDNA results
 
-## Revisiting our data questions {background-image="db_updates_2025-04/data_frog.jpeg" background-size="800px" background-position="bottom"}
+## Revisiting our data questions {background-image="db_updates_2025-04/data_frog.jpeg" background-size="600px" background-position="bottom right"}
+
+![](db_updates_2025-04/layout2_7_model.png){fig-alt="Complete model includes both context sharing and feedbacks" fig-align="center" width="600"}
 
 #### Let's dive in!
