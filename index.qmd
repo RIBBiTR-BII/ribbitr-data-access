@@ -14,3 +14,5 @@ Data access is an important component of our collaborative effort within RIBBiTR
 Any questions? Reach out to the [RIBBiTR data manager](mailto:jstaines@ucsb.edu).
 
 **_This website and its contents were created in R using [Quatro](https://quarto.org/). Source files are [available on Github](https://github.com/RIBBiTR-BII/ribbitr-data-access) under a [GPL v3 license](https://github.com/RIBBiTR-BII/ribbitr-data-access/blob/main/LICENSE)._**
+
+[RIBBiTR](https://ribbitr.com/) is a [Biology Integration Institute](https://www.nsf.gov/funding/opportunities/bii-biology-integration-institutes/), funded by the [National Science Foundation](https://www.nsf.gov/).

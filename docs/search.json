@@ -492,7 +492,7 @@
     "href": "index.html#closing-the-loop",
     "title": "RIBBiTR Data Access Center",
     "section": "Closing the loop",
-    "text": "Closing the loop\nData access is an important component of our collaborative effort within RIBBiTR, but it does not exist in a vacuum. Sharing of data is enhanced when coupled with other forms of high-context communication, such as interpersonal dialogue, collaborative writing and messaging, code sharing, and more. Confused by the data? See something odd? Encounter a barrier? help us increase the context in our communication by reaching out within the team for a conversation!\nAny questions? Reach out to the RIBBiTR data manager.\nThis website and its contents were created in R using Quatro. Source files are available on Github under a GPL v3 license."
+    "text": "Closing the loop\nData access is an important component of our collaborative effort within RIBBiTR, but it does not exist in a vacuum. Sharing of data is enhanced when coupled with other forms of high-context communication, such as interpersonal dialogue, collaborative writing and messaging, code sharing, and more. Confused by the data? See something odd? Encounter a barrier? help us increase the context in our communication by reaching out within the team for a conversation!\nAny questions? Reach out to the RIBBiTR data manager.\nThis website and its contents were created in R using Quatro. Source files are available on Github under a GPL v3 license.\nRIBBiTR is a Biology Integration Institute, funded by the National Science Foundation."
   },
   {
     "objectID": "index.html#lets-practice",
@@ -2215,21 +2215,21 @@
     "href": "presentations/db_updates_2025-04.html#recent-database-updates",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Recent database updates",
-    "text": "Recent database updates\nUpdated datasets\n\nSurvey data\n\nBrazil (2022-2024)\nPanama (2024)\nPennsylvania (2024)\nSierra Nevada (2024) + Kira PEP (2023)\n\nBd qPCR Results\n\nSierra Nevada 2022-2024"
+    "text": "Recent database updates\n\nUpdated datasets\n\nSurvey data\n\nBrazil (2022-2024)\nPanama (2024)\nPennsylvania (2024)\nSierra Nevada (2024) + Kira PEP (2023)\n\nBd qPCR Results\n\nSierra Nevada 2022-2024"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-database-updates-1",
     "href": "presentations/db_updates_2025-04.html#recent-database-updates-1",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Recent database updates",
-    "text": "Recent database updates\nNew datasets\n\nMucosome results\n\nNew support tables\n\nBd Isolates\nLab/point of contact\nSite history\nTaxonomy"
+    "text": "Recent database updates\n\nNew datasets\n\nMucosome results\n\n\n\nNew support tables\n\nBd Isolates\nLab/point of contact\nSite history\nTaxonomy"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-database-updates-2",
     "href": "presentations/db_updates_2025-04.html#recent-database-updates-2",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Recent database updates",
-    "text": "Recent database updates\nRestructured data tables\n\nMicroclimate\nEnvironmental\nBd qPCR results\neDNA"
+    "text": "Recent database updates\n\nRestructured data tables\n\nMicroclimate\nEnvironmental\nBd qPCR results\neDNA"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-database-updates-3",
@@ -2398,49 +2398,49 @@
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
+    "text": "Collaborative Data Management\n\n\n\nInformation cycles from field to database and (hopefully) back…"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-1",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-1",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
+    "text": "Collaborative Data Management\n\n\n\nInformation cycles from field to database and (hopefully) back…"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-2",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-2",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nInsight generated from the field through the research process"
+    "text": "Collaborative Data Management\n\n\n\nInsight generated from the field through the research process"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-3",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-3",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nRelevant insights support informed action (e.g. conservation)"
+    "text": "Collaborative Data Management\n\n\n\nRelevant insights support informed action (e.g. conservation)"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-4",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-4",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nBut critical context is lost along the way!"
+    "text": "Collaborative Data Management\n\n\n\nBut critical context is lost along the way!"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-5",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-5",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
+    "text": "Collaborative Data Management\n\n\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-6",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-6",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nFeedbacks at each step greatly increase responsiveness within the team"
+    "text": "Collaborative Data Management\n\n\n\nFeedbacks at each step greatly increase responsiveness within the team"
   },
   {
     "objectID": "resources/db_changelog.html#added-changed",
@@ -2486,8 +2486,8 @@
     "objectID": "presentations/db_updates_2025-04.html#workshop-overview",
     "href": "presentations/db_updates_2025-04.html#workshop-overview",
     "title": "RIBBITR Data Workshop PLE 2025",
-    "section": "Workshop Overview",
-    "text": "Workshop Overview\n\n\n\n\n\n\nSession 1: Fri. 2-3pm\n\nEngaging Presentation (0.5h)\n“What data where?” walkthrough (0.5h)\n\n\n\nSession 2: Sat. 1:30-3pm\n\nCollaborative coding session (1h)\n“Data needs & next steps” brainstorm (0.5h)"
+    "section": "",
+    "text": "Engaging Presentation (0.5h)\n“What data where?” walkthrough (0.5h)\n\n\n\n\n\nCollaborative coding session (1h)\n“Data needs & next steps” brainstorm (0.5h)"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#presentation-outline",
@@ -2501,7 +2501,7 @@
     "href": "presentations/db_updates_2025-04.html#ribbitr-database-overview",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "RIBBiTR database overview",
-    "text": "RIBBiTR database overview\n\nConceptual diagram of how disparate datasets connect"
+    "text": "RIBBiTR database overview\n\n\n\nConceptual diagram of how disparate datasets connect"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#database-stats",
@@ -2529,14 +2529,14 @@
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-7",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\nContext and feedback enhance data-driven insight generation and informed action"
+    "text": "Collaborative Data Management\n\n\n\nContext and feedback enhance data-driven insight generation and informed action"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#revisiting-our-data-questions",
     "href": "presentations/db_updates_2025-04.html#revisiting-our-data-questions",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Revisiting our data questions",
-    "text": "Revisiting our data questions\n\nLet’s dive in!"
+    "text": "Revisiting our data questions\n\n\n\n\n\n\nLet’s dive in!"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#whats-my-relationship-with-data",
@@ -2578,14 +2578,14 @@
     "href": "presentations/db_updates_2025-04.html#database-stats-1",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Database stats",
-    "text": "Database stats\n\nIndividual captures by taxon and region since the start of RIBBiTR"
+    "text": "Database stats\n\n\n\nIndividual captures by taxon and region since the start of RIBBiTR"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#database-stats-2",
     "href": "presentations/db_updates_2025-04.html#database-stats-2",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Database stats",
-    "text": "Database stats\n\nSamples by sample type collected since the start of RIBBiTR"
+    "text": "Database stats\n\n\n\nSamples by sample type collected since the start of RIBBiTR"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#guiding-questions",
@@ -2599,6 +2599,13 @@
     "href": "presentations/db_updates_2025-04.html#guiding-questions-1",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Guiding Questions",
-    "text": "Guiding Questions\n\n\nReflect on your roles & relationships with RIBBiTR data…\n\nTake a moment to write down a data-related question which might help advance your work to address."
+    "text": "Guiding Questions\n\n\n\nReflect on your roles & relationships with RIBBiTR data…\n\nTake a moment to write down a data-related question which might help advance your work to address."
+  },
+  {
+    "objectID": "presentations/db_updates_2025-04.html",
+    "href": "presentations/db_updates_2025-04.html",
+    "title": "RIBBITR Data Workshop PLE 2025",
+    "section": "",
+    "text": "Engaging Presentation (0.5h)\n“What data where?” walkthrough (0.5h)\n\n\n\n\n\nCollaborative coding session (1h)\n“Data needs & next steps” brainstorm (0.5h)"
   }
 ]
