@@ -7,6 +7,12 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-05-09
+
+### Added
+
+- Panama field survey data from November - December 2025
+
 ## 2025-04-22
 
 ### Added & Changed

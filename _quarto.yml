@@ -29,6 +29,8 @@ website:
                 href: ./resources/schema_diagram_survey_data.png
           - text: "Database Changelog"
             href: ./resources/db_changelog.md
+          - text: "RIBBiTR Github"
+            href: https://github.com/RIBBiTR-BII
       - section: "Presentations"
         contents: 
           - text: "Database in Context"
