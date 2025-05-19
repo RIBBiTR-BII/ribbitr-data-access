@@ -7,6 +7,14 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-05-19
+
+### Changed
+
+- New column: survey_data.survey.detection_subtype
+  - to distinguish between different detection protocols/methods within the same detection type, for example "swab" vs. "cmr" capture survey protocols of the Sierra Nevada team.
+  - Previously these surveys were lumped if they shared a start-time.
+
 ## 2025-05-09
 
 ### Added
