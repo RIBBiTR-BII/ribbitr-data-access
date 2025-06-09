@@ -7,6 +7,40 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2025-05-09
+
+### Added
+
+- New qPCR results from RZ Lab
+  - Brazil 2023
+  - Panama 2023
+  - Pennsylvania 2024
+
+## 2025-05-06
+
+### Added
+
+- New table `survey_data.project` to provide project specific metadata
+  - join with `survey_data.visit` table on column "project_id"
+- New column `survey_data.capture.treatment` for treatment info from controlled field experiements
+
+## 2025-05-02
+
+### Added
+
+- New tables for AMPs results
+  - `survey_data.amps_total` for total peptide quantities
+  - `survey_data.amps_maldi_peak` for MALDI-TOF peak results
+  - `survey_data.amps_maldi_intensity` for MALDI-TOF intensity results
+  - `survey_data.amps_gia` for results from Growth Inhibition Assays
+
+## 2025-05-22
+
+### Changed
+
+- Corrected geospatial (lat/lon & UTM) coordinates for most Panama sites
+- Corrected site "rabbit_stream" to region "campana" (from "el_valle")
+
 ## 2025-05-19
 
 ### Changed
