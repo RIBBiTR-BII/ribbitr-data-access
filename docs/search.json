@@ -2215,21 +2215,21 @@
     "href": "presentations/db_updates_2025-04.html#recent-database-updates",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Recent database updates",
-    "text": "Recent database updates\n\nUpdated datasets\n\nSurvey data\n\nBrazil (2022-2024)\nPanama (2024)\nPennsylvania (2024)\nSierra Nevada (2024) + Kira PEP (2023)\n\nBd qPCR Results\n\nSierra Nevada 2022-2024"
+    "text": "Recent database updates\nUpdated datasets\n\nSurvey data\n\nBrazil (2022-2024)\nPanama (2024)\nPennsylvania (2024)\nSierra Nevada (2024) + Kira PEP (2023)\n\nBd qPCR Results\n\nSierra Nevada 2022-2024"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-database-updates-1",
     "href": "presentations/db_updates_2025-04.html#recent-database-updates-1",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Recent database updates",
-    "text": "Recent database updates\n\nNew datasets\n\nMucosome results\n\n\n\nNew support tables\n\nBd Isolates\nLab/point of contact\nSite history\nTaxonomy"
+    "text": "Recent database updates\nNew datasets\n\nMucosome results\n\nNew support tables\n\nBd Isolates\nLab/point of contact\nSite history\nTaxonomy"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-database-updates-2",
     "href": "presentations/db_updates_2025-04.html#recent-database-updates-2",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Recent database updates",
-    "text": "Recent database updates\n\nRestructured data tables\n\nMicroclimate\nEnvironmental\nBd qPCR results\neDNA"
+    "text": "Recent database updates\nRestructured data tables\n\nMicroclimate\nEnvironmental\nBd qPCR results\neDNA"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#recent-database-updates-3",
@@ -2398,49 +2398,49 @@
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\n\n\nInformation cycles from field to database and (hopefully) back…"
+    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-1",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-1",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\n\n\nInformation cycles from field to database and (hopefully) back…"
+    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-2",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-2",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\n\n\nInsight generated from the field through the research process"
+    "text": "Collaborative Data Management\n\nInsight generated from the field through the research process"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-3",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-3",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\n\n\nRelevant insights support informed action (e.g. conservation)"
+    "text": "Collaborative Data Management\n\nRelevant insights support informed action (e.g. conservation)"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-4",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-4",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\n\n\nBut critical context is lost along the way!"
+    "text": "Collaborative Data Management\n\nBut critical context is lost along the way!"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-5",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-5",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\n\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
+    "text": "Collaborative Data Management\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#collaborative-data-management-6",
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-6",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\n\n\nFeedbacks at each step greatly increase responsiveness within the team"
+    "text": "Collaborative Data Management\n\nFeedbacks at each step greatly increase responsiveness within the team"
   },
   {
     "objectID": "resources/db_changelog.html#added-changed",
@@ -2486,8 +2486,8 @@
     "objectID": "presentations/db_updates_2025-04.html#workshop-overview",
     "href": "presentations/db_updates_2025-04.html#workshop-overview",
     "title": "RIBBITR Data Workshop PLE 2025",
-    "section": "",
-    "text": "Engaging Presentation (0.5h)\n“What data where?” walkthrough (0.5h)\n\n\n\n\n\nCollaborative coding session (1h)\n“Data needs & next steps” brainstorm (0.5h)"
+    "section": "Workshop Overview",
+    "text": "Workshop Overview\n\n\n\n\n\n\nSession 1: Fri. 2-3pm\n\nEngaging Presentation (0.5h)\n“What data where?” walkthrough (0.5h)\n\n\n\nSession 2: Sat. 1:30-3pm\n\nCollaborative coding session (1h)\n“Data needs & next steps” brainstorm (0.5h)"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#presentation-outline",
@@ -2501,7 +2501,7 @@
     "href": "presentations/db_updates_2025-04.html#ribbitr-database-overview",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "RIBBiTR database overview",
-    "text": "RIBBiTR database overview\n\n\n\nConceptual diagram of how disparate datasets connect"
+    "text": "RIBBiTR database overview\n\nConceptual diagram of how disparate datasets connect"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#database-stats",
@@ -2529,14 +2529,14 @@
     "href": "presentations/db_updates_2025-04.html#collaborative-data-management-7",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Collaborative Data Management",
-    "text": "Collaborative Data Management\n\n\n\nContext and feedback enhance data-driven insight generation and informed action"
+    "text": "Collaborative Data Management\n\nContext and feedback enhance data-driven insight generation and informed action"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#revisiting-our-data-questions",
     "href": "presentations/db_updates_2025-04.html#revisiting-our-data-questions",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Revisiting our data questions",
-    "text": "Revisiting our data questions\n\n\n\n\n\n\nLet’s dive in!"
+    "text": "Revisiting our data questions\n\nLet’s dive in!"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#whats-my-relationship-with-data",
@@ -2578,14 +2578,14 @@
     "href": "presentations/db_updates_2025-04.html#database-stats-1",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Database stats",
-    "text": "Database stats\n\n\n\nIndividual captures by taxon and region since the start of RIBBiTR"
+    "text": "Database stats\n\nIndividual captures by taxon and region since the start of RIBBiTR"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#database-stats-2",
     "href": "presentations/db_updates_2025-04.html#database-stats-2",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Database stats",
-    "text": "Database stats\n\n\n\nSamples by sample type collected since the start of RIBBiTR"
+    "text": "Database stats\n\nSamples by sample type collected since the start of RIBBiTR"
   },
   {
     "objectID": "presentations/db_updates_2025-04.html#guiding-questions",
@@ -2599,7 +2599,7 @@
     "href": "presentations/db_updates_2025-04.html#guiding-questions-1",
     "title": "RIBBITR Data Workshop PLE 2025",
     "section": "Guiding Questions",
-    "text": "Guiding Questions\n\n\n\nReflect on your roles & relationships with RIBBiTR data…\n\nTake a moment to write down a data-related question which might help advance your work to address."
+    "text": "Guiding Questions\n\n\nReflect on your roles & relationships with RIBBiTR data…\n\nTake a moment to write down a data-related question which might help advance your work to address."
   },
   {
     "objectID": "presentations/db_updates_2025-04.html",
@@ -2673,5 +2673,271 @@
       "Database Resources",
       "Database Changelog"
     ]
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#data-science-for-the-field",
+    "href": "presentations/sn_training_2025.html#data-science-for-the-field",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Data Science for the Field",
+    "text": "Data Science for the Field\nGoal: Empower you to bring a collaborative data science into your fieldwork (and careers)\nSome guiding questions - How does (consistent & thoughtful) field science impact analysis, storytelling & decision-making? - What might our work look like in 5 years? What skills might we cultivate now in preparation?\n\n\n\n\n\n\nWhat we might bring\n\nKnowledge of ecosystems of interest\nKnowledge of field protocols\nUnderstanding of research/conservation goals\nCommunication skills\nCuriosity\n\n\n\nSteps for us to get there:\n\nInformation flow\nCollaborative data management\nFrog vision\nQuestions & Poetic Wax"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#but-first-why",
+    "href": "presentations/sn_training_2025.html#but-first-why",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "But first, why!?",
+    "text": "But first, why!?\nWhat am I (are we) working towards?"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#but-first-a-big-why",
+    "href": "presentations/sn_training_2025.html#but-first-a-big-why",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "But first, a big why!?",
+    "text": "But first, a big why!?\nWhat are we working towards?"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-management",
+    "href": "presentations/sn_training_2025.html#collaborative-data-management",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-management-1",
+    "href": "presentations/sn_training_2025.html#collaborative-data-management-1",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-management-2",
+    "href": "presentations/sn_training_2025.html#collaborative-data-management-2",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nInsight generated from the field through the research process"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-management-3",
+    "href": "presentations/sn_training_2025.html#collaborative-data-management-3",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nRelevant insights support informed action (e.g. conservation)"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-management-4",
+    "href": "presentations/sn_training_2025.html#collaborative-data-management-4",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nBut critical context is lost along the way!"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-management-5",
+    "href": "presentations/sn_training_2025.html#collaborative-data-management-5",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-management-6",
+    "href": "presentations/sn_training_2025.html#collaborative-data-management-6",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nFeedbacks at each step greatly increase responsiveness within the team"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-management-7",
+    "href": "presentations/sn_training_2025.html#collaborative-data-management-7",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nContext and feedback enhance data-driven insight generation and informed action"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#other-slide",
+    "href": "presentations/sn_training_2025.html#other-slide",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "other slide",
+    "text": "other slide\n\n\n\n\n\n\nWhat we might bring\n\nKnowledge of ecosystems of interest\nKnowledge of field protocols\nUnderstanding of research/conservation goals\nCommunication skills\nCuriosity\n\n\n\nSteps for us to get there:\n\nInformation flow\nCollaborative data management\nFrog vision\nQuestions & Poetic Wax"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#how-do-we-do-this",
+    "href": "presentations/sn_training_2025.html#how-do-we-do-this",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "How do we do this",
+    "text": "How do we do this\nRIBBiTR background: The Research Q’s\n\nQ1: How does the history of disturbance differ across systems?\nQ2: How have changes at different levels of biological organization shaped overall system responses?\nQ3: What are the mechanisms contributing to resilience and are they shared across systems?\nQ4: How is resilience modulated by multiple interacting stressors?"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#ribbitr-background-who-we-are",
+    "href": "presentations/sn_training_2025.html#ribbitr-background-who-we-are",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "RIBBiTR background: Who we are",
+    "text": "RIBBiTR background: Who we are\n\nPart of the RIBBiTR team at Pymatuning, Pennsylvania, April 2025"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#ribbitr-background-what-we-do",
+    "href": "presentations/sn_training_2025.html#ribbitr-background-what-we-do",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "RIBBiTR background: What we do",
+    "text": "RIBBiTR background: What we do\nThe Research Q’s - Q1: How does the history of disturbance differ across systems? - Q2: How have changes at different levels of biological organization shaped overall system responses? - Q3: What are the mechanisms contributing to resilience and are they shared across systems? - Q4: How is resilience modulated by multiple interacting stressors?"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#ribbitr-who-we-are",
+    "href": "presentations/sn_training_2025.html#ribbitr-who-we-are",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "RIBBiTR — Who we are:",
+    "text": "RIBBiTR — Who we are:\nResilience Institute Bridging Biological Training and Research (RIBBiTR!)\n\nPart of the RIBBiTR team at Pymatuning Lab for Ecology, Pennsylvania, April 2025"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#ribbitr-what-we-do",
+    "href": "presentations/sn_training_2025.html#ribbitr-what-we-do",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "RIBBiTR — What we do:",
+    "text": "RIBBiTR — What we do:\nResillience Training\n\nTraining workshops\nCourse-based Undergraduate Research Experiences (CUREs)\nOutreach events (Artist in Residence, FrogWatch USA, Ectotherm ER, etc.)"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#ribbitr-how-we-do-it",
+    "href": "presentations/sn_training_2025.html#ribbitr-how-we-do-it",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "RIBBiTR — How we do it:",
+    "text": "RIBBiTR — How we do it:\n\nConceptual diagram of how disparate data streams might connect"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#ribbitr-what-we-do-1",
+    "href": "presentations/sn_training_2025.html#ribbitr-what-we-do-1",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "RIBBiTR — What we do:",
+    "text": "RIBBiTR — What we do:\nResiliance Research\n\nQ1: How does the history of disturbance differ across systems?\nQ2: How have changes at different levels of biological organization shaped overall system responses?\nQ3: What are the mechanisms contributing to resilience and are they shared across systems?\nQ4: How is resilience modulated by multiple interacting stressors?"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#field-science-through-a-collaborative-data-science-lens",
+    "href": "presentations/sn_training_2025.html#field-science-through-a-collaborative-data-science-lens",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Field Science through a Collaborative Data Science lens",
+    "text": "Field Science through a Collaborative Data Science lens\nGoal: Empower you to bring a collaborative data science into your fieldwork (and careers)\nSome guiding questions - How does (consistent & thoughtful) field science impact analysis, storytelling & decision-making? - What might our work look like in 5 years? What skills might we cultivate now in preparation?\n\n\n\n\n\n\nWhat we might bring\n\nKnowledge of ecosystems of interest\nKnowledge of field protocols\nUnderstanding of research/conservation goals\nCommunication skills\nCuriosity\n\n\n\nSteps for us to get there:\n\nInformation flow\nCollaborative data management\nFrog vision\nQuestions & Poetic Wax"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#field-science",
+    "href": "presentations/sn_training_2025.html#field-science",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Field Science",
+    "text": "Field Science\nthrough a Collaborative Data Science lens\nGoal: Empower you to bring a collaborative data science into your fieldwork (and careers)\nSome guiding questions - How does (consistent & thoughtful) field science impact analysis, storytelling & decision-making? - What might our work look like in 5 years? What skills might we cultivate now in preparation?\n\n\n\n\n\n\nWhat we might bring\n\nKnowledge of ecosystems of interest\nKnowledge of field protocols\nUnderstanding of research/conservation goals\nCommunication skills\nCuriosity\n\n\n\nSteps for us to get there:\n\nInformation flow\nCollaborative data management\nFrog vision\nQuestions & Poetic Wax"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#field-science-with-collaborative-data-science-lens",
+    "href": "presentations/sn_training_2025.html#field-science-with-collaborative-data-science-lens",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Field Science with Collaborative Data Science lens",
+    "text": "Field Science with Collaborative Data Science lens\nGoal: Empower you to bring a collaborative data science into your fieldwork (and careers)\nSome guiding questions - How does (consistent & thoughtful) field science impact analysis, storytelling & decision-making? - What might our work look like in 5 years? What skills might we cultivate now in preparation?\n\n\n\n\n\n\nWhat we might bring\n\nKnowledge of ecosystems of interest\nKnowledge of field protocols\nUnderstanding of research/conservation goals\nCommunication skills\nCuriosity\n\n\n\nSteps for us to get there:\n\nInformation flow\nCollaborative data management\nFrog vision\nQuestions & Poetic Wax"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#collaborative-data-science-for-the-field",
+    "href": "presentations/sn_training_2025.html#collaborative-data-science-for-the-field",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Collaborative Data Science for the Field",
+    "text": "Collaborative Data Science for the Field\nGoal: Empower you to bring a collaborative data science into your fieldwork (and careers)\nSome guiding questions - How does (consistent & thoughtful) field science impact analysis, storytelling & decision-making? - What might our work look like in 5 years? What skills might we cultivate now in preparation?\n\n\n\n\n\n\nWhat we might bring\n\nKnowledge of ecosystems of interest\nKnowledge of field protocols\nUnderstanding of research/conservation goals\nCommunication skills\nCuriosity\n\n\n\nSteps for us to get there:\n\nInformation flow\nCollaborative data management\nFrog vision\nQuestions & Poetic Wax"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#section",
+    "href": "presentations/sn_training_2025.html#section",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "",
+    "text": "Field Science through a Collaborative Data Science lens\nGoal: Empower you to bring a collaborative data science into your fieldwork (and careers)\nSome guiding questions - How does (consistent & thoughtful) field science impact analysis, storytelling & decision-making? - What might our work look like in 5 years? What skills might we cultivate now in preparation?\n\n\n\n\n\n\nWhat we might bring\n\nKnowledge of ecosystems of interest\nKnowledge of field protocols\nUnderstanding of research/conservation goals\nCommunication skills\nCuriosity\n\n\n\nSteps for us to get there:\n\nInformation flow\nCollaborative data management\nFrog vision\nQuestions & Poetic Wax"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#field-science-a-data-science-perspective",
+    "href": "presentations/sn_training_2025.html#field-science-a-data-science-perspective",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Field Science: A data science perspective",
+    "text": "Field Science: A data science perspective\nGoal: Empower you to bring a collaborative data science lens into your fieldwork (and careers)\n\nHow does field science impact analysis, storytelling & decision-making?\nWhat might our work look like in 5 years? What steps might we take now in preparation?"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#takeaways",
+    "href": "presentations/sn_training_2025.html#takeaways",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nYour work plays a central role in how we respond to ecosystem changes in the future\nWithin-project feedbacks enhance the value of our work\nField scientists have the unique opportunity and responsibility to share context beyond what the data alone can tell us\nInterpersonal communication skills are highly useful, transferable & urgently needed in collaborative research"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#ribbitr-where-we-do-it",
+    "href": "presentations/sn_training_2025.html#ribbitr-where-we-do-it",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "RIBBiTR — Where we do it:",
+    "text": "RIBBiTR — Where we do it:\n\nMap of Field Sites within the RIBBiTR database (2025)"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#exchanging-perspectives",
+    "href": "presentations/sn_training_2025.html#exchanging-perspectives",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Exchanging perspectives",
+    "text": "Exchanging perspectives\n\nTadpoles at 70459. Photo by Roland Knapp."
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#exchanging-perspectives-what-you-see",
+    "href": "presentations/sn_training_2025.html#exchanging-perspectives-what-you-see",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Exchanging perspectives: what you see",
+    "text": "Exchanging perspectives: what you see\n ## Exchanging perspectives ### What we see\n\n\n# A tibble: 27 × 51\n   taxon_ves         count_ves ves_transect_m microhabitat_type life_stage sex  \n   &lt;chr&gt;                 &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;             &lt;chr&gt;      &lt;chr&gt;\n 1 rana_sierrae             10 &lt;NA&gt;           outlet            tadpole    &lt;NA&gt; \n 2 rana_sierrae              8 &lt;NA&gt;           outlet            tadpole    &lt;NA&gt; \n 3 rana_sierrae           5428 &lt;NA&gt;           lake              tadpole    &lt;NA&gt; \n 4 rana_sierrae             46 &lt;NA&gt;           inlet             tadpole    &lt;NA&gt; \n 5 rana_sierrae            256 &lt;NA&gt;           lake              tadpole    &lt;NA&gt; \n 6 rana_sierrae            355 &lt;NA&gt;           lake              tadpole    &lt;NA&gt; \n 7 rana_sierrae           1370 &lt;NA&gt;           lake              tadpole    &lt;NA&gt; \n 8 pseudacris_regil…        75 &lt;NA&gt;           lake              tadpole    &lt;NA&gt; \n 9 rana_sierrae              2 &lt;NA&gt;           inlet             tadpole    &lt;NA&gt; \n10 rana_sierrae            405 &lt;NA&gt;           lake              tadpole    &lt;NA&gt; \n# ℹ 17 more rows\n# ℹ 45 more variables: comments_ves &lt;chr&gt;, microhabitat_detailed &lt;chr&gt;,\n#   observer_ves &lt;chr&gt;, visual_animal_state &lt;chr&gt;, ves_id &lt;chr&gt;,\n#   survey_id &lt;chr&gt;, start_time &lt;time&gt;, end_time &lt;time&gt;, detection_type &lt;chr&gt;,\n#   duration_minutes &lt;int&gt;, observers_survey &lt;chr&gt;, comments_survey &lt;chr&gt;,\n#   description &lt;chr&gt;, survey_quality &lt;chr&gt;, transect &lt;chr&gt;,\n#   number_observers &lt;int&gt;, visit_id &lt;chr&gt;, start_timestamp_utc &lt;dttm&gt;, …"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#exchanging-perspectives-1",
+    "href": "presentations/sn_training_2025.html#exchanging-perspectives-1",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Exchanging perspectives",
+    "text": "Exchanging perspectives\nWhat we see\n\ndata_of_interest = db_ves %&gt;%\n  left_join(db_survey, by = \"survey_id\") %&gt;%\n  left_join(db_visit, by = \"visit_id\") %&gt;%\n  left_join(db_site, by = \"site_id\") %&gt;%\n  filter(site == \"70459\",\n         life_stage == \"tadpole\") %&gt;%\n  select(site,\n         date,\n         taxon_ves,\n         count_ves,\n         life_stage,\n         comments_ves) %&gt;%\n  arrange(date) %&gt;%\n  collect()\n\ndata_of_interest"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#exchanging-perspectives-1-output",
+    "href": "presentations/sn_training_2025.html#exchanging-perspectives-1-output",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Exchanging perspectives",
+    "text": "Exchanging perspectives\n\n# A tibble: 27 × 6\n   site  date       taxon_ves          count_ves life_stage comments_ves        \n   &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;                  &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;               \n 1 70459 2001-08-08 rana_sierrae             405 tadpole    \"all infected indiv…\n 2 70459 2005-08-25 rana_sierrae             161 tadpole    \"\"                  \n 3 70459 2006-09-19 rana_sierrae              25 tadpole    \"all but 2 were 1st…\n 4 70459 2008-07-30 rana_sierrae               1 tadpole    \"\"                  \n 5 70459 2008-07-30 rana_sierrae            2010 tadpole    \"\"                  \n 6 70459 2009-09-03 rana_sierrae               5 tadpole    \"same animals as co…\n 7 70459 2009-09-03 rana_sierrae             256 tadpole    \"similar numbers of…\n 8 70459 2009-09-03 rana_sierrae               2 tadpole    \"\"                  \n 9 70459 2012-08-18 rana_sierrae             355 tadpole    \"\"                  \n10 70459 2016-08-21 pseudacris_regilla        75 tadpole    \"\"                  \n# ℹ 17 more rows"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#field-perspective",
+    "href": "presentations/sn_training_2025.html#field-perspective",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Field perspective",
+    "text": "Field perspective\n\nTadpoles at 70459. Photo by Roland Knapp."
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#analysis-perspective",
+    "href": "presentations/sn_training_2025.html#analysis-perspective",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Analysis perspective",
+    "text": "Analysis perspective\n\ndata_of_interest = db_ves %&gt;%\n  left_join(db_survey, by = \"survey_id\") %&gt;%\n  left_join(db_visit, by = \"visit_id\") %&gt;%\n  left_join(db_site, by = \"site_id\") %&gt;%\n  filter(site == \"70459\",\n         life_stage == \"tadpole\") %&gt;%\n  select(site,\n         date,\n         taxon_ves,\n         count_ves,\n         life_stage,\n         comments_ves) %&gt;%\n  arrange(date) %&gt;%\n  collect()\n\ndata_of_interest"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#analysis-perspective-output",
+    "href": "presentations/sn_training_2025.html#analysis-perspective-output",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Analysis perspective",
+    "text": "Analysis perspective\n\n# A tibble: 27 × 6\n   site  date       taxon_ves          count_ves life_stage comments_ves        \n   &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;                  &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;               \n 1 70459 2001-08-08 rana_sierrae             405 tadpole    \"all infected indiv…\n 2 70459 2005-08-25 rana_sierrae             161 tadpole    \"\"                  \n 3 70459 2006-09-19 rana_sierrae              25 tadpole    \"all but 2 were 1st…\n 4 70459 2008-07-30 rana_sierrae               1 tadpole    \"\"                  \n 5 70459 2008-07-30 rana_sierrae            2010 tadpole    \"\"                  \n 6 70459 2009-09-03 rana_sierrae               5 tadpole    \"same animals as co…\n 7 70459 2009-09-03 rana_sierrae             256 tadpole    \"similar numbers of…\n 8 70459 2009-09-03 rana_sierrae               2 tadpole    \"\"                  \n 9 70459 2012-08-18 rana_sierrae             355 tadpole    \"\"                  \n10 70459 2016-08-21 pseudacris_regilla        75 tadpole    \"\"                  \n# ℹ 17 more rows"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#leveraging-our-perspectives",
+    "href": "presentations/sn_training_2025.html#leveraging-our-perspectives",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Leveraging our perspectives",
+    "text": "Leveraging our perspectives"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#learning-from-how-frogs-see-things",
+    "href": "presentations/sn_training_2025.html#learning-from-how-frogs-see-things",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Learning from how frogs see things",
+    "text": "Learning from how frogs see things"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#lessons-from-how-frogs-see-things",
+    "href": "presentations/sn_training_2025.html#lessons-from-how-frogs-see-things",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Lessons from how frogs see things",
+    "text": "Lessons from how frogs see things\n\nPhoto credit?"
+  },
+  {
+    "objectID": "presentations/sn_training_2025.html#thank-you",
+    "href": "presentations/sn_training_2025.html#thank-you",
+    "title": "Sierra Nevada Field Team Training 2025: Data Science",
+    "section": "Thank you!",
+    "text": "Thank you!\nQuestions & Discussion"
   }
 ]

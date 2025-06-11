@@ -1,0 +1,140 @@
+---
+title: "Sierra Nevada Field Team Training 2025: Data Science"
+author: "Cob Staines"
+format: revealjs
+editor: source
+incremental: true
+---
+
+## Field Science: A data science perspective
+
+**Goal:** *Empower you to bring a collaborative data science lens into your fieldwork (and careers)*
+
+- How does field science impact analysis, storytelling & decision-making? 
+- What might our work look like in 5 years? What steps might we take now in preparation?
+
+## But first, why!?
+#### What am I (are we) working towards?
+
+## RIBBiTR — Who we are:
+#### Resilience Institute Bridging Biological Training and Research (RIBBiTR!)
+![Part of the RIBBiTR team at Pymatuning Lab for Ecology, Pennsylvania, April 2025](sn_training_2025/RIBBiTR_Y4_PLE_everyone_crop.jpg){fig-alt="Part of the RIBBiTR team at Pymatuning, Pennsylvania, April 2025" fig-align="center" width="600"}
+
+## RIBBiTR — What we do:
+
+#### Resillience Training
+ - Training workshops
+ - Course-based Undergraduate Research Experiences (CUREs)
+ - Outreach events (Artist in Residence, FrogWatch USA, Ectotherm ER, etc.)
+ 
+
+## RIBBiTR — What we do:
+
+#### Resiliance Research
+- **Q1**: How does the history of disturbance differ across systems?
+- **Q2**: How have changes at different levels of biological organization shaped overall system responses?
+- **Q3**: What are the mechanisms contributing to resilience and are they shared across systems?
+- **Q4**: How is resilience modulated by multiple interacting stressors?
+
+## RIBBiTR — Where we do it:
+![Map of Field Sites within the RIBBiTR database (2025)](sn_training_2025/ribbitr_sites.png){fig-alt="Map of Field Sites within the RIBBiTR database (2025)" fig-align="center" width="600"}
+
+## RIBBiTR — How we do it:
+![Conceptual diagram of how disparate data streams might connect](db_updates_2025-04/database_datasets.drawio.png){fig-alt="Conceptual diagram linking field and lab datasets with support tables" fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![Information cycles from field to database and (hopefully) back...](db_updates_2025-04/layout2_1_cycle.png){fig-alt="Information flows cyclically from frogs to humans, to computers, apps, and databases, and then back to humans and (hopefully) back to frogs" fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![Information cycles from field to database and (hopefully) back...](db_updates_2025-04/layout2_1_labeled.png){fig-alt="Information flows cyclically from frogs to humans, to computers, apps, and databases, and then back to humans and (hopefully) back to frogs" fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![Insight generated from the field through the research process](db_updates_2025-04/layout2_2_insight.png){fig-alt="Insight generation is the primary component of the displayed cycle." fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![Relevant insights support informed action (e.g. conservation)](db_updates_2025-04/layout2_3_action.png){fig-alt="Informed action brings insight back to the field (and frogs), closing the loop." fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![But critical context is lost along the way!](db_updates_2025-04/layout2_4_needs.png){fig-alt="Context is lost as we move towards data, and context is needed as we move back toward the field." fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![Transmission of context at each step is key to supporting locally-relevant, informed action](db_updates_2025-04/layout2_5_context.png){fig-alt="Context can be transmitted through shared experiences, meetings, calls, emails, code and document sharing, and data" fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![Feedbacks at each step greatly increase responsiveness within the team](db_updates_2025-04/layout2_6_feedback.png){fig-alt="Feedback can also be transmitted through shared experiences, conversations, meetings, calls, emails, and code sharing." fig-align="center" width="600"}
+
+## Collaborative Data Management
+
+![Context and feedback enhance data-driven insight generation and informed action](db_updates_2025-04/layout2_7_model.png){fig-alt="Complete model includes both context sharing and feedbacks" fig-align="center" width="600"}
+
+## Field perspective
+![Tadpoles at 70459. Photo by Roland Knapp.](sn_training_2025/RASI_tadpoles_70459c.jpg){fig-alt="Complete model includes both context sharing and feedbacks" fig-align="center" width="600"}
+
+## Analysis perspective
+```{r}
+#| eval: true
+#| output: false
+#| code-fold: true
+#| code-summary: "Show setup code"
+
+# setup
+librarian::shelf(tidyverse, dbplyr, here, janitor, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)
+
+## Connect to DB
+dbcon <- hopToDB("ribbitr")
+
+# table pointers
+db_ves = tbl(dbcon, Id("survey_data", "ves"))
+db_survey = tbl(dbcon, Id("survey_data", "survey"))
+db_visit = tbl(dbcon, Id("survey_data", "visit"))
+db_site = tbl(dbcon, Id("survey_data", "site"))
+```
+
+```{r}
+#| echo: true
+#| output-location: slide
+
+data_of_interest = db_ves %>%
+  left_join(db_survey, by = "survey_id") %>%
+  left_join(db_visit, by = "visit_id") %>%
+  left_join(db_site, by = "site_id") %>%
+  filter(site == "70459",
+         life_stage == "tadpole") %>%
+  select(site,
+         date,
+         taxon_ves,
+         count_ves,
+         life_stage,
+         comments_ves) %>%
+  arrange(date) %>%
+  collect()
+
+data_of_interest
+```
+## Leveraging our perspectives
+::: {layout-ncol=2}
+![](sn_training_2025/fulcrum-logo1.png)
+![](sn_training_2025/RAMU_22008_a.JPG)
+
+![](sn_training_2025/WhatsApp Image 2025-06-11 at 12.18.21.jpeg){fig-align="left" width="300"}
+
+:::
+
+## Lessons from how frogs see things
+![Photo credit?](sn_training_2025/RASIadult_50183-13.jpg){fig-align="center" width="600"}
+
+## Takeaways
+- Your work plays a central role in **how we respond** to ecosystem changes in the future
+- Within-project **feedbacks** enhance the value of our work
+- Field scientists have the unique opportunity and **responsibility to share context** beyond what the data alone can tell us
+- **Interpersonal communication** skills are highly useful, transferable & urgently needed in collaborative research
+
+## Thank you!
+Questions & Discussion
