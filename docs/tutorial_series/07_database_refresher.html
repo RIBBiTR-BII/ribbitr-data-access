@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-04-24">
+<meta name="dcterms.date" content="2025-09-29">
 
 <title>7. Database Refresher – RIBBiTR Data Access</title>
 <style>
@@ -232,6 +232,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://github.com/RIBBiTR-BII" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR Github</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -315,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 24, 2025</p>
+      <p class="date">September 29, 2025</p>
     </div>
   </div>
   
@@ -420,30 +426,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns come from specified tables using the pointer, just like a data table</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_capture)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "taxon_capture"         "time_of_capture"       "capture_transect_m"   
- [4] "microhabitat_type"     "body_temp_c"           "substrate_temp_c"     
- [7] "svl_mm"                "body_mass_g"           "life_stage"           
-[10] "sex"                   "capture_animal_state"  "comments_capture"     
-[13] "photo"                 "photo_id"              "microhabitat_detailed"
-[16] "body_and_bag_mass_g"   "bag_mass_g"            "marked"               
-[19] "capture_utme"          "capture_utmn"          "capture_type"         
-[22] "observer_capture"      "bag_id"                "processor"            
-[25] "cmr_id"                "microhabitat_notes"    "tail_length_mm"       
-[28] "bucket"                "inside_outside_serdp"  "temp_gun"             
-[31] "clearcut"              "number_of_mites"       "flir"                 
-[34] "tad_stage"             "capture_id"            "survey_id"            
-[37] "microhabitat_wet"      "capture_utm_zone"      "capture_latitude"     
-[40] "capture_longitude"    </code></pre>
+<pre><code> [1] "taxon_capture"            "time_of_capture"         
+ [3] "capture_transect_m"       "microhabitat_type"       
+ [5] "body_temp_c"              "substrate_temp_c"        
+ [7] "svl_mm"                   "body_mass_g"             
+ [9] "life_stage"               "sex"                     
+[11] "capture_animal_state"     "comments_capture"        
+[13] "photo"                    "photo_id"                
+[15] "microhabitat_detailed"    "body_and_bag_mass_g"     
+[17] "bag_mass_g"               "marked"                  
+[19] "capture_utme"             "capture_utmn"            
+[21] "capture_type"             "observer_capture"        
+[23] "bag_id"                   "processor"               
+[25] "cmr_id"                   "microhabitat_notes"      
+[27] "tail_length_mm"           "bucket"                  
+[29] "inside_outside_serdp"     "temp_gun"                
+[31] "clearcut"                 "number_of_mites"         
+[33] "flir"                     "tad_stage"               
+[35] "capture_id"               "survey_id"               
+[37] "microhabitat_wet"         "capture_utm_zone"        
+[39] "capture_latitude"         "capture_longitude"       
+[41] "timestamp_of_capture_utc" "treatment"               </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can count the rows of this table</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>db_capture <span class="sc">%&gt;%</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 1]
-# Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
+# Database: postgres  [ple_coding@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1   80281</code></pre>
+1   80655</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># left join supporting tables</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>db_capture_country <span class="ot">=</span> db_capture <span class="sc">%&gt;%</span></span>
@@ -456,34 +469,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># see what columns are available in the joined table pointer</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_capture_country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "taxon_capture"         "time_of_capture"       "capture_transect_m"   
- [4] "microhabitat_type"     "body_temp_c"           "substrate_temp_c"     
- [7] "svl_mm"                "body_mass_g"           "life_stage"           
-[10] "sex"                   "capture_animal_state"  "comments_capture"     
-[13] "photo"                 "photo_id"              "microhabitat_detailed"
-[16] "body_and_bag_mass_g"   "bag_mass_g"            "marked"               
-[19] "capture_utme"          "capture_utmn"          "capture_type"         
-[22] "observer_capture"      "bag_id"                "processor"            
-[25] "cmr_id"                "microhabitat_notes"    "tail_length_mm"       
-[28] "bucket"                "inside_outside_serdp"  "temp_gun"             
-[31] "clearcut"              "number_of_mites"       "flir"                 
-[34] "tad_stage"             "capture_id"            "survey_id"            
-[37] "microhabitat_wet"      "capture_utm_zone"      "capture_latitude"     
-[40] "capture_longitude"     "start_time"            "end_time"             
-[43] "detection_type"        "duration_minutes"      "observers_survey"     
-[46] "comments_survey"       "description"           "survey_quality"       
-[49] "transect"              "number_observers"      "visit_id"             
-[52] "start_timestamp_utc"   "end_timestamp_utc"     "date"                 
-[55] "time_of_day"           "campaign"              "visit_status"         
-[58] "comments_visit"        "site_id"               "visit_lab"            
-[61] "project"               "site"                  "site_utm_zone"        
-[64] "site_utme"             "site_utmn"             "area_sqr_m"           
-[67] "site_code"             "site_elevation_m"      "depth_m"              
-[70] "topo"                  "wilderness"            "site_comments"        
-[73] "region_id"             "site_name_alt"         "site_latitude"        
-[76] "site_longitude"        "geographic_area"       "geographic_area_type" 
-[79] "region"                "country_id"            "time_zone"            
-[82] "country"               "iso_country_code"     </code></pre>
+<pre><code> [1] "taxon_capture"            "time_of_capture"         
+ [3] "capture_transect_m"       "microhabitat_type"       
+ [5] "body_temp_c"              "substrate_temp_c"        
+ [7] "svl_mm"                   "body_mass_g"             
+ [9] "life_stage"               "sex"                     
+[11] "capture_animal_state"     "comments_capture"        
+[13] "photo"                    "photo_id"                
+[15] "microhabitat_detailed"    "body_and_bag_mass_g"     
+[17] "bag_mass_g"               "marked"                  
+[19] "capture_utme"             "capture_utmn"            
+[21] "capture_type"             "observer_capture"        
+[23] "bag_id"                   "processor"               
+[25] "cmr_id"                   "microhabitat_notes"      
+[27] "tail_length_mm"           "bucket"                  
+[29] "inside_outside_serdp"     "temp_gun"                
+[31] "clearcut"                 "number_of_mites"         
+[33] "flir"                     "tad_stage"               
+[35] "capture_id"               "survey_id"               
+[37] "microhabitat_wet"         "capture_utm_zone"        
+[39] "capture_latitude"         "capture_longitude"       
+[41] "timestamp_of_capture_utc" "treatment"               
+[43] "start_time"               "end_time"                
+[45] "detection_type"           "duration_minutes"        
+[47] "observers_survey"         "comments_survey"         
+[49] "description"              "survey_quality"          
+[51] "transect"                 "number_observers"        
+[53] "visit_id"                 "start_timestamp_utc"     
+[55] "end_timestamp_utc"        "detection_subtype"       
+[57] "date"                     "time_of_day"             
+[59] "campaign"                 "visit_status"            
+[61] "comments_visit"           "site_id"                 
+[63] "visit_lab"                "project_id"              
+[65] "site"                     "site_utm_zone"           
+[67] "site_utme"                "site_utmn"               
+[69] "area_sqr_m"               "site_code"               
+[71] "site_elevation_m"         "depth_m"                 
+[73] "topo"                     "wilderness"              
+[75] "site_comments"            "region_id"               
+[77] "site_name_alt"            "site_latitude"           
+[79] "site_longitude"           "geographic_area"         
+[81] "geographic_area_type"     "region"                  
+[83] "country_id"               "time_zone"               
+[85] "country"                  "iso_country_code"        </code></pre>
 </div>
 </div>
 </section>
@@ -528,47 +556,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  [29] "its1_copies_per_standard_unit" "singular_sample_results"      
  [31] "sample_name"                   "sample_type"                  
  [33] "capture_id"                    "sample_name_conflict"         
- [35] "taxon_capture"                 "time_of_capture"              
- [37] "capture_transect_m"            "microhabitat_type"            
- [39] "body_temp_c"                   "substrate_temp_c"             
- [41] "svl_mm"                        "body_mass_g"                  
- [43] "life_stage"                    "sex"                          
- [45] "capture_animal_state"          "comments_capture"             
- [47] "photo"                         "photo_id"                     
- [49] "microhabitat_detailed"         "body_and_bag_mass_g"          
- [51] "bag_mass_g"                    "marked"                       
- [53] "capture_utme"                  "capture_utmn"                 
- [55] "capture_type"                  "observer_capture"             
- [57] "bag_id"                        "processor"                    
- [59] "cmr_id"                        "microhabitat_notes"           
- [61] "tail_length_mm"                "bucket"                       
- [63] "inside_outside_serdp"          "temp_gun"                     
- [65] "clearcut"                      "number_of_mites"              
- [67] "flir"                          "tad_stage"                    
- [69] "survey_id"                     "microhabitat_wet"             
- [71] "capture_utm_zone"              "capture_latitude"             
- [73] "capture_longitude"             "start_time"                   
- [75] "end_time"                      "detection_type"               
- [77] "duration_minutes"              "observers_survey"             
- [79] "comments_survey"               "description"                  
- [81] "survey_quality"                "transect"                     
- [83] "number_observers"              "visit_id"                     
- [85] "start_timestamp_utc"           "end_timestamp_utc"            
- [87] "date"                          "time_of_day"                  
- [89] "campaign"                      "visit_status"                 
- [91] "comments_visit"                "site_id"                      
- [93] "visit_lab"                     "project"                      
- [95] "site"                          "site_utm_zone"                
- [97] "site_utme"                     "site_utmn"                    
- [99] "area_sqr_m"                    "site_code"                    
-[101] "site_elevation_m"              "depth_m"                      
-[103] "topo"                          "wilderness"                   
-[105] "site_comments"                 "region_id"                    
-[107] "site_name_alt"                 "site_latitude"                
-[109] "site_longitude"                "geographic_area"              
-[111] "geographic_area_type"          "region"                       
-[113] "country_id"                    "time_zone"                    
-[115] "country"                       "iso_country_code"             </code></pre>
+ [35] "negative_control_sample_id"    "negative_control"             
+ [37] "taxon_capture"                 "time_of_capture"              
+ [39] "capture_transect_m"            "microhabitat_type"            
+ [41] "body_temp_c"                   "substrate_temp_c"             
+ [43] "svl_mm"                        "body_mass_g"                  
+ [45] "life_stage"                    "sex"                          
+ [47] "capture_animal_state"          "comments_capture"             
+ [49] "photo"                         "photo_id"                     
+ [51] "microhabitat_detailed"         "body_and_bag_mass_g"          
+ [53] "bag_mass_g"                    "marked"                       
+ [55] "capture_utme"                  "capture_utmn"                 
+ [57] "capture_type"                  "observer_capture"             
+ [59] "bag_id"                        "processor"                    
+ [61] "cmr_id"                        "microhabitat_notes"           
+ [63] "tail_length_mm"                "bucket"                       
+ [65] "inside_outside_serdp"          "temp_gun"                     
+ [67] "clearcut"                      "number_of_mites"              
+ [69] "flir"                          "tad_stage"                    
+ [71] "survey_id"                     "microhabitat_wet"             
+ [73] "capture_utm_zone"              "capture_latitude"             
+ [75] "capture_longitude"             "timestamp_of_capture_utc"     
+ [77] "treatment"                     "start_time"                   
+ [79] "end_time"                      "detection_type"               
+ [81] "duration_minutes"              "observers_survey"             
+ [83] "comments_survey"               "description"                  
+ [85] "survey_quality"                "transect"                     
+ [87] "number_observers"              "visit_id"                     
+ [89] "start_timestamp_utc"           "end_timestamp_utc"            
+ [91] "detection_subtype"             "date"                         
+ [93] "time_of_day"                   "campaign"                     
+ [95] "visit_status"                  "comments_visit"               
+ [97] "site_id"                       "visit_lab"                    
+ [99] "project_id"                    "site"                         
+[101] "site_utm_zone"                 "site_utme"                    
+[103] "site_utmn"                     "area_sqr_m"                   
+[105] "site_code"                     "site_elevation_m"             
+[107] "depth_m"                       "topo"                         
+[109] "wilderness"                    "site_comments"                
+[111] "region_id"                     "site_name_alt"                
+[113] "site_latitude"                 "site_longitude"               
+[115] "geographic_area"               "geographic_area_type"         
+[117] "region"                        "country_id"                   
+[119] "time_zone"                     "country"                      
+[121] "iso_country_code"             </code></pre>
 </div>
 </div>
 </section>
@@ -649,10 +680,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 1]
-# Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
+# Database: postgres  [ple_coding@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1   66177</code></pre>
+1   67806</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># group by region &amp; country, and count each combination</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>summary_bd_region <span class="ot">=</span> db_bd_env <span class="sc">%&gt;%</span></span>
@@ -670,10 +701,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 1]
-# Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
+# Database: postgres  [ple_coding@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1    8781</code></pre>
+1    9486</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># other ways we might want to group and summarize this data to explore it:</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># group by region &amp; country, and count each combination</span></span>
@@ -710,14 +741,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_adult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 21
-  sample_name_bd detected bd_its1_copies_per_swab taxon_capture          svl_mm
-  &lt;chr&gt;          &lt;lgl&gt;                      &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
-1 121022_04      FALSE                          0 pristimantis_museosus    11.4
-2 121124_11      FALSE                          0 bolitoglossa_biseriata   40.5
-3 121125_14      FALSE                          0 colostethus_panamansis   21.2
-4 121125_15      FALSE                          0 silverstoneia_flotator   13.4
-5 121125_16      FALSE                          0 colostethus_panamansis   25.2
-6 121125_18      FALSE                          0 silverstoneia_flotator    9.9
+  sample_name_bd detected bd_its1_copies_per_swab taxon_capture           svl_mm
+  &lt;chr&gt;          &lt;lgl&gt;                      &lt;dbl&gt; &lt;chr&gt;                    &lt;dbl&gt;
+1 191211_031     TRUE                        19.4 lithobates_warszewitsc…   44.7
+2 Pe_Bd00683     FALSE                        0   hyla_versicolor           48.2
+3 Pe_Bd00925     FALSE                        0   eurycea_bislineata        42.1
+4 Pe_Bd00663     FALSE                        0   pseudacris_crucifer       28.3
+5 Pe_Bd00580     FALSE                        0   desmognathus_ochrophae…   39.1
+6 Pe_Bd00482     TRUE                        96.3 rana_clamitans            60.5
 # ℹ 16 more variables: body_mass_g &lt;dbl&gt;, sex &lt;chr&gt;, life_stage &lt;chr&gt;,
 #   substrate_temp_c &lt;dbl&gt;, air_temp_c_mean &lt;dbl&gt;, water_temp_c_mean &lt;dbl&gt;,
 #   env_n &lt;int64&gt;, microhabitat_type &lt;chr&gt;, time_of_capture &lt;time&gt;,

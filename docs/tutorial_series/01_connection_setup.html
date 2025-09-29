@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-04-24">
+<meta name="dcterms.date" content="2025-09-29">
 
 <title>1. Connection Setup – RIBBiTR Data Access</title>
 <style>
@@ -232,6 +232,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Database Changelog</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://github.com/RIBBiTR-BII" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR Github</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -293,7 +299,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 24, 2025</p>
+      <p class="date">September 29, 2025</p>
     </div>
   </div>
   
@@ -402,12 +408,12 @@ YAML login credentials
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ── R CMD build ─────────────────────────────────────────────────────────────────
-* checking for file ‘/tmp/RtmpD1z8Uy/remotes1042a44aaf418/RIBBiTR-BII-ribbitrrr-7fe3036/DESCRIPTION’ ... OK
+* checking for file ‘/tmp/Rtmp93SmFu/remotes11202733dbca0/RIBBiTR-BII-ribbitrrr-b42826c/DESCRIPTION’ ... OK
 * preparing ‘ribbitrrr’:
 * checking DESCRIPTION meta-information ... OK
 * checking for LF line-endings in source and make files and shell scripts
 * checking for empty or unneeded directories
-* building ‘ribbitrrr_0.0.2.3.tar.gz’</code></pre>
+* building ‘ribbitrrr_0.0.2.4.tar.gz’</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># minimal packages for establishing RIBBiTR DB connection</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR<span class="sc">-</span>BII<span class="sc">/</span>ribbitrrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
