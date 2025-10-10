@@ -294,5 +294,5 @@ dbDisconnect(dbcon)
 ```
 
 <div style="text-align: center;">
-[\<- 6. Microclimate Workflow](06_microclimate_workflow.html) \|
+[\<- 7. Sample Results and Controls](07_samples_controls.html) \|
 </div>

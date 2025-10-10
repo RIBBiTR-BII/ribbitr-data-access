@@ -351,5 +351,5 @@ dbcon.disconnect()
 
 :::
 <div style="text-align: center;">
-[\<- 5. Bd-Capture Workflow](05_bd_capture_workflow.html) \|  [7. Database Refesher -\>](07_database_refresher.html)
+[\<- 5. Bd-Capture Workflow](05_bd_capture_workflow.html) \|  [7. Sample Results and Controls -\>](07_samples_controls.html)
 </div>
