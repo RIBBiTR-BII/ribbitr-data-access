@@ -242,8 +242,8 @@ wordcloud(
 - **Tools and Tips** (e.g, Github Copilot, Positron, Elicit)
 - **Other topics**
 
-## Sources
-### AI Use Statement
+
+## AI Use Statement
 This presentation was made with support from the following AI tools:
 
 ::: {.nonincremental}
@@ -253,7 +253,7 @@ This presentation was made with support from the following AI tools:
 
 :::
 
-### References
+## References
 ::: {#refs}
 :::
 
