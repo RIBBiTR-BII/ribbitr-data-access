@@ -1,0 +1,96 @@
+---
+title: "RIBBITR 101: AI use in Research"
+author: "Cob Staines"
+format: revealjs
+editor: source
+incremental: true
+bibliography: ai_references.bib
+csl: ecology.csl
+---
+
+## Today's Agenda
+
+::: {layout-ncol="2"}
+
+### Presentation (15 min)
+
+- What constitutes "AI"?
+- RIBBiTR AI Poll results
+- AI x Research in the Literature
+- Institutional Guidance
+
+### Discussion (45 min)
+
+- Tips and tools
+- Functional considerations
+- Ethical considerations
+- Privacy concerns
+- Access & Inclusion
+
+:::
+
+## What constitutes "AI"?
+**Artificial Intelligence (AI)** -- *A broad body of computational methods designed to automate tasks typically associated with human intelligence, such as:*
+
+- classification
+- pattern recognition
+- learning
+- problem-solving
+
+## What constitutes "AI"?
+**Some AI history**
+
+- 1800s -- Method of least squares for optimization
+- 1950 -- Turing test a.k.a. "Imitation game"[@Turing1950]
+- 1950s -- Beginnings of Machine Learning (ML) & artificial neural networks
+- 1960s -- Beginnings of Natural Language Processing (NLP)
+- 1970s -- Beginnings of Deep Learning & Transfer Learning
+- 1980s -- Applied Backpropogation & Convolutional Neural Networks (CNN) for Computer Vision (CV)
+
+## What constitutes "AI"?
+**Some AI history**
+
+- 1996 -- IBM's Deep Blue defeats chess world champion Gary Kasparov
+- 2010s -- Virtual assistants (e.g. "Siri" & "Alexa") & Generative Pre-trained Transformers (GPTs)
+- 2020s -- Generative AI and Freemium Large Language Model (LLM) access
+
+##  What constitutes "AI"? {background-image="ai_in_research_2025-12/ai_venn.webp" background-size="70%" background-position="center"}
+
+##  What constitutes "AI"?
+**Some takeaways...**
+
+- AI is a very general term for technologies which have been in development for decades
+- Recent "explosion" in AI application is related to **(technological advances)** x **(access to technology)**
+- We will focus primarily on generative AI and LLMs in Research (and see Justin's talk on Dec. 18)
+
+
+## RIBBiTR AI Poll Results
+- Do you use AI regularly in your research?
+- What AI tools do you use most frequently? For what tasks?
+- What emotions, ideas or concerns do you experience when using AI?
+- What would you like to discuss/learn more about regarding AI use in research?
+
+## - AI x Research in the Literature
+**Notable Review Papers**
+
+## - AI x Research in the Literature
+**Opportunities**
+
+## - AI x Research in the Literature
+**Concerns**
+
+- Transparency & Accountability
+- Ethical use
+- Accuracy
+- Reproducability
+- Collaboration & Communication
+- Privacy
+
+## Institutional Guidance
+
+
+
+## References
+
+::: {#refs}
+:::
