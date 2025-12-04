@@ -37,6 +37,8 @@ website:
             href: ./presentations/db_context_presentation.html
           - text: "Database Refresher 2025"
             href: ./presentations/db_updates_2025-04.html
+          - text: "RIBBiTR 101: AI Use in Research"
+            href: ./presentations/ai_in_research_2025-12.html
             
 
 format:

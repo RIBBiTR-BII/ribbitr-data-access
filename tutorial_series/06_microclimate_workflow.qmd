@@ -145,7 +145,7 @@ head(ts_of_interest_long)
 ```
 
 ## Pivot wider
-We have our data! Taking a closer look, we find our temperature data in the column `temperature_c_01_raw`, where '01_raw' tells us that these are the raw data pulled from the sensor (i.e. no filtering or gap filling).
+We have our data! Taking a closer look, we find our temperature data in the column `temperature_c`.
 
 Now, depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the `tidyr::pivot_wider()` function to rearrange our data to a wide format, with a few options regarding how we name the columns:
 
@@ -155,7 +155,7 @@ ts_of_interest_temp_c_id = ts_of_interest_long %>%
   pivot_wider(id_cols = c(timestamp_utc,
                           timestamp_local),
               names_from = sensor_id,
-              values_from = temperature_c_01_raw)
+              values_from = temperature_c)
 
 # descriptive column names
 ts_of_interest_temp_c_desc = sensors_of_interest %>%
@@ -168,7 +168,7 @@ ts_of_interest_temp_c_desc = sensors_of_interest %>%
                           timestamp_local),
               names_from = c(site_microclimate,
                              microhabitat),
-              values_from = temperature_c_01_raw)
+              values_from = temperature_c)
 
 ```
 
@@ -323,7 +323,7 @@ We have our data! Though depending on our application, we may want to reformat t
 ts_of_interest_id = ts_of_interest_long.pivot(
     index='timestamp_local',
     columns='sensor_id',
-    values='temperature_c_01_raw'
+    values='temperature_c'
 ).reset_index()
 
 # descriptive column names
@@ -334,7 +334,7 @@ ts_of_interest_desc = (
     .pivot(
         index='timestamp_local',
         columns=['site_microclimate', 'microhabitat'],
-        values='temperature_c_01_raw'
+        values='temperature_c'
     )
     .reset_index()
 )

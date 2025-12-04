@@ -1554,7 +1554,7 @@
     "href": "tutorial_series/06_microclimate_workflow.html#filter-and-pull-associated-time-series-data",
     "title": "6. Microclimate Workflow",
     "section": "Filter and pull associated time series data",
-    "text": "Filter and pull associated time series data\nEach sensor in sensors_of_interest has an associated time series in our database, the table in which it is stored corresponds to values of sensor_type. For example, all time series from sensors with sensor_type == 'temperature' are stored in the corresponding ts_temperature table. Let’s pull temperature data which correspond to the sensor_ids in our list, filtering to the date range of interest.\nNOTE ON TIMESTAMPS: The timestamp_utc columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the time in UTC of the observations. When we filter our data to 2023, we may wish to specify the filter with start and end times in the local timezone to be clear about where our data of interest begins and ends. The region table provides a local region.time_zone, which we can refer to in our filter. If we want our data in local time, we will need to convert it to the regional timezone after pulling.\n\n# pull local time zone\nlocal_tz = unique(sensors_of_interest$time_zone)\n\n# specify window of interest in local time, convert to utc fir query\nstart_datetime &lt;- with_tz(force_tz(ymd_hms(\"2023-01-01 00:00:00\"), tzone = local_tz), tzone = \"UTC\")\nend_datetime &lt;- with_tz(force_tz(ymd_hms(\"2024-01-01 00:00:00\"), tzone = local_tz), tzone = \"UTC\")\n\n# filter and pull\nts_of_interest_long = db_ts_temp %&gt;%\n  filter(sensor_id %in% sensors_of_interest$sensor_id,\n         timestamp_utc &gt;= start_datetime,\n         timestamp_utc &lt; end_datetime) %&gt;%\n  collect() %&gt;%\n  mutate(timestamp_local = with_tz(timestamp_utc, tzone = local_tz)) # transform timestamp_utc to local timezone\n\nhead(ts_of_interest_long)\n\n# A tibble: 6 × 4\n  sensor_id         timestamp_utc       temperature_c_01_raw timestamp_local    \n  &lt;chr&gt;             &lt;dttm&gt;                             &lt;dbl&gt; &lt;dttm&gt;             \n1 1e412c83-f3ba-45… 2023-01-01 05:00:00                 19.7 2023-01-01 00:00:00\n2 1e412c83-f3ba-45… 2023-01-01 05:30:00                 19.7 2023-01-01 00:30:00\n3 1e412c83-f3ba-45… 2023-01-01 06:00:00                 19.7 2023-01-01 01:00:00\n4 1e412c83-f3ba-45… 2023-01-01 06:30:00                 19.8 2023-01-01 01:30:00\n5 1e412c83-f3ba-45… 2023-01-01 07:00:00                 19.8 2023-01-01 02:00:00\n6 1e412c83-f3ba-45… 2023-01-01 07:30:00                 19.8 2023-01-01 02:30:00",
+    "text": "Filter and pull associated time series data\nEach sensor in sensors_of_interest has an associated time series in our database, the table in which it is stored corresponds to values of sensor_type. For example, all time series from sensors with sensor_type == 'temperature' are stored in the corresponding ts_temperature table. Let’s pull temperature data which correspond to the sensor_ids in our list, filtering to the date range of interest.\nNOTE ON TIMESTAMPS: The timestamp_utc columns contains date, time, and timezone information for each corresponding given sensor readings, corresponding to the time in UTC of the observations. When we filter our data to 2023, we may wish to specify the filter with start and end times in the local timezone to be clear about where our data of interest begins and ends. The region table provides a local region.time_zone, which we can refer to in our filter. If we want our data in local time, we will need to convert it to the regional timezone after pulling.\n\n# pull local time zone\nlocal_tz = unique(sensors_of_interest$time_zone)\n\n# specify window of interest in local time, convert to utc fir query\nstart_datetime &lt;- with_tz(force_tz(ymd_hms(\"2023-01-01 00:00:00\"), tzone = local_tz), tzone = \"UTC\")\nend_datetime &lt;- with_tz(force_tz(ymd_hms(\"2024-01-01 00:00:00\"), tzone = local_tz), tzone = \"UTC\")\n\n# filter and pull\nts_of_interest_long = db_ts_temp %&gt;%\n  filter(sensor_id %in% sensors_of_interest$sensor_id,\n         timestamp_utc &gt;= start_datetime,\n         timestamp_utc &lt; end_datetime) %&gt;%\n  collect() %&gt;%\n  mutate(timestamp_local = with_tz(timestamp_utc, tzone = local_tz)) # transform timestamp_utc to local timezone\n\nhead(ts_of_interest_long)\n\n# A tibble: 6 × 4\n  sensor_id                timestamp_utc       temperature_c timestamp_local    \n  &lt;chr&gt;                    &lt;dttm&gt;                      &lt;dbl&gt; &lt;dttm&gt;             \n1 1e412c83-f3ba-453c-a70f… 2023-01-01 05:00:00          19.7 2023-01-01 00:00:00\n2 1e412c83-f3ba-453c-a70f… 2023-01-01 05:30:00          19.7 2023-01-01 00:30:00\n3 1e412c83-f3ba-453c-a70f… 2023-01-01 06:00:00          19.7 2023-01-01 01:00:00\n4 1e412c83-f3ba-453c-a70f… 2023-01-01 06:30:00          19.8 2023-01-01 01:30:00\n5 1e412c83-f3ba-453c-a70f… 2023-01-01 07:00:00          19.8 2023-01-01 02:00:00\n6 1e412c83-f3ba-453c-a70f… 2023-01-01 07:30:00          19.8 2023-01-01 02:30:00",
     "crumbs": [
       "RIBBiTR Database Tutorial Series",
       "6. Microclimate Workflow"
@@ -1565,7 +1565,7 @@
     "href": "tutorial_series/06_microclimate_workflow.html#pivot-wider",
     "title": "6. Microclimate Workflow",
     "section": "Pivot wider",
-    "text": "Pivot wider\nWe have our data! Taking a closer look, we find our temperature data in the column temperature_c_01_raw, where ‘01_raw’ tells us that these are the raw data pulled from the sensor (i.e. no filtering or gap filling).\nNow, depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the tidyr::pivot_wider() function to rearrange our data to a wide format, with a few options regarding how we name the columns:\n\n# column names from sensor_id\nts_of_interest_temp_c_id = ts_of_interest_long %&gt;%\n  pivot_wider(id_cols = c(timestamp_utc,\n                          timestamp_local),\n              names_from = sensor_id,\n              values_from = temperature_c_01_raw)\n\n# descriptive column names\nts_of_interest_temp_c_desc = sensors_of_interest %&gt;%\n  select(sensor_id,\n         site_microclimate,\n         microhabitat) %&gt;%\n  inner_join(ts_of_interest_long, by = \"sensor_id\") %&gt;%\n  select(-sensor_id) %&gt;%\n  pivot_wider(id_cols = c(timestamp_utc,\n                          timestamp_local),\n              names_from = c(site_microclimate,\n                             microhabitat),\n              values_from = temperature_c_01_raw)\n\nThese data are ready to be analyzed and visualized!",
+    "text": "Pivot wider\nWe have our data! Taking a closer look, we find our temperature data in the column temperature_c.\nNow, depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the tidyr::pivot_wider() function to rearrange our data to a wide format, with a few options regarding how we name the columns:\n\n# column names from sensor_id\nts_of_interest_temp_c_id = ts_of_interest_long %&gt;%\n  pivot_wider(id_cols = c(timestamp_utc,\n                          timestamp_local),\n              names_from = sensor_id,\n              values_from = temperature_c)\n\n# descriptive column names\nts_of_interest_temp_c_desc = sensors_of_interest %&gt;%\n  select(sensor_id,\n         site_microclimate,\n         microhabitat) %&gt;%\n  inner_join(ts_of_interest_long, by = \"sensor_id\") %&gt;%\n  select(-sensor_id) %&gt;%\n  pivot_wider(id_cols = c(timestamp_utc,\n                          timestamp_local),\n              names_from = c(site_microclimate,\n                             microhabitat),\n              values_from = temperature_c)\n\nThese data are ready to be analyzed and visualized!",
     "crumbs": [
       "RIBBiTR Database Tutorial Series",
       "6. Microclimate Workflow"
@@ -1631,7 +1631,7 @@
     "href": "tutorial_series/06_microclimate_workflow.html#pivot-wider-1",
     "title": "6. Microclimate Workflow",
     "section": "Pivot wider",
-    "text": "Pivot wider\nWe have our data! Though depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the pd.pivot() function to rearrange our data to a wide format, with a few options regarding how we name the columns:\n\n# column names from sensor_id\nts_of_interest_id = ts_of_interest_long.pivot(\n    index='timestamp_local',\n    columns='sensor_id',\n    values='temperature_c_01_raw'\n).reset_index()\n\n# descriptive column names\nts_of_interest_desc = (\n    sensors_of_interest[['sensor_id', 'site_microclimate', 'microhabitat']]\n    .merge(ts_of_interest_long, on='sensor_id', how='inner')\n    .drop(columns=['sensor_id'])\n    .pivot(\n        index='timestamp_local',\n        columns=['site_microclimate', 'microhabitat'],\n        values='temperature_c_01_raw'\n    )\n    .reset_index()\n)\n\nThese data are ready to be analyzed and visualized!",
+    "text": "Pivot wider\nWe have our data! Though depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the pd.pivot() function to rearrange our data to a wide format, with a few options regarding how we name the columns:\n\n# column names from sensor_id\nts_of_interest_id = ts_of_interest_long.pivot(\n    index='timestamp_local',\n    columns='sensor_id',\n    values='temperature_c'\n).reset_index()\n\n# descriptive column names\nts_of_interest_desc = (\n    sensors_of_interest[['sensor_id', 'site_microclimate', 'microhabitat']]\n    .merge(ts_of_interest_long, on='sensor_id', how='inner')\n    .drop(columns=['sensor_id'])\n    .pivot(\n        index='timestamp_local',\n        columns=['site_microclimate', 'microhabitat'],\n        values='temperature_c'\n    )\n    .reset_index()\n)\n\nThese data are ready to be analyzed and visualized!",
     "crumbs": [
       "RIBBiTR Database Tutorial Series",
       "6. Microclimate Workflow"
@@ -2939,5 +2939,390 @@
     "title": "Sierra Nevada Field Team Training 2025: Data Science",
     "section": "Thank you!",
     "text": "Thank you!\nQuestions & Discussion"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#todays-agenda",
+    "href": "presentations/ai_in_research_2025-12.html#todays-agenda",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Today’s Agenda",
+    "text": "Today’s Agenda\n\n\n\n\n\n\nPresentation (15 min)\n\nWhat constitutes “AI”?\nRIBBiTR AI poll results\nLiterature on AI use in Research\nInstitutional AI Guidance\n\n\n\nDiscussion (45 min)\n\nEthical considerations\nFunctional considerations\nEducational considerations\nAccess & Inclusion\nPrivacy concerns\nTools and Tips"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#what-constitutes-ai",
+    "href": "presentations/ai_in_research_2025-12.html#what-constitutes-ai",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "What constitutes “AI”?",
+    "text": "What constitutes “AI”?\nArtificial Intelligence (AI) – A broad body of computational methods designed to automate tasks typically associated with human intelligence, such as:\n\nclassification\npattern recognition\nlearning\nproblem-solving"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results",
+    "href": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "RIBBiTR AI Poll Results",
+    "text": "RIBBiTR AI Poll Results"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#guiding-questions",
+    "href": "presentations/ai_in_research_2025-12.html#guiding-questions",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Guiding Questions",
+    "text": "Guiding Questions\n\n\n\n\n\n\n\n\nData collection\n\nIs our data present in the database?\nIs our data accessible to others in the database?\nHow to give more context to enhance data use?\n\n\n\nData analysis\n\nWhat data are present in the database?\nHow to access these data for analysis?\nHow to find more context for enhanced data use?"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#guiding-questions-1",
+    "href": "presentations/ai_in_research_2025-12.html#guiding-questions-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Guiding Questions",
+    "text": "Guiding Questions\n\n\nReflect on your roles & relationships with RIBBiTR data…\n\nTake a moment to write down a data-related question which might help advance your work to address."
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#collaborative-data-management",
+    "href": "presentations/ai_in_research_2025-12.html#collaborative-data-management",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#collaborative-data-management-1",
+    "href": "presentations/ai_in_research_2025-12.html#collaborative-data-management-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nInformation cycles from field to database and (hopefully) back…"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#collaborative-data-management-2",
+    "href": "presentations/ai_in_research_2025-12.html#collaborative-data-management-2",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nInsight generated from the field through the research process"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#collaborative-data-management-3",
+    "href": "presentations/ai_in_research_2025-12.html#collaborative-data-management-3",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nRelevant insights support informed action (e.g. conservation)"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#collaborative-data-management-4",
+    "href": "presentations/ai_in_research_2025-12.html#collaborative-data-management-4",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nBut critical context is lost along the way!"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#collaborative-data-management-5",
+    "href": "presentations/ai_in_research_2025-12.html#collaborative-data-management-5",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nTransmission of context at each step is key to supporting locally-relevant, informed action"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#collaborative-data-management-6",
+    "href": "presentations/ai_in_research_2025-12.html#collaborative-data-management-6",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nFeedbacks at each step greatly increase responsiveness within the team"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#collaborative-data-management-7",
+    "href": "presentations/ai_in_research_2025-12.html#collaborative-data-management-7",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Collaborative Data Management",
+    "text": "Collaborative Data Management\n\nContext and feedback enhance data-driven insight generation and informed action"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ribbitr-database-overview",
+    "href": "presentations/ai_in_research_2025-12.html#ribbitr-database-overview",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "RIBBiTR database overview",
+    "text": "RIBBiTR database overview\n\nConceptual diagram of how disparate datasets connect"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#database-stats",
+    "href": "presentations/ai_in_research_2025-12.html#database-stats",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Database stats",
+    "text": "Database stats\nOver 2000 site visits since October 2021!\n\n\n\nSurvey type\ncount\n\n\n\n\naural\n125\n\n\ncapture\n1516\n\n\neDNA\n84\n\n\nenvironmental\n1728\n\n\nvisual\n1224"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#database-stats-1",
+    "href": "presentations/ai_in_research_2025-12.html#database-stats-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Database stats",
+    "text": "Database stats\n\nIndividual captures by taxon and region since the start of RIBBiTR"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#database-stats-2",
+    "href": "presentations/ai_in_research_2025-12.html#database-stats-2",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Database stats",
+    "text": "Database stats\n\nSamples by sample type collected since the start of RIBBiTR"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#recent-database-updates",
+    "href": "presentations/ai_in_research_2025-12.html#recent-database-updates",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Recent database updates",
+    "text": "Recent database updates\nUpdated datasets\n\nSurvey data\n\nBrazil (2022-2024)\nPanama (2024)\nPennsylvania (2024)\nSierra Nevada (2024) + Kira PEP (2023)\n\nBd qPCR Results\n\nSierra Nevada 2022-2024"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#recent-database-updates-1",
+    "href": "presentations/ai_in_research_2025-12.html#recent-database-updates-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Recent database updates",
+    "text": "Recent database updates\nNew datasets\n\nMucosome results\n\nNew support tables\n\nBd Isolates\nLab/point of contact\nSite history\nTaxonomy"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#recent-database-updates-2",
+    "href": "presentations/ai_in_research_2025-12.html#recent-database-updates-2",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Recent database updates",
+    "text": "Recent database updates\nRestructured data tables\n\nMicroclimate\nEnvironmental\nBd qPCR results\neDNA"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#coming-soon",
+    "href": "presentations/ai_in_research_2025-12.html#coming-soon",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Coming soon…",
+    "text": "Coming soon…\n\nAMP Growth Inhibition Assay & MALDI results\nBd qPCR restructuring\nMicrobiome 16S metadata, sequences, and data products\neDNA results"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#revisiting-our-data-questions",
+    "href": "presentations/ai_in_research_2025-12.html#revisiting-our-data-questions",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Revisiting our data questions",
+    "text": "Revisiting our data questions\n\nLet’s dive in!\nReferences\n\n\n[1] Turing, A. M. 1950. I.—computer machinery and intelligence. Mind LIX:433–460."
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-1",
+    "href": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "What constitutes “AI”?",
+    "text": "What constitutes “AI”?\n\n\n\nImage from BaslerWeb"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-2",
+    "href": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-2",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "What constitutes “AI”?",
+    "text": "What constitutes “AI”?\nSome AI history…\n\n1800s – Method of least squares for optimization\n1950 – Turing test a.k.a. “Imitation game”1\n1950s – Beginnings of Machine Learning (ML) & Artificial Neural Networks\n1960s – Beginnings of Natural Language Processing (NLP)\n1996 – IBM’s Deep Blue defeats chess world champion Gary Kasparov\n2020s – Generative AI and Freemium Large Language Model (LLM) access"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-3",
+    "href": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-3",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "What constitutes “AI”?",
+    "text": "What constitutes “AI”?"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-4",
+    "href": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-4",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "What constitutes “AI”?",
+    "text": "What constitutes “AI”?\nSome takeaways…\n\nAI is a very general term for technologies which have been in development for “a while”\nRecent “explosion” in AI applications is related to (technological advances) x (access to technology)\nLLMs have reduced barriers to interacting with AI models, generating both opportunities & concerns for AI use\nOur conversation today will focus on generative AI and LLMs in Research (and see Justin’s talk on Dec. 18)"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ai-x-research-in-the-literature",
+    "href": "presentations/ai_in_research_2025-12.html#ai-x-research-in-the-literature",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "- AI x Research in the Literature",
+    "text": "- AI x Research in the Literature\nNotable Review Papers"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ai-x-research-in-the-literature-1",
+    "href": "presentations/ai_in_research_2025-12.html#ai-x-research-in-the-literature-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "- AI x Research in the Literature",
+    "text": "- AI x Research in the Literature\nOpportunities"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ai-x-research-in-the-literature-2",
+    "href": "presentations/ai_in_research_2025-12.html#ai-x-research-in-the-literature-2",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "- AI x Research in the Literature",
+    "text": "- AI x Research in the Literature\nConcerns\n\nTransparency & Accountability\nEthical use\nAccuracy\nReproducability\nCollaboration & Communication\nPrivacy"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#institutional-guidance",
+    "href": "presentations/ai_in_research_2025-12.html#institutional-guidance",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Institutional Guidance",
+    "text": "Institutional Guidance\n(some examples)\nGovernmental Guidance\n\nCanada “FASTER” principles3\n\nUniversity Policies & Resources\n\nPitt Guidance\nUCSB AI Guidlines\nCheck with your University for AI policies & resources\n\nAcademic Journals\n\nPLOS Publisher Policies on AI (submissions & reviews)\nSpringer AI Policies"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#references",
+    "href": "presentations/ai_in_research_2025-12.html#references",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "References",
+    "text": "References\n\n\n[1] Turing, A. M. 1950. I.—computer machinery and intelligence. Mind LIX:433–460.\n\n\n[2] Helmy, M., L. Jin, A. Alhossary, T. Mansour, D. Pellagrina, and K. Selvarajoo. 2025. Ten simple rules for optimal and careful use of generative AI in science. PLoS Comput. Biol. 21."
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results-1",
+    "href": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "RIBBiTR AI Poll Results",
+    "text": "RIBBiTR AI Poll Results"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results-2",
+    "href": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results-2",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "RIBBiTR AI Poll Results",
+    "text": "RIBBiTR AI Poll Results\n“What AI tools do you use and for what tasks?”\n\n\n\n\n\n\nTools\n\nChatbots (ChatGPT, Perplexity, Gemini, Claude, Jenova)\nCode Assistants (Github Copilot, V0, Blackbox)\nResearch tools (Elicit, Connected Papers, ResearchRabbit)\n\n\n\nTasks\n\nBrainstorming\nCode development & troubleshooting\nWriting (grammar & coherence)\nResource discovery"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results-3",
+    "href": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results-3",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "RIBBiTR AI Poll Results",
+    "text": "RIBBiTR AI Poll Results\n“What emotions or sensations do you experience when using AI technologies?”"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#literature-on-ai-x-research",
+    "href": "presentations/ai_in_research_2025-12.html#literature-on-ai-x-research",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "- Literature on AI x Research",
+    "text": "- Literature on AI x Research\nNotable Research & Review Papers Ten simple rules for optimal and careful use of generative AI in science"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#literature-on-ai-x-research-1",
+    "href": "presentations/ai_in_research_2025-12.html#literature-on-ai-x-research-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "- Literature on AI x Research",
+    "text": "- Literature on AI x Research\nOpportunities"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#literature-on-ai-x-research-2",
+    "href": "presentations/ai_in_research_2025-12.html#literature-on-ai-x-research-2",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "- Literature on AI x Research",
+    "text": "- Literature on AI x Research\nConcerns\n\nTransparency & Accountability\nEthical use\nAccuracy\nReproducability\nCollaboration & Communication\nPrivacy"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#notable-research-review-papers",
+    "href": "presentations/ai_in_research_2025-12.html#notable-research-review-papers",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Notable Research & Review Papers",
+    "text": "Notable Research & Review Papers\nHelmy et al. 2025: Ten simple rules for optimal and careful use of generative AI in science2"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#opportunities-in-the-literature",
+    "href": "presentations/ai_in_research_2025-12.html#opportunities-in-the-literature",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Opportunities in the Literature",
+    "text": "Opportunities in the Literature\n\n\n\nEven the smartest AI can’t sign the ethics form. The figure was generated using ChatGPT.\n\n\nFig. 1 from Helmy et al., 20252"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#concerns-in-the-literature",
+    "href": "presentations/ai_in_research_2025-12.html#concerns-in-the-literature",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Concerns in the Literature",
+    "text": "Concerns in the Literature\n\nTransparency & Accountability\nEthical use\nAccuracy\nReproducability\nCollaboration & Communication\nPrivacy"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#concerns-in-the-literaturehelmy2025-zl",
+    "href": "presentations/ai_in_research_2025-12.html#concerns-in-the-literaturehelmy2025-zl",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Concerns in the Literature2",
+    "text": "Concerns in the Literature2\n\nMass Generation of Low-Quality Content\nAI as an Author\nRisk of Plagiarism in AI-generated Text\nAI Hallucinations\nBias Amplification\nUnethical use in Academics\nSecurity & Safety\nIntellectual Property & Originality\nImplications for Research Skills"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ai-use-in-research",
+    "href": "presentations/ai_in_research_2025-12.html#ai-use-in-research",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "AI Use in Research",
+    "text": "AI Use in Research"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#concerns-from-the-literaturehelmy2025-zl",
+    "href": "presentations/ai_in_research_2025-12.html#concerns-from-the-literaturehelmy2025-zl",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Concerns from the Literature2",
+    "text": "Concerns from the Literature2\n\nMass Generation of Low-Quality Content\nAI as an Author\nRisk of Plagiarism in AI-generated Text\nAI Hallucinations\nBias Amplification\nUnethical use in Academics\nSecurity & Safety\nIntellectual Property & Originality\nImplications for Research Skills"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#liturature-on-ai-use-in-research",
+    "href": "presentations/ai_in_research_2025-12.html#liturature-on-ai-use-in-research",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Liturature on AI Use in Research",
+    "text": "Liturature on AI Use in Research\n\n\n\nEven the smartest AI can’t sign the ethics form. The figure was generated using ChatGPT.\n\n\nFig. 1 from Helmy et al., 20252"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#liturature-on-ai-use-in-research-1",
+    "href": "presentations/ai_in_research_2025-12.html#liturature-on-ai-use-in-research-1",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Liturature on AI Use in Research",
+    "text": "Liturature on AI Use in Research\nOpportunities2 34\n\nSearching & synthesizing literature\nData wrangling & analysis\nWriting & editing (articles, reports, etc.)\nSynthesis, communication & translation"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#liturature-on-ai-use-in-research-2",
+    "href": "presentations/ai_in_research_2025-12.html#liturature-on-ai-use-in-research-2",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Liturature on AI Use in Research",
+    "text": "Liturature on AI Use in Research\nConcerns2 34\n\nRobustness (accuracy, repeatability)\nTransparency & Accountability (misrepresentation of contributions)\nAttribution (plagiarism, intellectual property, sources)\nBias amplification\nImplications for research & communication skills\nSecurity & safety\nAI authorship ethics"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#sources",
+    "href": "presentations/ai_in_research_2025-12.html#sources",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Sources",
+    "text": "Sources\nAI Use Statement\nThis presentation was made with support from the following AI tools:\n\n\nPerplexity: Resource & literature search, reference formatting\nGithub Copilot: Code assistance for visuals\n\n\nReferences\n\n\n[1] Turing, A. M. 1950. I.—computer machinery and intelligence. Mind LIX:433–460.\n\n\n[2] Helmy, M., L. Jin, A. Alhossary, T. Mansour, D. Pellagrina, and K. Selvarajoo. 2025. Ten simple rules for optimal and careful use of generative AI in science. PLoS Comput. Biol. 21.\n\n\n[3] Kim, S. J. 2024. Research ethics and issues regarding the use of ChatGPT-like artificial intelligence platforms by authors and reviewers: A narrative review. Science Editing 11:96–106.\n\n\n[4] Klimova, B., and M. Pikhart. 2025. Exploring the effects of artificial intelligence on student and academic well-being in higher education: A mini-review. Frontiers in Psychology 16:1498132.\n\n\n[5] Canada Secretariat, T. B. of. 2024, February. Guide on the use of generative artificial intelligence - Canada.ca — canada.ca. https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/responsible-use-ai/guide-use-generative-ai.html."
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#institutional-guidance-some-examples",
+    "href": "presentations/ai_in_research_2025-12.html#institutional-guidance-some-examples",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Institutional Guidance (some examples)",
+    "text": "Institutional Guidance (some examples)\nGovernmental Guidance\n\nCanada “FASTER” principles3\n\nUniversity Policies & Resources\n\nPitt Guidance\nUCSB AI Guidlines\nCheck with your University for AI policies & resources\n\nAcademic Journals\n\nPLOS Publisher Policies on AI (submissions & reviews)\nSpringer AI Policies"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#institutional-guidance-examples",
+    "href": "presentations/ai_in_research_2025-12.html#institutional-guidance-examples",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Institutional Guidance (examples)",
+    "text": "Institutional Guidance (examples)\nGovernmental Guidance\n\nCanada “FASTER” principles5\n\nUniversity Policies & Resources\n\nPitt Guidance\nUCSB AI Guidlines\n\nAcademic Journals\n\nPLOS Publisher Policies on AI (submissions & reviews)\nSpringer AI Policies"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results-4",
+    "href": "presentations/ai_in_research_2025-12.html#ribbitr-ai-poll-results-4",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "RIBBiTR AI Poll Results",
+    "text": "RIBBiTR AI Poll Results\n“What concerns do you have (if any) regarding AI use in research?”\n\nAccuracy, Reproducibility & Bias\nEnvironmental & Social Impact\nTransparency & Accountability\nData Privacy\n“Do I need to use AI?”"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#discussion-ideas",
+    "href": "presentations/ai_in_research_2025-12.html#discussion-ideas",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "Discussion ideas",
+    "text": "Discussion ideas\n\nEthical considerations (e.g. transparency, accountability, attribution)\nFunctional considerations (e.g. robustness, repeatability)\nLearning considerations (e.g. Practices to advance understandings, not just tasks)\nAccess & Inclusion (Where does AI help/hinder inclusion?)\nPrivacy concerns (What risks exist, and how to navigate them?)\nTools and Tips (e.g, Github Copilot, Positron, Elicit)\nOther topics"
+  },
+  {
+    "objectID": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-5",
+    "href": "presentations/ai_in_research_2025-12.html#what-constitutes-ai-5",
+    "title": "RIBBITR 101: AI use in Research",
+    "section": "What constitutes “AI”?",
+    "text": "What constitutes “AI”?\nSome takeaways…\n\nAI is a very general term for technologies which have been in development for “a while”\nRecent “explosion” in AI applications is related to (technological advances) x (access to technology)\nLLMs have reduced barriers to interacting with AI models, generating both opportunities & concerns for AI use\nOur conversation today will focus on generative AI and LLMs in Research (and see Justin’s talk on Dec. 18)"
+  },
+  {
+    "objectID": "tutorial_series/07_samples_controls.html",
+    "href": "tutorial_series/07_samples_controls.html",
+    "title": "7. Sample Results and Controls",
+    "section": "",
+    "text": "This tutorial is available as a .qmd on Github."
+  },
+  {
+    "objectID": "tutorial_series/07_samples_controls.html#setup",
+    "href": "tutorial_series/07_samples_controls.html#setup",
+    "title": "7. Sample Results and Controls",
+    "section": "Setup",
+    "text": "Setup\n\n# minimal packages for RIBBiTR DB data discovery\nlibrarian::shelf(tidyverse, dbplyr, RPostgres, DBI, RIBBiTR-BII/ribbitrrr)\n\n# establish database connection\ndbcon &lt;- hopToDB(\"ribbitr\")\n\nConnecting to 'ribbitr'... Success!\n\n# load table metadata\nmdt &lt;- tbl(dbcon, Id(\"public\", \"all_tables\")) %&gt;%\n  filter(table_schema == \"survey_data\") %&gt;%\n  collect()\n\n# load column metadata\nmdc &lt;- tbl(dbcon, Id(\"public\", \"all_columns\")) %&gt;%\n  filter(table_schema == \"survey_data\") %&gt;%\n  collect()"
+  },
+  {
+    "objectID": "tutorial_series/07_samples_controls.html#data-discovery-and-pulling",
+    "href": "tutorial_series/07_samples_controls.html#data-discovery-and-pulling",
+    "title": "7. Sample Results and Controls",
+    "section": "Data discovery and pulling",
+    "text": "Data discovery and pulling\nLooking at the survey_data schema diagram, we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called “capture” and “bd_qpcr_results”.\n\nPoint to support tables\n\n# survey tables\ndb_capture = tbl(dbcon, Id(\"survey_data\", \"capture\"))\ndb_survey = tbl(dbcon, Id(\"survey_data\", \"survey\"))\ndb_visit = tbl(dbcon, Id(\"survey_data\", \"visit\"))\ndb_site = tbl(dbcon, Id(\"survey_data\", \"site\"))\ndb_region = tbl(dbcon, Id(\"survey_data\", \"region\"))\ndb_country = tbl(dbcon, Id(\"survey_data\", \"country\"))\n\n# sample results tables\ndb_sample = tbl(dbcon, Id(\"survey_data\", \"sample\"))\ndb_bdqpcr = tbl(dbcon, Id(\"survey_data\", \"bd_qpcr_results\"))\ndb_amp_gia = tbl(dbcon, Id(\"survey_data\", \"amp_gia\"))\ndb_amp_intensity = tbl(dbcon, Id(\"survey_data\", \"amp_maldi_intensity\"))\ndb_amp_peak = tbl(dbcon, Id(\"survey_data\", \"amp_maldi_peak\"))\ndb_amp_total = tbl(dbcon, Id(\"survey_data\", \"amp_total\"))\ndb_mucosome_gia = tbl(dbcon, Id(\"survey_data\", \"mucosome_gia\"))\n\n\n\nIdentiy data of interest\nLet’s begin by taking a look at all the capture data since 2022 for which we have AMP total results. We can preview the columns in there amp_total table with colnames(db_amp_total), by looking at the metadata (mdc), or consulting the survey_data schema diagram.\n\n# un-executed (no \"collect()\") preliminary query\ndata_oi = db_amp_total %&gt;%\n  inner_join(db_sample, by = \"sample_id\") %&gt;%\n  inner_join(db_capture, by = \"capture_id\") %&gt;%\n  left_join(db_survey, by = \"survey_id\") %&gt;%\n  left_join(db_visit, by = \"visit_id\") %&gt;%\n  left_join(db_site, by = \"site_id\") %&gt;%\n  left_join(db_region, by = \"region_id\") %&gt;%\n  left_join(db_country, by = \"country_id\") %&gt;%\n  filter(date &gt;= \"2022-01-01\",\n         sample_type == \"amp\")\n\n# investigate what data are there\n(stats_data_oi_species = data_oi %&gt;%\n  group_by(taxon_capture) %&gt;%\n  count() %&gt;%\n  collect() %&gt;%\n  arrange(desc(n)))\n\n# A tibble: 11 × 2\n# Groups:   taxon_capture [11]\n   taxon_capture                   n\n   &lt;chr&gt;                     &lt;int64&gt;\n 1 rana_sierrae                  132\n 2 colostethus_panamansis        104\n 3 hylodes_phyllodes              80\n 4 ischnocnema_henselii           79\n 5 rana_catesbeiana               62\n 6 lithobates_warszewitschii      52\n 7 rana_muscosa                   12\n 8 rana_clamitans                  7\n 9 rana_pipiens                    6\n10 pseudacris_crucifer             3\n11 atelopus_varius                 1\n\n\nFilter to species and variables of interest\n\nspecies_oi = stats_data_oi_species %&gt;%\n  filter(n &gt; 50) %&gt;%\n  pull(taxon_capture)\n\ndata_amp_total = data_oi %&gt;%\n  filter(taxon_capture %in% species_oi) %&gt;%\n  select(result_id,\n         sample_id,\n         sample_name_amp,\n         total_peptides_ug,\n         notes,\n         negative_control_group_id,  # we will touch on this later\n         taxon_capture,\n         svl_mm,\n         date,\n         site,\n         region,\n         country) %&gt;%\n  collect()\n\nSummarize by species & visualize\n\ndata_summary_species = data_amp_total %&gt;%\n  group_by(taxon_capture) %&gt;%\n  summarise(n = n(),\n            svl_mm_mean = mean(svl_mm, na.rm = TRUE),\n            svl_mm_sd = sd(svl_mm, na.rm = TRUE),\n            svl_mm_min = min(svl_mm, na.rm = TRUE),\n            svl_mm_max = max(svl_mm, na.rm = TRUE),\n            total_peptides_ug_mean = mean(total_peptides_ug),\n            total_peptides_ug_sd = sd(total_peptides_ug),\n            total_peptides_ug_min = min(total_peptides_ug),\n            total_peptides_ug_max = max(total_peptides_ug),\n            .groups = \"drop\")\n\nggplot(data_summary_species, aes(x = svl_mm_mean, y = total_peptides_ug_mean, color = taxon_capture)) +\n  geom_point(size = 3) +\n  geom_errorbar(aes(ymin = total_peptides_ug_min, ymax = total_peptides_ug_max), width = 0) +  # vertical whiskers\n  geom_errorbarh(aes(xmin = svl_mm_min, xmax = svl_mm_max), height = 0) +  # horizontal whiskers\n  theme_minimal() +\n  labs(x = \"Mean Snout-Vent Length (mm)\\n(min and max whiskers)\", y = \"Mean Total Peptides (ug)\\n(min and max whiskers)\", color = \"Species\") +\n  scale_y_log10() +\n  ggtitle(\"AMP totals v. size\\n(no negative control correction)\")\n\nWarning: `geom_errobarh()` was deprecated in ggplot2 4.0.0.\nℹ Please use the `orientation` argument of `geom_errorbar()` instead.\n\n\n`height` was translated to `width`.\n\n\n\n\n\n\n\n\n\nGreat! But what about our negative controls? We should subtract any peptides found in corresponding negative controls from samples to make this more accurate of the frogss sampled.\n\n# get negative_control_group_ids\nnc_groups_count = data_amp_total %&gt;%\n  group_by(negative_control_group_id) %&gt;%\n  count()\n\n# we see that a substantial number don't have correspondign negative controls in the database yet (NAs). Let's proceede with those that do\n  \nnc_groups = data_amp_total %&gt;%\n  filter(!is.na(negative_control_group_id)) %&gt;%\n  pull(negative_control_group_id) %&gt;%\n  unique()\n\nnc_data = db_amp_total %&gt;%\n  inner_join(db_sample, by = \"sample_id\") %&gt;%\n  filter(negative_control,\n         negative_control_group_id %in% nc_groups) %&gt;%\n  select(result_id,\n         sample_id,\n         sample_name_amp,\n         total_peptides_ug,\n         notes,\n         negative_control,\n         negative_control_group_id) %&gt;%\n  collect()\n\n# in general there may be multiple negative controls within a negative control group, good practice to aggregate\nnc_group_data = nc_data %&gt;%\n  group_by (negative_control_group_id) %&gt;%\n  summarise(nc_n = n(),\n            total_peptides_ug_nc_mean = mean(total_peptides_ug),\n            .groups = \"drop\")"
   }
 ]

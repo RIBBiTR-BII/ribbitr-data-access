@@ -8,6 +8,11 @@ bibliography: ai_references.bib
 csl: ecology.csl
 ---
 
+```{r}
+#| include: false
+librarian::shelf(tidyverse, here, RColorBrewer, wordcloud, tidytext)
+```
+
 ## Today's Agenda
 
 ::: {layout-ncol="2"}
@@ -15,17 +20,18 @@ csl: ecology.csl
 ### Presentation (15 min)
 
 - What constitutes "AI"?
-- RIBBiTR AI Poll results
-- AI x Research in the Literature
-- Institutional Guidance
+- RIBBiTR AI poll results
+- Literature on AI use in Research
+- Institutional AI Guidance
 
 ### Discussion (45 min)
 
-- Tips and tools
-- Functional considerations
 - Ethical considerations
-- Privacy concerns
+- Functional considerations
+- Educational considerations
 - Access & Inclusion
+- Privacy concerns
+- Tools and Tips
 
 :::
 
@@ -38,59 +44,216 @@ csl: ecology.csl
 - problem-solving
 
 ## What constitutes "AI"?
-**Some AI history**
+![Image from [BaslerWeb](https://www.baslerweb.com/fr-fr/learning/deep-learning/)](ai_in_research_2025-12/neuralnet.webp){fig-align="center" height="500px"}
+
+## What constitutes "AI"?
+**Some AI history...**
 
 - 1800s -- Method of least squares for optimization
 - 1950 -- Turing test a.k.a. "Imitation game"[@Turing1950]
-- 1950s -- Beginnings of Machine Learning (ML) & artificial neural networks
+- 1950s -- Beginnings of Machine Learning (ML) & [Artificial Neural Networks](https://youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&si=FhJhv3osAGNKB4i8)
 - 1960s -- Beginnings of Natural Language Processing (NLP)
-- 1970s -- Beginnings of Deep Learning & Transfer Learning
-- 1980s -- Applied Backpropogation & Convolutional Neural Networks (CNN) for Computer Vision (CV)
-
-## What constitutes "AI"?
-**Some AI history**
-
 - 1996 -- IBM's Deep Blue defeats chess world champion Gary Kasparov
-- 2010s -- Virtual assistants (e.g. "Siri" & "Alexa") & Generative Pre-trained Transformers (GPTs)
 - 2020s -- Generative AI and Freemium Large Language Model (LLM) access
 
-##  What constitutes "AI"? {background-image="ai_in_research_2025-12/ai_venn.webp" background-size="70%" background-position="center"}
+##  What constitutes "AI"?
+![](ai_in_research_2025-12/ai_venn.webp){fig-align="center" height="600px"}
 
 ##  What constitutes "AI"?
 **Some takeaways...**
 
-- AI is a very general term for technologies which have been in development for decades
-- Recent "explosion" in AI application is related to **(technological advances)** x **(access to technology)**
-- We will focus primarily on generative AI and LLMs in Research (and see Justin's talk on Dec. 18)
-
+- AI is a very **general term** for technologies which have been in development for **"a while"**
+- Recent "explosion" in AI applications is related to **(technological advances)** x **(access to technology)**
+- LLMs have reduced barriers to interacting with AI models, generating both **opportunities** & **concerns** for AI use
+- Our conversation today will focus on generative AI and LLMs in Research (and **see Justin's talk** on Dec. 18)
 
 ## RIBBiTR AI Poll Results
-- Do you use AI regularly in your research?
-- What AI tools do you use most frequently? For what tasks?
-- What emotions, ideas or concerns do you experience when using AI?
-- What would you like to discuss/learn more about regarding AI use in research?
 
-## - AI x Research in the Literature
-**Notable Review Papers**
+## RIBBiTR AI Poll Results
 
-## - AI x Research in the Literature
-**Opportunities**
+```{r}
+#| echo: false
+#| fig-height: 4
+#| fig-width: 6
 
-## - AI x Research in the Literature
-**Concerns**
+# Q1
 
+responses = read.csv(here("presentations", "ai_in_research_2025-12", "ai_use_poll_responses.csv"))
+colnames(responses) = c("timestamp",
+                        "Chatbots", 
+                        "Code Assistants", 
+                        "Pattern Recognition", 
+                        "Statistical Modeling", 
+                        "Machine Learning", 
+                        "Other", 
+                        "q2_tools_tasks", 
+                        "q3_emotions", 
+                        "q4_concerns", 
+                        "q5_learning")
+
+responses_long = responses %>%
+  select("Chatbots", 
+         "Code Assistants", 
+         "Pattern Recognition", 
+         "Statistical Modeling", 
+         "Machine Learning", 
+         "Other") %>%
+  pivot_longer(c("Chatbots", 
+                 "Code Assistants", 
+                 "Pattern Recognition", 
+                 "Statistical Modeling", 
+                 "Machine Learning", 
+                 "Other"),
+               names_to = "technology",
+               values_to = "response") %>%
+  filter(response != "")
+
+responses_long$technology <- factor(
+  responses_long$technology,
+  levels = c(setdiff(unique(responses_long$technology), "Other"), "Other")
+)
+
+ggplot(responses_long, aes(x = response, fill = response)) +
+  geom_bar() +
+  labs(
+    x = "Response",
+    y = "Count",
+    title = paste('"How do different AI technologies feature in your work?"')
+  ) +
+  scale_fill_brewer(palette = "BrBG") +
+  facet_wrap(. ~ technology) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  labs(fill = "Responses") +
+  xlab("")
+
+```
+
+## RIBBiTR AI Poll Results
+"What AI tools do you use and for what tasks?"
+
+::: {layout-ncol="2"}
+
+### Tools
+
+- **Chatbots** *(ChatGPT, Perplexity, Gemini, Claude, Jenova)*
+- **Code Assistants** *(Github Copilot, V0, Blackbox)*
+- **Research tools** *(Elicit, Connected Papers, ResearchRabbit)*
+
+
+### Tasks
+
+- Brainstorming
+- Code development & troubleshooting
+- Writing (grammar & coherence)
+- Resource discovery
+
+:::
+
+## RIBBiTR AI Poll Results
+"What emotions or sensations do you experience when using AI technologies?"
+
+```{r}
+#| echo: false
+#| fig-height: 3
+#| fig-width: 7
+
+core_words <- responses %>%
+  select(q3_emotions) %>%
+  unnest_tokens(word, q3_emotions) %>%
+  anti_join(stop_words) %>%
+  filter(!str_detect(word, "^[0-9]+$")) %>%
+  filter(str_length(word) > 2) %>%
+  count(word, sort = TRUE)
+
+set.seed(1234) # For reproducibility
+wordcloud(
+  words = core_words$word,
+  freq = core_words$n,
+  min.freq = 1,
+  max.words = 50,
+  random.order = FALSE,
+  rot.per = 0,
+  colors = brewer.pal(4, "Dark2"),
+  family = "serif",
+  fixed.asp = FALSE
+)
+```
+
+## RIBBiTR AI Poll Results
+"What concerns do you have (if any) regarding AI use in research?"
+
+- Accuracy, Reproducibility & Bias
+- Environmental & Social Impact
 - Transparency & Accountability
-- Ethical use
-- Accuracy
-- Reproducability
-- Collaboration & Communication
-- Privacy
+- Data Privacy
+- "Do I need to use AI?"
 
-## Institutional Guidance
+## Liturature on AI Use in Research
+![Even the smartest AI can’t sign the ethics form. The figure was generated using ChatGPT.](ai_in_research_2025-12/helmy_comic.png){fig-align="center" height="400px"}
 
+*Fig. 1 from Helmy et al., 2025 @Helmy2025-zl*
 
+## Liturature on AI Use in Research
+**Opportunities** [@Helmy2025-zl] [@Kim2024] [@Klimova2025]
 
-## References
+- Searching & synthesizing literature
+- Data wrangling & analysis
+- Writing & editing (articles, reports, etc.)
+- Synthesis, communication & translation
 
+## Liturature on AI Use in Research
+**Concerns** [@Helmy2025-zl] [@Kim2024] [@Klimova2025]
+
+- Robustness (accuracy, repeatability)
+- Transparency & Accountability (misrepresentation of contributions)
+- Attribution (plagiarism, intellectual property, sources)
+- Bias amplification
+- Implications for research & communication skills
+- Security & safety
+- AI authorship ethics
+
+<!-- ## Notable Research & Review Papers -->
+<!-- Helmy et al. 2025: [Ten simple rules for optimal and careful use of generative AI in science](https://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1013588) [@Helmy2025-zl] -->
+
+<!-- ![](ai_in_research_2025-12/10_simple_rules.png){fig-align="center" height="500px"} -->
+
+## Institutional Guidance *(examples)*
+
+#### Governmental Guidance
+- [Canada "FASTER" principles](https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/responsible-use-ai/guide-use-generative-ai.html)[@canadaGuideGenAI]
+
+#### University Policies & Resources 
+
+- [Pitt Guidance](https://law-pitt.libguides.com/c.php?g=1431139&p=10781011)
+- [UCSB AI Guidlines](https://cio.ucsb.edu/artificial-intelligence/ai-use-guidelines)
+
+#### Academic Journals
+- [PLOS Publisher Policies on AI (submissions & reviews)](https://journals.plos.org/plosone/s/ethical-publishing-practice)
+- [Springer AI Policies](https://www.springer.com/gp/editorial-policies/artificial-intelligence--ai-/25428500)
+
+## Discussion ideas
+
+- **Ethical considerations** (e.g. transparency, accountability, attribution)
+- **Functional considerations** (e.g. robustness, repeatability)
+- **Learning considerations** (e.g. Practices to advance understandings, not just tasks)
+- **Access & Inclusion** (Where does AI help/hinder inclusion?)
+- **Privacy concerns** (What risks exist, and how to navigate them?)
+- **Tools and Tips** (e.g, Github Copilot, Positron, Elicit)
+- **Other topics**
+
+## Sources
+### AI Use Statement
+This presentation was made with support from the following AI tools:
+
+::: {.nonincremental}
+
+- **Perplexity**: Resource & literature search, reference formatting
+- **Github Copilot**: Code assistance for visuals
+
+:::
+
+### References
 ::: {#refs}
 :::
+

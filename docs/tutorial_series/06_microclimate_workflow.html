@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-09-29">
+<meta name="dcterms.date" content="2025-12-04">
 
 <title>6. Microclimate Workflow – RIBBiTR Data Access</title>
 <style>
@@ -187,11 +187,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/07_database_refresher.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">7. Database Refresher</span></a>
-  </div>
-</li>
+ <span class="menu-text">./tutorial_series/07_database_refresher.qmd</span>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -261,6 +258,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Database Refresher 2025</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././presentations/ai_in_research_2025-12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR 101: AI Use in Research</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -299,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 29, 2025</p>
+      <p class="date">December 4, 2025</p>
     </div>
   </div>
   
@@ -426,20 +429,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ts_of_interest_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
-  sensor_id         timestamp_utc       temperature_c_01_raw timestamp_local    
-  &lt;chr&gt;             &lt;dttm&gt;                             &lt;dbl&gt; &lt;dttm&gt;             
-1 1e412c83-f3ba-45… 2023-01-01 05:00:00                 19.7 2023-01-01 00:00:00
-2 1e412c83-f3ba-45… 2023-01-01 05:30:00                 19.7 2023-01-01 00:30:00
-3 1e412c83-f3ba-45… 2023-01-01 06:00:00                 19.7 2023-01-01 01:00:00
-4 1e412c83-f3ba-45… 2023-01-01 06:30:00                 19.8 2023-01-01 01:30:00
-5 1e412c83-f3ba-45… 2023-01-01 07:00:00                 19.8 2023-01-01 02:00:00
-6 1e412c83-f3ba-45… 2023-01-01 07:30:00                 19.8 2023-01-01 02:30:00</code></pre>
+  sensor_id                timestamp_utc       temperature_c timestamp_local    
+  &lt;chr&gt;                    &lt;dttm&gt;                      &lt;dbl&gt; &lt;dttm&gt;             
+1 1e412c83-f3ba-453c-a70f… 2023-01-01 05:00:00          19.7 2023-01-01 00:00:00
+2 1e412c83-f3ba-453c-a70f… 2023-01-01 05:30:00          19.7 2023-01-01 00:30:00
+3 1e412c83-f3ba-453c-a70f… 2023-01-01 06:00:00          19.7 2023-01-01 01:00:00
+4 1e412c83-f3ba-453c-a70f… 2023-01-01 06:30:00          19.8 2023-01-01 01:30:00
+5 1e412c83-f3ba-453c-a70f… 2023-01-01 07:00:00          19.8 2023-01-01 02:00:00
+6 1e412c83-f3ba-453c-a70f… 2023-01-01 07:30:00          19.8 2023-01-01 02:30:00</code></pre>
 </div>
 </div>
 </section>
 <section id="pivot-wider" class="level2">
 <h2 class="anchored" data-anchor-id="pivot-wider">Pivot wider</h2>
-<p>We have our data! Taking a closer look, we find our temperature data in the column <code>temperature_c_01_raw</code>, where ‘01_raw’ tells us that these are the raw data pulled from the sensor (i.e.&nbsp;no filtering or gap filling).</p>
+<p>We have our data! Taking a closer look, we find our temperature data in the column <code>temperature_c</code>.</p>
 <p>Now, depending on our application, we may want to reformat this data so that time series are show in in parallel, each sensor having a respective column. We can use the <code>tidyr::pivot_wider()</code> function to rearrange our data to a wide format, with a few options regarding how we name the columns:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column names from sensor_id</span></span>
@@ -447,7 +450,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="fu">c</span>(timestamp_utc,</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                          timestamp_local),</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> sensor_id,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> temperature_c_01_raw)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> temperature_c)</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># descriptive column names</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>ts_of_interest_temp_c_desc <span class="ot">=</span> sensors_of_interest <span class="sc">%&gt;%</span></span>
@@ -460,7 +463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                          timestamp_local),</span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> <span class="fu">c</span>(site_microclimate,</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                             microhabitat),</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> temperature_c_01_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> temperature_c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These data are ready to be analyzed and visualized!</p>
 </section>
@@ -612,7 +615,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ts_of_interest_id <span class="op">=</span> ts_of_interest_long.pivot(</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">'timestamp_local'</span>,</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span><span class="st">'sensor_id'</span>,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">'temperature_c_01_raw'</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">'temperature_c'</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># descriptive column names</span></span>
@@ -623,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">'timestamp_local'</span>,</span>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[<span class="st">'site_microclimate'</span>, <span class="st">'microhabitat'</span>],</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span><span class="st">'temperature_c_01_raw'</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span><span class="st">'temperature_c'</span></span>
 <span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -641,7 +644,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div style="text-align: center;">
-<p><a href="05_bd_capture_workflow.html">&lt;- 5. Bd-Capture Workflow</a> | <a href="07_database_refresher.html">7. Database Refesher -&gt;</a></p>
+<p><a href="05_bd_capture_workflow.html">&lt;- 5. Bd-Capture Workflow</a> | <a href="07_samples_controls.html">7. Sample Results and Controls -&gt;</a></p>
 </div>
 
 
