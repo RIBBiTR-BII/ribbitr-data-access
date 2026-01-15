@@ -14,6 +14,10 @@ editor: source
 - Added `survey_data.microbiome_sequencing` table to hold sequencing metadata and point to corresponding fastq files
 - Added preliminary data to `survey_data.microbiome_sequencing` table
 
+### CHanged
+
+- Changed column name `bd_detected` <- `detected` in table `survey_data.bd_qpcr_results`
+
 ## 2025-11-05
 
 ### Added
