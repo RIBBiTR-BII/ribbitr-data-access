@@ -7,6 +7,20 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-01-14
+
+### Added
+
+- Added `survey_data.microbiome_sequencing` table to hold sequencing metadata and point to corresponding fastq files
+- Added preliminary data to `survey_data.microbiome_sequencing` table
+
+## 2025-11-05
+
+### Added
+
+- Incorporated `negative_control` and `negative_control_group_id` columns into `survey_data.sample` table.
+
+
 ## 2025-05-09
 
 ### Added
