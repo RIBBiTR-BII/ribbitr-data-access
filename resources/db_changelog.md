@@ -7,6 +7,18 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+@@ 2026-02-03
+
+### Added
+
+- Added field survey data
+  - Brazil 2025
+  - Panama December 2025
+  - Pennsylvania Fall 2025
+- Added Bd qPCR results
+  - Brazil 2024 & 2025
+  - Pennsylvania 2025
+
 ## 2026-01-14
 
 ### Added
