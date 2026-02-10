@@ -12,7 +12,6 @@ editor: source
 ### Added
 
 - New columns in table `survey_data.bd_qpcr_results`:
-  - `ipc`: Internal Positive Control outcome ("pass" or "fail")
   - `bsal_detected`: Was BSal detected in this sample?
 
 ### Changed
