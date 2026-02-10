@@ -7,6 +7,19 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-02-10
+
+### Added
+
+- New table `survey_data.bsal_qpcr_results` for qPCR results for BSal
+
+### Changed
+
+- Renamed columns in table `survey_data.bd_qpcr_results`:
+  - `bd_cycle_quant` <- `cycle_quant`
+  - `bd_target_quant` <- `target_quant`
+  - `bd_target_quant_per_swab` <- `target_quant_per_swab`
+
 ## 2026-02-03
 
 ### Added
