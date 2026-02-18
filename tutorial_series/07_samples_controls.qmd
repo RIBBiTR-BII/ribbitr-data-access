@@ -72,7 +72,7 @@ db_mucosome_gia = tbl(dbcon, Id("survey_data", "mucosome_gia"))
 
 ```
 
-### Identiy data of interest
+### Identify data of interest
 
 Let's begin by taking a look at all the capture data since 2022 for which we have AMP total results. We can preview the columns in there `amp_total` table with `colnames(db_amp_total)`, by looking at the metadata (`mdc`), or consulting the [`survey_data` schema diagram](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_survey_data.png).
 ```{r}
@@ -138,8 +138,8 @@ data_summary_species = data_amp_total %>%
 
 ggplot(data_summary_species, aes(x = svl_mm_mean, y = total_peptides_ug_mean, color = taxon_capture)) +
   geom_point(size = 3) +
-  geom_errorbar(aes(ymin = total_peptides_ug_min, ymax = total_peptides_ug_max), width = 0) +  # vertical whiskers
-  geom_errorbarh(aes(xmin = svl_mm_min, xmax = svl_mm_max), height = 0) +  # horizontal whiskers
+  geom_errorbar(aes(ymin = total_peptides_ug_min, ymax = total_peptides_ug_max), width = 0, orientation = "x") +  # vertical whiskers
+  geom_errorbar(aes(xmin = svl_mm_min, xmax = svl_mm_max), height = 0, orientation = "y") +  # horizontal whiskers
   theme_minimal() +
   labs(x = "Mean Snout-Vent Length (mm)\n(min and max whiskers)", y = "Mean Total Peptides (ug)\n(min and max whiskers)", color = "Species") +
   scale_y_log10() +
@@ -147,7 +147,7 @@ ggplot(data_summary_species, aes(x = svl_mm_mean, y = total_peptides_ug_mean, co
 
 ```
 
-Great! But what about our negative controls? We should subtract any peptides found in corresponding negative controls from samples to make this more accurate of the frogss sampled.
+Great! But what about our negative controls? We should subtract any peptides found in corresponding negative controls from samples to make this more accurate of the frogs sampled.
 
 ```{r}
 # get negative_control_group_ids
@@ -155,7 +155,7 @@ nc_groups_count = data_amp_total %>%
   group_by(negative_control_group_id) %>%
   count()
 
-# we see that a substantial number don't have correspondign negative controls in the database yet (NAs). Let's proceede with those that do
+# we see that a substantial number don't have corresponding negative controls in the database yet (NAs). Let's proceed with those that do
   
 nc_groups = data_amp_total %>%
   filter(!is.na(negative_control_group_id)) %>%
@@ -207,12 +207,12 @@ data_summary_species_nc = data_amp_total_nc %>%
 
 ggplot(data_summary_species_nc, aes(x = svl_mm_mean, y = total_peptides_ug_mean, color = taxon_capture)) +
   geom_point(size = 3) +
-  geom_errorbar(aes(ymin = total_peptides_ug_min, ymax = total_peptides_ug_max), width = 0) +  # vertical whiskers
-  geom_errorbarh(aes(xmin = svl_mm_min, xmax = svl_mm_max), height = 0) +  # horizontal whiskers
+  geom_errorbar(aes(ymin = total_peptides_ug_min, ymax = total_peptides_ug_max), width = 0, orientation = "x") +  # vertical whiskers
+  geom_errorbar(aes(xmin = svl_mm_min, xmax = svl_mm_max), height = 0, orientation = "y") +  # horizontal whiskers
   theme_minimal() +
   labs(x = "Mean Snout-Vent Length (mm)\n(min and max whiskers)", y = "Mean Total Peptides (ug)\n(min and max whiskers)", color = "Species") +
   scale_y_log10() +
-  ggtitle("AMP totals v. size\n(no negative control correction)")
+  ggtitle("AMP totals v. size\n(with negative control correction)")
 
 ```
 

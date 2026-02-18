@@ -160,7 +160,7 @@ db_env_visit = db_env %>%
 db_bd_env = db_bd_country %>%
   left_join(db_env_visit, by = "visit_id") %>%
   select(sample_name_bd,
-         detected,
+         bd_detected,
          bd_its1_copies_per_swab,
          taxon_capture,
          svl_mm,

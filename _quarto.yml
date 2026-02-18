@@ -18,7 +18,8 @@ website:
           - ./tutorial_series/04_table_joins.qmd
           - ./tutorial_series/05_bd_capture_workflow.qmd
           - ./tutorial_series/06_microclimate_workflow.qmd
-          - ./tutorial_series/07_database_refresher.qmd
+          - ./tutorial_series/07_samples_controls.qmd
+          - ./tutorial_series/08_database_refresher.qmd
       - section: "Database Resources"
         contents: 
           - section: "Schema Diagrams"

@@ -73,7 +73,7 @@ db_country = tbl(dbcon, Id("survey_data", "country"))
 
 ### Join all data of interest
 
-In this case we only want to consider cases for which he have both capture *and* Bd qPCR data. An inner join across the Bd, sample, and capture tables will keep only values which are common between them. Of these data, we want to return all supporting info, so we will left join to the remaining support tables.
+In this case we only want to consider cases for which we have both capture *and* Bd qPCR data. An inner join across the Bd, sample, and capture tables will keep only values which are common between them. Of these data, we want to return all supporting info, so we will left join to the remaining support tables.
 ```{r}
 # inner join capture and bd samples
 # left join supporting tables
@@ -112,10 +112,10 @@ data_bd_capture_2015 = data_bd_capture %>%
          cmr_id,
          sample_id,
          sample_name_bd,
-         detected,
-         cycle_quant,
-         target_quant,
-         target_quant_per_swab,
+         bd_detected,
+         bd_cycle_quant,
+         bd_target_quant,
+         bd_target_quant_per_swab,
          bd_its1_copies_per_swab,
          comments_capture,
          comments_qpcr,
@@ -178,7 +178,6 @@ import ibis
 from ibis import _
 import pandas as pd
 import dbconfig
-import db_access as db
 
 # establish database connection
 dbcon = ibis.postgres.connect(**dbconfig.ribbitr)
@@ -196,7 +195,7 @@ mdc = (
 
 ## Data discovery and pulling
 
-Looking at the [`survey_data` schema diagram](resources/schema_diagram_survey_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called "capture" and "bd_qpcr_results".
+Looking at the [`survey_data` schema diagram](https://ribbitr-bii.github.io/ribbitr-data-access/resources/schema_diagram_survey_data.png), we can browse to see which tables and columns we want. We can also consult the table or column metadata. The two observation tables with the primary data of interest are called `capture` and `bd_qpcr_results`.
 
 ### Point to support tables
 
@@ -214,7 +213,7 @@ db_country = dbcon.table('country', database='survey_data')
 
 ### Join all data of interest
 
-In this case we only want to consider cases for which he have both capture *and* Bd qPCR data. An inner join across the Bd, sample, and capture tables will keep only values which are common between them. Of these data, we want to return all supporting info, so we will left join to the remaining support tables.
+In this case we only want to consider cases for which we have both capture *and* Bd qPCR data. An inner join across the Bd, sample, and capture tables will keep only values which are common between them. Of these data, we want to return all supporting info, so we will left join to the remaining support tables.
 
 ```{python}
 # Recursive joins
@@ -254,10 +253,10 @@ data_bd_capture_2015 = (
     "cmr_id",
     "sample_id",
     "sample_name_bd",
-    "detected",
-    "cycle_quant",
-    "target_quant",
-    "target_quant_per_swab",
+    "bd_detected",
+    "bd_cycle_quant",
+    "bd_target_quant",
+    "bd_target_quant_per_swab",
     "bd_its1_copies_per_swab",
     "comments_capture",
     "comments_qpcr",

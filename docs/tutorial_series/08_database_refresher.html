@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-12-04">
+<meta name="dcterms.date" content="2026-02-18">
 
 <title>7. Database Refresher – RIBBiTR Data Access</title>
 <style>
@@ -116,9 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      RIBBiTR Data Access
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/08_database_refresher.html">7. Database Refresher</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -147,11 +145,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../tutorial_series/00_tutorial_series.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">RIBBiTR Database Tutorial Series</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../tutorial_series/01_connection_setup.html" class="sidebar-item-text sidebar-link">
@@ -189,8 +187,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
           <li class="sidebar-item">
- <span class="menu-text">./tutorial_series/07_database_refresher.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/07_samples_controls.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7. Sample Results and Controls</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/08_database_refresher.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">7. Database Refresher</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -307,7 +314,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorial_series/00_tutorial_series.html">RIBBiTR Database Tutorial Series</a></li><li class="breadcrumb-item"><a href="../tutorial_series/08_database_refresher.html">7. Database Refresher</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">7. Database Refresher</h1>
 </div>
@@ -326,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 4, 2025</p>
+      <p class="date">February 18, 2026</p>
     </div>
   </div>
   
@@ -458,10 +465,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 1]
-# Database: postgres  [ple_coding@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
+# Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1   80933</code></pre>
+1   81046</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># left join supporting tables</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>db_capture_country <span class="ot">=</span> db_capture <span class="sc">%&gt;%</span></span>
@@ -545,12 +552,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_bd_country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] "result_id"                     "sample_id"                    
-  [3] "sample_name_bd"                "detected"                     
+  [3] "sample_name_bd"                "bd_detected"                  
   [5] "replicates"                    "replicate_id"                 
-  [7] "cycle_quant"                   "target_quant"                 
+  [7] "bd_cycle_quant"                "bd_target_quant"              
   [9] "total_qpcr_volume_uL"          "qpcr_dilution_factor"         
  [11] "template_dna_volume_uL"        "extract_volume_uL"            
- [13] "target_quant_per_swab"         "bd_its1_copies_per_swab"      
+ [13] "bd_target_quant_per_swab"      "bd_its1_copies_per_swab"      
  [15] "swab_type"                     "standard_target_type"         
  [17] "standard"                      "master_mix"                   
  [19] "extraction_plate_name"         "extraction_date"              
@@ -558,7 +565,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  [23] "qpcr_plate_name"               "qpcr_well"                    
  [25] "qpcr_date"                     "qpcr_machine"                 
  [27] "qpcr_lab"                      "comments_qpcr"                
- [29] "its1_copies_per_standard_unit" "singular_sample_results"      
+ [29] "its1_copies_per_standard_unit" "bsal_detected"                
  [31] "sample_name"                   "sample_type"                  
  [33] "capture_id"                    "sample_name_conflict"         
  [35] "negative_control_group_id"     "negative_control"             
@@ -615,32 +622,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view environmental table columns</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_env)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "environmental_id"             "survey_id"                   
- [3] "wind_speed_m_s"               "air_temp_c"                  
- [5] "water_temp_c"                 "p_h"                         
- [7] "tds_ppm"                      "wind"                        
- [9] "sky"                          "air_time"                    
-[11] "water_time"                   "sample_loccation_desctiption"
-[13] "dissolved_o2_percent"         "salinity_ppt"                
-[15] "cloud_cover_percent"          "precipitation_notes"         
-[17] "soil_moisture_m3_m3"          "wind_speed_scale"            
-[19] "precipitation_during_visit"   "precipitation_last_48_h"     
-[21] "temperature_last_48_h"        "weather_condition_notes"     
-[23] "relative_humidity_percent"    "wind_speed_min_m_s"          
-[25] "wind_speed_max_m_s"           "air_temp_c_drop"             
-[27] "densiometer_d1_num_covered"   "d1_n"                        
-[29] "d1_s"                         "d1_e"                        
-[31] "d1_w"                         "d1_percent_cover"            
-[33] "densiometer_d2_num_covered"   "d2_n"                        
-[35] "d2_s"                         "d2_e"                        
-[37] "d2_w"                         "d2_percent_cover"            
-[39] "depth_of_water_from_d2_cm"    "vegetation_cover_percent"    
-[41] "vegetation_notes"             "secchi_depth_cm"             
-[43] "conductivity_us_cm"           "fish"                        
-[45] "comments_environmental"       "environmental_utmn"          
-[47] "environmental_utme"           "environmental_utm_zone"      
-[49] "environmental_elevation_m"    "environmental_latitude"      
-[51] "environmental_longitude"      "air_pressure_mbar"           </code></pre>
+<pre><code> [1] "environmental_id"            "survey_id"                  
+ [3] "wind_speed_m_s"              "air_temp_c"                 
+ [5] "water_temp_c"                "p_h"                        
+ [7] "tds_ppm"                     "wind"                       
+ [9] "sky"                         "air_time"                   
+[11] "water_time"                  "sample_location_desctiption"
+[13] "dissolved_o2_percent"        "salinity_ppt"               
+[15] "cloud_cover_percent"         "precipitation_notes"        
+[17] "soil_moisture_m3_m3"         "wind_speed_scale"           
+[19] "precipitation_during_visit"  "precipitation_last_48_h"    
+[21] "temperature_last_48_h"       "weather_condition_notes"    
+[23] "relative_humidity_percent"   "wind_speed_min_m_s"         
+[25] "wind_speed_max_m_s"          "air_temp_c_drop"            
+[27] "densiometer_d1_num_covered"  "d1_n"                       
+[29] "d1_s"                        "d1_e"                       
+[31] "d1_w"                        "d1_percent_cover"           
+[33] "densiometer_d2_num_covered"  "d2_n"                       
+[35] "d2_s"                        "d2_e"                       
+[37] "d2_w"                        "d2_percent_cover"           
+[39] "depth_of_water_from_d2_cm"   "vegetation_cover_percent"   
+[41] "vegetation_notes"            "secchi_depth_cm"            
+[43] "conductivity_us_cm"          "fish"                       
+[45] "comments_environmental"      "environmental_utmn"         
+[47] "environmental_utme"          "environmental_utm_zone"     
+[49] "environmental_elevation_m"   "environmental_latitude"     
+[51] "environmental_longitude"     "air_pressure_mbar"          </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># join with survey and visit tables, </span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>db_env_visit <span class="ot">=</span> db_env <span class="sc">%&gt;%</span></span>
@@ -655,7 +662,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>db_bd_env <span class="ot">=</span> db_bd_country <span class="sc">%&gt;%</span></span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_env_visit, <span class="at">by =</span> <span class="st">"visit_id"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sample_name_bd,</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>         detected,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>         bd_detected,</span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>         bd_its1_copies_per_swab,</span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>         taxon_capture,</span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>         svl_mm,</span>
@@ -685,10 +692,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 1]
-# Database: postgres  [ple_coding@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
+# Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1   67850</code></pre>
+1   69827</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># group by region &amp; country, and count each combination</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>summary_bd_region <span class="ot">=</span> db_bd_env <span class="sc">%&gt;%</span></span>
@@ -706,10 +713,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 1]
-# Database: postgres  [ple_coding@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
+# Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1    9384</code></pre>
+1    9374</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># other ways we might want to group and summarize this data to explore it:</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># group by region &amp; country, and count each combination</span></span>
@@ -746,14 +753,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_adult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 21
-  sample_name_bd detected bd_its1_copies_per_swab taxon_capture          svl_mm
-  &lt;chr&gt;          &lt;lgl&gt;                      &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
-1 Pe_Bd00683     FALSE                        0   hyla_versicolor          48.2
-2 Pe_Bd00487     TRUE                       407.  pseudacris_crucifer      30.3
-3 231120_K005    FALSE                        0   espadarana_prosoblepon   25.1
-4 Pe_Bd00874     FALSE                        0   rana_catesbeiana         65.2
-5 231119_K004    TRUE                        39.7 colostethus_panamansis   23.4
-6 Pe_Bd00603     FALSE                        0   rana_clamitans           52.4
+  sample_name_bd bd_detected bd_its1_copies_per_swab taxon_capture        svl_mm
+  &lt;chr&gt;          &lt;lgl&gt;                         &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;
+1 121212_09      FALSE                             0 rhaebo_haematiticus    14.8
+2 131204_16      FALSE                             0 craugastor_crassidi…   37  
+3 121022_04      FALSE                             0 pristimantis_museos…   11.4
+4 121026_01      FALSE                             0 craugastor_fitzinge…   NA  
+5 121026_02      FALSE                             0 sachatamia_albomacu…   20.6
+6 121027_02      FALSE                             0 smilisca_sila          50.4
 # ℹ 16 more variables: body_mass_g &lt;dbl&gt;, sex &lt;chr&gt;, life_stage &lt;chr&gt;,
 #   substrate_temp_c &lt;dbl&gt;, air_temp_c_mean &lt;dbl&gt;, water_temp_c_mean &lt;dbl&gt;,
 #   env_n &lt;int64&gt;, microhabitat_type &lt;chr&gt;, time_of_capture &lt;time&gt;,
