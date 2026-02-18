@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2025-09-29">
+<meta name="dcterms.date" content="2026-02-18">
 
 <title>2. Data Discovery – RIBBiTR Data Access</title>
 <style>
@@ -188,7 +188,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../tutorial_series/07_database_refresher.html" class="sidebar-item-text sidebar-link">
+  <a href="../tutorial_series/07_samples_controls.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7. Sample Results and Controls</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorial_series/08_database_refresher.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">7. Database Refresher</span></a>
   </div>
 </li>
@@ -261,6 +267,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Database Refresher 2025</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href=".././presentations/ai_in_research_2025-12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR 101: AI Use in Research</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -299,7 +311,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 29, 2025</p>
+      <p class="date">February 18, 2026</p>
     </div>
   </div>
   
@@ -446,7 +458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 30609</code></pre>
+[1] 31505</code></pre>
 </div>
 </div>
 <p><em>The pull() function executes a query to return a single column or variable, synonymous with the collect() function which returns a collection of variables as a table.</em></p>
@@ -460,7 +472,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 30433</code></pre>
+[1] 31323</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -476,10 +488,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 8 × 2
   life_stage    row_count
   &lt;chr&gt;           &lt;int64&gt;
-1 tadpole           10570
-2 adult              9891
+1 tadpole           10571
+2 adult              9892
 3 subadult           7380
-4 &lt;NA&gt;               1919
+4 &lt;NA&gt;               2813
 5 eggmass             655
 6 juvenile            154
 7 egg                  33
@@ -568,21 +580,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 22        survey_data  ...  Laboratory lookup table -- use to identify who...
 23        survey_data  ...  Column-specific definitions and metadata ("dat...
 24        survey_data  ...  Table-specific definitions and metadata ("data...
-25        survey_data  ...         Results from mucosome-Bd-inhibition assays
-26        survey_data  ...  Project lookup table with project-specific met...
-27        survey_data  ...                                Region lookup table
-28        survey_data  ...  sample lookup table for tracking sample result...
-29        survey_data  ...                                               None
+25        survey_data  ...  sequencing run metadata and fastq files for sk...
+26        survey_data  ...         Results from mucosome-Bd-inhibition assays
+27        survey_data  ...  Project lookup table with project-specific met...
+28        survey_data  ...                                Region lookup table
+29        survey_data  ...  sample lookup table for tracking sample result...
 30        survey_data  ...                                               None
-31        survey_data  ...                            Field site lookup table
-32        survey_data  ...  Tracking of human interventions, manipulations...
-33        survey_data  ...                          Field survey lookup table
-34        survey_data  ...                              Taxonomy lookup table
-35        survey_data  ...                                               None
-36        survey_data  ...  Field survey visual observations. Zeros are im...
-37        survey_data  ...                           Field visit lookup table
+31        survey_data  ...                                               None
+32        survey_data  ...                            Field site lookup table
+33        survey_data  ...  Tracking of human interventions, manipulations...
+34        survey_data  ...                          Field survey lookup table
+35        survey_data  ...                              Taxonomy lookup table
+36        survey_data  ...                                               None
+37        survey_data  ...  Field survey visual observations. Zeros are im...
+38        survey_data  ...                           Field visit lookup table
 
-[38 rows x 4 columns]</code></pre>
+[39 rows x 4 columns]</code></pre>
 </div>
 </div>
 </section>
@@ -611,13 +624,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 3    survey_data    amp_gia  ...           None            None
 4    survey_data    amp_gia  ...     bd_isolate   bd_isolate_id
 ..           ...        ...  ...            ...             ...
-463  survey_data      visit  ...           None            None
-464  survey_data      visit  ...           None            None
-465  survey_data      visit  ...           site         site_id
-466  survey_data      visit  ...            lab          lab_id
-467  survey_data      visit  ...        project      project_id
+487  survey_data      visit  ...           None            None
+488  survey_data      visit  ...           None            None
+489  survey_data      visit  ...           site         site_id
+490  survey_data      visit  ...            lab          lab_id
+491  survey_data      visit  ...        project      project_id
 
-[468 rows x 25 columns]</code></pre>
+[492 rows x 25 columns]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list the columns in our column-metadata table</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>mdc.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -638,12 +651,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(metameta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    table_schema        table_name  ... fkey_ref_table fkey_ref_column
-292  survey_data  metadata_columns  ...           None            None
-293  survey_data  metadata_columns  ...           None            None
-294  survey_data  metadata_columns  ...           None            None
-295  survey_data  metadata_columns  ...           None            None
-296  survey_data  metadata_columns  ...           None            None
-297  survey_data  metadata_columns  ...           None            None
 298  survey_data  metadata_columns  ...           None            None
 299  survey_data  metadata_columns  ...           None            None
 300  survey_data  metadata_columns  ...           None            None
@@ -663,6 +670,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 314  survey_data  metadata_columns  ...           None            None
 315  survey_data  metadata_columns  ...           None            None
 316  survey_data  metadata_columns  ...           None            None
+317  survey_data  metadata_columns  ...           None            None
+318  survey_data  metadata_columns  ...           None            None
+319  survey_data  metadata_columns  ...           None            None
+320  survey_data  metadata_columns  ...           None            None
+321  survey_data  metadata_columns  ...           None            None
+322  survey_data  metadata_columns  ...           None            None
 
 [25 rows x 25 columns]</code></pre>
 </div>
@@ -700,7 +713,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a> .count()</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a> .execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>30609</code></pre>
+<pre><code>np.int64(31505)</code></pre>
 </div>
 </div>
 <p><em>The ibis.execute() function executes a query and returns the result, regardless of the format. This is synonymous with the to_pandas() function which returns query results as a pandas dataframe where possible.</em></p>
@@ -715,7 +728,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>30433</code></pre>
+<pre><code>31323</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -731,10 +744,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      life_stage  row_count
-0        tadpole      10570
-1          adult       9891
+0        tadpole      10571
+1          adult       9892
 2       subadult       7380
-3           None       1919
+3           None       2813
 4        eggmass        655
 5       juvenile        154
 6            egg         33

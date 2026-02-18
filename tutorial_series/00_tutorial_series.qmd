@@ -23,4 +23,5 @@ Dive into the tutorial series below:
 4. [Table Joins](04_table_joins.html).
 5. [Bd-Capture Workflow](05_bd_capture_workflow.html).
 6. [Microclimate Workflow](06_microclimate_workflow.html).
-7. [Database Refresher](07_database_refresher.html).
+7. [Sample Controls](07_samples_controls.html).
+8. [Database Refresher](08_database_refresher.html).
