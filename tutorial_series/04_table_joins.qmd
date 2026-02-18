@@ -370,7 +370,7 @@ print(ves_metadata)
 We can see here that `ves_id` is the primary key (ie. unique, non-null row identifier) for the ves table (`ves_id` is also the only natural key for this table). We also see that column `survey_id` is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there another way?
 
 ```{python}
-## data_access key functions
+## db_access key functions
 
 # primary key for ves table
 db.tbl_pkey("ves", mdc)
@@ -398,7 +398,7 @@ db_ves = dbcon.table(database="survey_data", name="ves")
 # survey lazy table
 db_survey = dbcon.table(database="survey_data", name="survey")
 
-# leff_join
+# left_join
 left_ves_survey = db_ves.left_join(db_survey, "survey_id")
 
 # check columns
@@ -422,11 +422,11 @@ print(db_survey.count().execute())
 print(left_ves_survey.count().execute())
 ```
 
-Notice that in this case, the number of rows in the joined `db_ves_survey` table is equal to the number ofrows in the `db_ves` table. This has to do with the type of join we used to join these tables, in this case a "left join".
+Notice that in this case, the number of rows in the joined `db_ves_survey` table is equal to the number of rows in the `db_ves` table. This has to do with the type of join we used to join these tables, in this case a "left join".
 
 ### Types of joins
 
-Joins unite rows from two tables along shared key column values, allowing unshared columns between the two tables to be brought into a single table (as we see above in `db_ves_survey`). However,here are different joins to handle key columns vales that are not shared between tables (ie. are unique to one table). The following graphic helps illustrate the different join types:
+Joins unite rows from two tables along shared key column values, allowing unshared columns between the two tables to be brought into a single table (as we see above in `db_ves_survey`). However, there are different joins to handle key columns vales that are not shared between tables (ie. are unique to one table). The following graphic helps illustrate the different join types:
 
 ![Types of dplyr joins. Graphic by [Software Carpentry](http://software-carpentry.org/) used under [Creative Commons 4.0](https://creativecommons.org/licenses/by/4.0/)](./images/07-dplyr_joins.png)
 
@@ -451,7 +451,7 @@ print(left_ves_survey.select(['detection_type']).distinct().execute())
 # Distinct detection_types in full_ves_survey
 print(full_ves_survey.select(['detection_type']).distinct().execute())
 ```
-**Note:** In this case, the `survey` table is intentionally designed such that all `survey_id`'s in the `ves` table. To confirm this we can try:
+**Note:** In this case, the `survey` table is intentionally designed such that all `survey_id`'s in the `ves` table show up in the survey table (definition of a "foreign key" constraint). To confirm this we can try:
 
 ```{python}
 # Anti-join of db_ves and db_survey
@@ -460,26 +460,31 @@ anti_ves_survey_rows = anti_ves_survey.count().execute()
 print(anti_ves_survey_rows)
 ```
 
-There are 0 rows in this anti_join. This means that in our Venn diagram, the left lobe is essentially empty or nonexistent. The outcome is that in *this case*, `left_join()` and `inner_join()` are equivalent, as are `full_join()` and `right_join()`. This is not true in general, however.
+There are 0 rows in this anti_join. This means that in our Venn diagram, the left lobe is essentially empty or nonexistent. The outcome is that in *this case*, `left_join()` and `inner_join()` are equivalent, as are `full_join()` and `right_join()`. This is true for all foreign key relationships, but is not always true in general.
 
+::: {.callout-tip}
 #### Relationship cardinality
-Foreign keys which point to primary keys are an example of a many:1 ("many-to-one") relationship This is to say that a foreign key column can hold any number of duplicate values, while a primary key value can show up a maximum of once. Many:1 relationships are most common in our database. Occasionally you may see a 1:1 relationship or a many:many relationship.
+
+Foreign keys which point to primary keys are an example of a many:1 ("many-to-one") relationship This is to say that a foreign key column can hold any number of duplicate values, while a primary key value can show up a maximum of once. Many:1 relationships are most common in our database. Occasionally you may also see a 1:1 relationship or a many:many relationship. This classification of relationships in a relational database is called "cardinality".
+
+:::
 
 ### Deciding how to join tables
-You have the liberty to decide which join you want, so how do you make that choice? Do you want
+You have the liberty to decide which join you want, so how do you make that choice? Do you want:
+
 - all the data from one table (`left_join()` or `right_join()`)
 - all the data or from both tables (`full_join`)
 - only data that is shared between the two (`inner_join()`)
 
 To join tables properly along shared and key columns, it is important to understand the structure of the database. This is where consulting the column metadata (`mdc`) or [schema diagram](../resources/schema_diagram_survey_data.png) comes in handy.
 
-Looking at the schema diagram, we see that to join the VES data with country, we will have to recursively join the survey, visit, site, region, and country tables.
+Looking at the schema diagram, we see that to join the VES data with country, we will have to recursively join the `survey`, `visit`, `site`, `region`, and `country` tables.
 
 ## Recursive joins
 With that understanding, let's connect the data we have been wanting all along:
 
 ```{python}
-# Ponters for all tables
+# Pointers for all tables of interest
 db_ves = dbcon.table('ves', database='survey_data')
 db_survey = dbcon.table('survey', database='survey_data')
 db_visit = dbcon.table('visit', database='survey_data')
@@ -488,7 +493,7 @@ db_region = dbcon.table('region', database='survey_data')
 db_country = dbcon.table('country', database='survey_data')
 
 # Recursive joins
-db_ves_sup = (
+db_ves_country = (
     db_ves
     .left_join(db_survey, db_ves.survey_id == db_survey.survey_id)
     .left_join(db_visit, db_survey.visit_id == db_visit.visit_id)
@@ -503,7 +508,7 @@ Finally we can select for and filter the variables of interest:
 
 ```{python}
 data_ves_filtered = (
-    db_ves_sup
+    db_ves_country
     .select(
       'taxon_ves',
       'count_ves',
@@ -524,11 +529,15 @@ data_ves_filtered = (
 
 Great! These data are ready to be analyzed.
 
+A final note, the above "lazy table" query construction was created in two steps here, passing the lazy table `db_ves_country` to `data_ves_filter` for subsequent data collection. In general you can break this into as many or as few steps as make sense for the clarity of your code.
+
 ## Disconnect
 
 ```{python}
 dbcon.disconnect()
 ```
+
+::: {.callout-tip}
 
 ## Also try:
 
@@ -537,7 +546,7 @@ dbcon.disconnect()
 ```{python, eval=FALSE}
 db_ves_filtered.compile()
 ```
-
+:::
 
 :::
 

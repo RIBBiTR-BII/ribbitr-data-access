@@ -262,13 +262,6 @@ The `ibis.compile()` function converts our lazy table "shopping list" into an SQ
 dbcon.disconnect()
 ```
 
-## Also try:
-- Check out the SQL code for your last query with:
-
-```{python, eval=FALSE}
-db_ves_adult_final.compile()
-```
-
 :::
 <div style="text-align: center;">
 [<- 2. Data Discovery](02_data_discovery.html) | [4. Table Joins ->](04_table_joins.html)

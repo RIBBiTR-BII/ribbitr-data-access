@@ -699,7 +699,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can see here that <code>ves_id</code> is the primary key (ie. unique, non-null row identifier) for the ves table (<code>ves_id</code> is also the only natural key for this table). We also see that column <code>survey_id</code> is a foreign key, meaning it points to the primary key of another table. Good investigation work, but this is tedious. Is there another way?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">## data_access key functions</span></span>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">## db_access key functions</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># primary key for ves table</span></span>
 <span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>db.tbl_pkey(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -719,7 +719,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all unique key columns for ves table</span></span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>db.tbl_keys(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['taxon_ves', 'ves_id', 'survey_id', 'microhabitat_detailed']</code></pre>
+<pre><code>['ves_id', 'survey_id', 'microhabitat_detailed', 'taxon_ves']</code></pre>
 </div>
 </div>
 <p>Notice that we passed the column metadata to these functions, to help us automate key lookups.</p>
@@ -734,7 +734,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># survey lazy table</span></span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>db_survey <span class="op">=</span> dbcon.table(database<span class="op">=</span><span class="st">"survey_data"</span>, name<span class="op">=</span><span class="st">"survey"</span>)</span>
 <span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># leff_join</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># left_join</span></span>
 <span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>left_ves_survey <span class="op">=</span> db_ves.left_join(db_survey, <span class="st">"survey_id"</span>)</span>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check columns</span></span>
@@ -763,10 +763,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>31505</code></pre>
 </div>
 </div>
-<p>Notice that in this case, the number of rows in the joined <code>db_ves_survey</code> table is equal to the number ofrows in the <code>db_ves</code> table. This has to do with the type of join we used to join these tables, in this case a “left join”.</p>
+<p>Notice that in this case, the number of rows in the joined <code>db_ves_survey</code> table is equal to the number of rows in the <code>db_ves</code> table. This has to do with the type of join we used to join these tables, in this case a “left join”.</p>
 <section id="types-of-joins-1" class="level3">
 <h3 class="anchored" data-anchor-id="types-of-joins-1">Types of joins</h3>
-<p>Joins unite rows from two tables along shared key column values, allowing unshared columns between the two tables to be brought into a single table (as we see above in <code>db_ves_survey</code>). However,here are different joins to handle key columns vales that are not shared between tables (ie. are unique to one table). The following graphic helps illustrate the different join types:</p>
+<p>Joins unite rows from two tables along shared key column values, allowing unshared columns between the two tables to be brought into a single table (as we see above in <code>db_ves_survey</code>). However, there are different joins to handle key columns vales that are not shared between tables (ie. are unique to one table). The following graphic helps illustrate the different join types:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./images/07-dplyr_joins.png" class="img-fluid figure-img"></p>
@@ -805,7 +805,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 5         visual</code></pre>
 </div>
 </div>
-<p><strong>Note:</strong> In this case, the <code>survey</code> table is intentionally designed such that all <code>survey_id</code>’s in the <code>ves</code> table. To confirm this we can try:</p>
+<p><strong>Note:</strong> In this case, the <code>survey</code> table is intentionally designed such that all <code>survey_id</code>’s in the <code>ves</code> table show up in the survey table (definition of a “foreign key” constraint). To confirm this we can try:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Anti-join of db_ves and db_survey</span></span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>anti_ves_survey <span class="op">=</span> db_ves.anti_join(db_survey, db_ves.survey_id <span class="op">==</span> db_survey.survey_id)</span>
@@ -815,24 +815,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>0</code></pre>
 </div>
 </div>
-<p>There are 0 rows in this anti_join. This means that in our Venn diagram, the left lobe is essentially empty or nonexistent. The outcome is that in <em>this case</em>, <code>left_join()</code> and <code>inner_join()</code> are equivalent, as are <code>full_join()</code> and <code>right_join()</code>. This is not true in general, however.</p>
-<section id="relationship-cardinality-1" class="level4">
-<h4 class="anchored" data-anchor-id="relationship-cardinality-1">Relationship cardinality</h4>
-<p>Foreign keys which point to primary keys are an example of a many:1 (“many-to-one”) relationship This is to say that a foreign key column can hold any number of duplicate values, while a primary key value can show up a maximum of once. Many:1 relationships are most common in our database. Occasionally you may see a 1:1 relationship or a many:many relationship.</p>
-</section>
+<p>There are 0 rows in this anti_join. This means that in our Venn diagram, the left lobe is essentially empty or nonexistent. The outcome is that in <em>this case</em>, <code>left_join()</code> and <code>inner_join()</code> are equivalent, as are <code>full_join()</code> and <code>right_join()</code>. This is true for all foreign key relationships, but is not always true in general.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Relationship cardinality
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Foreign keys which point to primary keys are an example of a many:1 (“many-to-one”) relationship This is to say that a foreign key column can hold any number of duplicate values, while a primary key value can show up a maximum of once. Many:1 relationships are most common in our database. Occasionally you may also see a 1:1 relationship or a many:many relationship. This classification of relationships in a relational database is called “cardinality”.</p>
+</div>
+</div>
 </section>
 <section id="deciding-how-to-join-tables-1" class="level3">
 <h3 class="anchored" data-anchor-id="deciding-how-to-join-tables-1">Deciding how to join tables</h3>
-<p>You have the liberty to decide which join you want, so how do you make that choice? Do you want - all the data from one table (<code>left_join()</code> or <code>right_join()</code>) - all the data or from both tables (<code>full_join</code>) - only data that is shared between the two (<code>inner_join()</code>)</p>
+<p>You have the liberty to decide which join you want, so how do you make that choice? Do you want:</p>
+<ul>
+<li>all the data from one table (<code>left_join()</code> or <code>right_join()</code>)</li>
+<li>all the data or from both tables (<code>full_join</code>)</li>
+<li>only data that is shared between the two (<code>inner_join()</code>)</li>
+</ul>
 <p>To join tables properly along shared and key columns, it is important to understand the structure of the database. This is where consulting the column metadata (<code>mdc</code>) or <a href="../resources/schema_diagram_survey_data.png">schema diagram</a> comes in handy.</p>
-<p>Looking at the schema diagram, we see that to join the VES data with country, we will have to recursively join the survey, visit, site, region, and country tables.</p>
+<p>Looking at the schema diagram, we see that to join the VES data with country, we will have to recursively join the <code>survey</code>, <code>visit</code>, <code>site</code>, <code>region</code>, and <code>country</code> tables.</p>
 </section>
 </section>
 <section id="recursive-joins-1" class="level2">
 <h2 class="anchored" data-anchor-id="recursive-joins-1">Recursive joins</h2>
 <p>With that understanding, let’s connect the data we have been wanting all along:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ponters for all tables</span></span>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pointers for all tables of interest</span></span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>db_ves <span class="op">=</span> dbcon.table(<span class="st">'ves'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
 <span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>db_survey <span class="op">=</span> dbcon.table(<span class="st">'survey'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
 <span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>db_visit <span class="op">=</span> dbcon.table(<span class="st">'visit'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
@@ -841,7 +855,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>db_country <span class="op">=</span> dbcon.table(<span class="st">'country'</span>, database<span class="op">=</span><span class="st">'survey_data'</span>)</span>
 <span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Recursive joins</span></span>
-<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>db_ves_sup <span class="op">=</span> (</span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>db_ves_country <span class="op">=</span> (</span>
 <span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>    db_ves</span>
 <span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>    .left_join(db_survey, db_ves.survey_id <span class="op">==</span> db_survey.survey_id)</span>
 <span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>    .left_join(db_visit, db_survey.visit_id <span class="op">==</span> db_visit.visit_id)</span>
@@ -853,7 +867,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Finally we can select for and filter the variables of interest:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>data_ves_filtered <span class="op">=</span> (</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>    db_ves_sup</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>    db_ves_country</span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>    .select(</span>
 <span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">'taxon_ves'</span>,</span>
 <span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">'count_ves'</span>,</span>
@@ -872,20 +886,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Great! These data are ready to be analyzed.</p>
+<p>A final note, the above “lazy table” query construction was created in two steps here, passing the lazy table <code>db_ves_country</code> to <code>data_ves_filter</code> for subsequent data collection. In general you can break this into as many or as few steps as make sense for the clarity of your code.</p>
 </section>
 <section id="disconnect-1" class="level2">
 <h2 class="anchored" data-anchor-id="disconnect-1">Disconnect</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>dbcon.disconnect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="also-try-1" class="level2">
-<h2 class="anchored" data-anchor-id="also-try-1">Also try:</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Also try:
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
 <li>Check out the SQL code for your last query with:</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>db_ves_filtered.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </div>
 </section>
 </div>
