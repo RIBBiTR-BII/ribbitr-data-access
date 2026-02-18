@@ -294,7 +294,7 @@ Let's set up our environment to get ready to join tables.
 
 ## Load packages
 
-For the second half of this tutorial, you will need to download the [db_access.py](https://github.com/RIBBiTR-BII/ribbitr-data-access/blob/main/database_tutorials/db_access.py) script and save it alongside your `dbconfig.py` file. This script will provide us with some useful functions for recursively joining tables
+For the second half of this tutorial, you will need to download the [db_access.py](https://github.com/RIBBiTR-BII/ribbitr-data-access/blob/main/tutorial_series/db_access.py) script and save it alongside your `dbconfig.py` file. This script will provide us with some useful functions for recursively joining tables
 
 ## Setup
 
