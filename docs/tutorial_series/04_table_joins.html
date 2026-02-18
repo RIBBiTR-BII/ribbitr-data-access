@@ -195,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../tutorial_series/08_database_refresher.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">7. Database Refresher</span></a>
+ <span class="menu-text">8. Database Refresher</span></a>
   </div>
 </li>
       </ul>
@@ -728,7 +728,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all unique key columns for ves table</span></span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>db.tbl_keys(<span class="st">"ves"</span>, mdc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['ves_id', 'microhabitat_detailed', 'survey_id', 'taxon_ves']</code></pre>
+<pre><code>['ves_id', 'taxon_ves', 'survey_id', 'microhabitat_detailed']</code></pre>
 </div>
 </div>
 <p>Notice that we passed the column metadata to these functions, to help us automate key lookups.</p>
