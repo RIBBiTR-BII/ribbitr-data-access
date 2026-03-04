@@ -7,6 +7,16 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-03-04
+
+### Added
+
+- Bd qPCR results for Brazil 2024 plate 9 (resolved contamination issues)\
+
+### Changed
+
+- Added well numbers to Bd qPCR results where missing
+
 ## 2026-02-10
 
 ### Added
