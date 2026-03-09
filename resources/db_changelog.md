@@ -7,11 +7,17 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-03-09
+
+### Added
+
+- Sierra 2025 AMPs results (total peptides, peaks, intensities)
+
 ## 2026-03-04
 
 ### Added
 
-- Bd qPCR results for Brazil 2024 plate 9 (resolved contamination issues)\
+- Bd qPCR results for Brazil 2024 plate 9 (resolved contamination issues)
 
 ### Changed
 
