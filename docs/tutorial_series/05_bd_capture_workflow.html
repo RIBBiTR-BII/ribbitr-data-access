@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2026-02-18">
+<meta name="dcterms.date" content="2026-08-02">
 
 <title>5. Bd-Capture Workflow – RIBBiTR Data Access</title>
 <style>
@@ -209,6 +209,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://pondr-app-production.up.railway.app/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR Data Portal</span></a>
+  </div>
+</li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
@@ -311,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 18, 2026</p>
+      <p class="date">August 2, 2026</p>
     </div>
   </div>
   
@@ -516,19 +522,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(row_count)) <span class="sc">%&gt;%</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 2
-   life_stage    row_count
-   &lt;chr&gt;           &lt;int64&gt;
- 1 adult             34884
- 2 juvenile           4397
- 3 tadpole            2763
- 4 &lt;NA&gt;               2584
- 5 subadult           1862
- 6 metamorph           429
- 7 larva               417
- 8 larvae              218
- 9 metamorphosed        28
-10 eggmass               7</code></pre>
+<pre><code># A tibble: 6 × 2
+  life_stage row_count
+  &lt;chr&gt;        &lt;int64&gt;
+1 adult          36515
+2 subadult        6311
+3 larva           3493
+4 &lt;NA&gt;            2726
+5 metamorph        457
+6 eggmass            7</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_bd_capture_2015_life <span class="ot">&lt;-</span> data_bd_capture_2015 <span class="sc">%&gt;%</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(life_stage <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"juvenile"</span>,</span>
@@ -688,12 +690,12 @@ WHERE
 <pre><code># A tibble: 6 × 20
   capture_id        taxon_capture life_stage svl_mm body_mass_g survey_id cmr_id
   &lt;chr&gt;             &lt;chr&gt;         &lt;chr&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt; 
-1 6eeeb74d-5325-44… espadarana_p… adult        25.5         0.7 473bfaba… &lt;NA&gt;  
-2 96fba6ff-677d-4b… colostethus_… adult        27.3         2.1 c500c2d7… &lt;NA&gt;  
-3 05aac450-7c9e-4a… colostethus_… adult        26.5         1.5 60b7f2d7… &lt;NA&gt;  
-4 f1ab9744-86a7-45… boana_platan… adult        55.0        15.3 5ca54b85… &lt;NA&gt;  
-5 707f2783-6de8-40… colostethus_… adult        27.3         2.8 c500c2d7… &lt;NA&gt;  
-6 e68a063e-c259-4c… colostethus_… adult        26.8         2.7 c500c2d7… &lt;NA&gt;  
+1 c26c5265-bd13-51… rana_clamita… adult        68.7       41.3  191b982b… &lt;NA&gt;  
+2 c8e47a1e-b12a-49… sachatamia_a… adult        25.6        0.85 b627fb81… &lt;NA&gt;  
+3 9fc4bd14-7792-44… rana_catesbe… adult       124.       290.   e96ba35c… &lt;NA&gt;  
+4 fd99c3ba-c36c-48… rana_clamita… adult        68.1       35.1  895c0158… &lt;NA&gt;  
+5 9991df0e-d605-4c… rana_catesbe… adult        72.7       55.2  191b982b… &lt;NA&gt;  
+6 7d996414-4d94-50… rana_clamita… adult        66.3       40.7  191b982b… &lt;NA&gt;  
 # ℹ 13 more variables: sample_id &lt;chr&gt;, sample_name_bd &lt;chr&gt;,
 #   bd_detected &lt;lgl&gt;, bd_cycle_quant &lt;dbl&gt;, bd_target_quant &lt;dbl&gt;,
 #   bd_target_quant_per_swab &lt;dbl&gt;, bd_its1_copies_per_swab &lt;dbl&gt;,
@@ -828,17 +830,13 @@ WHERE
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      life_stage  row_count
-0          adult      34884
-1       juvenile       4397
-2        tadpole       2763
-3           None       2584
-4       subadult       1862
-5      metamorph        429
-6          larva        417
-7         larvae        218
-8  metamorphosed         28
-9        eggmass          7</code></pre>
+<pre><code>  life_stage  row_count
+0      adult      36515
+1   subadult       6311
+2      larva       3493
+3       None       2726
+4  metamorph        457
+5    eggmass          7</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to desired life stages</span></span>
@@ -863,11 +861,11 @@ WHERE
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>data_bd_capture_final.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                             capture_id  ... country
-0  6eeeb74d-5325-44a0-bc9e-e19c930e7f2e  ...  panama
-1  96fba6ff-677d-4b8c-84e7-a17763b18523  ...  panama
-2  05aac450-7c9e-4acf-9e98-80aa97750cd6  ...  panama
-3  f1ab9744-86a7-45d7-9014-f4a6da9c857f  ...  panama
-4  707f2783-6de8-4048-aa3a-1bbc3c149710  ...  panama
+0  baaf8695-7389-4543-a714-16612f451860  ...     usa
+1  c26c5265-bd13-5121-bcb2-fb8b66fae704  ...     usa
+2  c8e47a1e-b12a-490e-9ddc-cb02e296a085  ...  panama
+3  9fc4bd14-7792-446c-8749-c4bfaebff199  ...     usa
+4  fd99c3ba-c36c-48d5-9997-af89c0547a33  ...     usa
 
 [5 rows x 20 columns]</code></pre>
 </div>

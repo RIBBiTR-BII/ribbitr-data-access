@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2026-02-18">
+<meta name="dcterms.date" content="2026-08-02">
 
 <title>2. Data Discovery – RIBBiTR Data Access</title>
 <style>
@@ -209,6 +209,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://pondr-app-production.up.railway.app/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR Data Portal</span></a>
+  </div>
+</li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
@@ -311,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 18, 2026</p>
+      <p class="date">August 2, 2026</p>
     </div>
   </div>
   
@@ -458,7 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 31505</code></pre>
+[1] 32043</code></pre>
 </div>
 </div>
 <p><em>The pull() function executes a query to return a single column or variable, synonymous with the collect() function which returns a collection of variables as a table.</em></p>
@@ -472,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>integer64
-[1] 31323</code></pre>
+[1] 31861</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -485,17 +491,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(row_count)) <span class="sc">%&gt;%</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8 × 2
-  life_stage    row_count
-  &lt;chr&gt;           &lt;int64&gt;
-1 tadpole           10571
-2 adult              9892
-3 subadult           7380
-4 &lt;NA&gt;               2813
-5 eggmass             655
-6 juvenile            154
-7 egg                  33
-8 metamorphosed         7</code></pre>
+<pre><code># A tibble: 6 × 2
+  life_stage row_count
+  &lt;chr&gt;        &lt;int64&gt;
+1 larva          10742
+2 adult          10109
+3 subadult        7688
+4 &lt;NA&gt;            2813
+5 eggmass          684
+6 metamorph          7</code></pre>
 </div>
 </div>
 </section>
@@ -713,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a> .count()</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a> .execute())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>np.int64(31505)</code></pre>
+<pre><code>np.int64(32043)</code></pre>
 </div>
 </div>
 <p><em>The ibis.execute() function executes a query and returns the result, regardless of the format. This is synonymous with the to_pandas() function which returns query results as a pandas dataframe where possible.</em></p>
@@ -728,7 +732,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_row_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>31323</code></pre>
+<pre><code>31861</code></pre>
 </div>
 </div>
 <p>How many rows corresponding to a each life stage:</p>
@@ -743,15 +747,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(life_stage_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      life_stage  row_count
-0        tadpole      10571
-1          adult       9892
-2       subadult       7380
-3           None       2813
-4        eggmass        655
-5       juvenile        154
-6            egg         33
-7  metamorphosed          7</code></pre>
+<pre><code>  life_stage  row_count
+0      larva      10742
+1      adult      10109
+2   subadult       7688
+3       None       2813
+4    eggmass        684
+5  metamorph          7</code></pre>
 </div>
 </div>
 </section>

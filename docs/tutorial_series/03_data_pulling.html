@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2026-02-18">
+<meta name="dcterms.date" content="2026-08-02">
 
 <title>3. Data Pulling – RIBBiTR Data Access</title>
 <style>
@@ -209,6 +209,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://pondr-app-production.up.railway.app/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR Data Portal</span></a>
+  </div>
+</li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
@@ -311,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 18, 2026</p>
+      <p class="date">August 2, 2026</p>
     </div>
   </div>
   
@@ -403,12 +409,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 6 × 5
   taxon_ves          count_ves life_stage sex   survey_id                       
   &lt;chr&gt;                  &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;                           
-1 thamnophis_elegans         4 adult      &lt;NA&gt;  b08ea21b-1b43-457c-80f9-79e5229…
-2 rana_sierrae               2 adult      &lt;NA&gt;  be0263cb-ba57-59b3-a58a-4e54b35…
-3 thamnophis_elegans         1 adult      &lt;NA&gt;  aa82047b-53ff-521b-a4d0-c27ca43…
-4 rana_sierrae               3 adult      &lt;NA&gt;  d21d76d3-32c2-54a3-aa59-25b4d8e…
-5 rana_sierrae               3 adult      &lt;NA&gt;  96c482d1-838c-54ab-9d77-58bae2d…
-6 rana_sierrae               1 adult      &lt;NA&gt;  08f54a99-5626-528a-9346-0f9efa2…</code></pre>
+1 rana_sierrae               2 adult      &lt;NA&gt;  be0263cb-ba57-59b3-a58a-4e54b35…
+2 thamnophis_elegans         1 adult      &lt;NA&gt;  aa82047b-53ff-521b-a4d0-c27ca43…
+3 rana_sierrae               3 adult      &lt;NA&gt;  d21d76d3-32c2-54a3-aa59-25b4d8e…
+4 rana_sierrae               1 adult      &lt;NA&gt;  08f54a99-5626-528a-9346-0f9efa2…
+5 rana_muscosa               8 adult      &lt;NA&gt;  4fec584b-898f-594b-bb28-5e2f95d…
+6 rana_sierrae             125 adult      &lt;NA&gt;  483fc67f-8db4-5979-9594-3683a9e…</code></pre>
 </div>
 </div>
 <p>Great! The above script is an example of how we can efficiently pull the data of interest without having to pull excess data.</p>
@@ -444,19 +450,19 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(db_ves_adult_sql)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           taxon_ves count_ves life_stage  sex
-1 thamnophis_elegans         4      adult &lt;NA&gt;
-2       rana_sierrae         2      adult &lt;NA&gt;
-3 thamnophis_elegans         1      adult &lt;NA&gt;
-4       rana_sierrae         3      adult &lt;NA&gt;
-5       rana_sierrae         3      adult &lt;NA&gt;
-6       rana_sierrae         1      adult &lt;NA&gt;
+1       rana_sierrae         2      adult &lt;NA&gt;
+2 thamnophis_elegans         1      adult &lt;NA&gt;
+3       rana_sierrae         3      adult &lt;NA&gt;
+4       rana_sierrae         1      adult &lt;NA&gt;
+5       rana_muscosa         8      adult &lt;NA&gt;
+6       rana_sierrae       125      adult &lt;NA&gt;
                              survey_id
-1 b08ea21b-1b43-457c-80f9-79e522993fcd
-2 be0263cb-ba57-59b3-a58a-4e54b35c3968
-3 aa82047b-53ff-521b-a4d0-c27ca4327b62
-4 d21d76d3-32c2-54a3-aa59-25b4d8ef8fca
-5 96c482d1-838c-54ab-9d77-58bae2dae3bd
-6 08f54a99-5626-528a-9346-0f9efa23fabe</code></pre>
+1 be0263cb-ba57-59b3-a58a-4e54b35c3968
+2 aa82047b-53ff-521b-a4d0-c27ca4327b62
+3 d21d76d3-32c2-54a3-aa59-25b4d8ef8fca
+4 08f54a99-5626-528a-9346-0f9efa23fabe
+5 4fec584b-898f-594b-bb28-5e2f95d33788
+6 483fc67f-8db4-5979-9594-3683a9e3df8b</code></pre>
 </div>
 </div>
 <p>On close inspection we see that this is identical to the db_ves_adult_sql above. Now you have two ways to access the same data!</p>
@@ -566,11 +572,11 @@ WHERE ("life_stage" = 'adult')</code></pre>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>db_ves_adult.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            taxon_ves  count_ves  ...   sex                             survey_id
-0  thamnophis_elegans        4.0  ...  None  b08ea21b-1b43-457c-80f9-79e522993fcd
-1        rana_sierrae        2.0  ...  None  be0263cb-ba57-59b3-a58a-4e54b35c3968
-2  thamnophis_elegans        1.0  ...  None  aa82047b-53ff-521b-a4d0-c27ca4327b62
-3        rana_sierrae        3.0  ...  None  d21d76d3-32c2-54a3-aa59-25b4d8ef8fca
-4        rana_sierrae        3.0  ...  None  96c482d1-838c-54ab-9d77-58bae2dae3bd
+0        rana_sierrae        2.0  ...  None  be0263cb-ba57-59b3-a58a-4e54b35c3968
+1  thamnophis_elegans        1.0  ...  None  aa82047b-53ff-521b-a4d0-c27ca4327b62
+2        rana_sierrae        3.0  ...  None  d21d76d3-32c2-54a3-aa59-25b4d8ef8fca
+3        rana_sierrae        1.0  ...  None  08f54a99-5626-528a-9346-0f9efa23fabe
+4        rana_muscosa        8.0  ...  None  4fec584b-898f-594b-bb28-5e2f95d33788
 
 [5 rows x 5 columns]</code></pre>
 </div>

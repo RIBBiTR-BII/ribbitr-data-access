@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2026-02-18">
+<meta name="dcterms.date" content="2026-08-02">
 
 <title>8. Database Refresher – RIBBiTR Data Access</title>
 <style>
@@ -209,6 +209,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://pondr-app-production.up.railway.app/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR Data Portal</span></a>
+  </div>
+</li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
@@ -333,7 +339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 18, 2026</p>
+      <p class="date">August 2, 2026</p>
     </div>
   </div>
   
@@ -468,7 +474,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1   81046</code></pre>
+1   83355</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># left join supporting tables</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>db_capture_country <span class="ot">=</span> db_capture <span class="sc">%&gt;%</span></span>
@@ -695,7 +701,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1   69827</code></pre>
+1   71747</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># group by region &amp; country, and count each combination</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>summary_bd_region <span class="ot">=</span> db_bd_env <span class="sc">%&gt;%</span></span>
@@ -716,7 +722,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Database: postgres  [cob_reads@ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com:5432/ribbitr]
         n
   &lt;int64&gt;
-1    9374</code></pre>
+1    9481</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># other ways we might want to group and summarize this data to explore it:</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># group by region &amp; country, and count each combination</span></span>
@@ -755,12 +761,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 6 × 21
   sample_name_bd bd_detected bd_its1_copies_per_swab taxon_capture        svl_mm
   &lt;chr&gt;          &lt;lgl&gt;                         &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;
-1 121022_04      FALSE                             0 pristimantis_museos…   11.4
-2 121212_09      FALSE                             0 rhaebo_haematiticus    14.8
-3 131204_16      FALSE                             0 craugastor_crassidi…   37  
-4 121026_02      FALSE                             0 sachatamia_albomacu…   20.6
-5 121027_02      FALSE                             0 smilisca_sila          50.4
-6 121029_02      FALSE                             0 rhaebo_haematiticus    14.5
+1 240721_K002    TRUE                           735. colostethus_panaman…   21.2
+2 240719_D004    FALSE                            0  sachatamia_albomacu…   25.6
+3 241208_R002    FALSE                            0  rhaebo_haematiticus    61.0
+4 241127_D001    FALSE                            0  colostethus_panaman…   24.7
+5 231206_S004    TRUE                           186. lithobates_warszewi…   38.3
+6 241125_D002    TRUE                         92953. sachatamia_albomacu…   25.7
 # ℹ 16 more variables: body_mass_g &lt;dbl&gt;, sex &lt;chr&gt;, life_stage &lt;chr&gt;,
 #   substrate_temp_c &lt;dbl&gt;, air_temp_c_mean &lt;dbl&gt;, water_temp_c_mean &lt;dbl&gt;,
 #   env_n &lt;int64&gt;, microhabitat_type &lt;chr&gt;, time_of_capture &lt;time&gt;,
@@ -813,7 +819,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># look at columns in the labs table for context</span></span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "lab_id"           "lab_name"         "lab_data_contact"</code></pre>
+<pre><code>[1] "lab_id"           "lab_name"         "lab_data_contact" "domain"          
+[5] "contact_email"   </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to </span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>collaborators <span class="ot">=</span> db_lab <span class="sc">%&gt;%</span></span>

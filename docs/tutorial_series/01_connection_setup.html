@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cob Staines">
-<meta name="dcterms.date" content="2026-02-18">
+<meta name="dcterms.date" content="2026-08-02">
 
 <title>1. Connection Setup – RIBBiTR Data Access</title>
 <style>
@@ -209,6 +209,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://pondr-app-production.up.railway.app/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RIBBiTR Data Portal</span></a>
+  </div>
+</li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
@@ -311,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 18, 2026</p>
+      <p class="date">August 2, 2026</p>
     </div>
   </div>
   
@@ -353,9 +359,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Copy the following database connection parameters to your .Renviron file, substituting your login credentials (user &amp; password).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RIBBiTR DB credentials</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ribbitr.dbname <span class="ot">=</span> <span class="st">"ribbitr"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ribbitr.host <span class="ot">=</span> <span class="st">"ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ribbitr.port <span class="ot">=</span> <span class="st">"5432"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ribbitr.dbname <span class="ot">=</span> <span class="st">"[DATABASE-HERE]"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ribbitr.host <span class="ot">=</span> <span class="st">"[HOST-HERE]"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ribbitr.port <span class="ot">=</span> <span class="st">"[PORT-HERE]"</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ribbitr.user <span class="ot">=</span> <span class="st">"[YOUR-USERNAME-HERE]"</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ribbitr.password <span class="ot">=</span> <span class="st">"[YOUR-PASSWORD-HERE]"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -417,7 +423,7 @@ YAML login credentials
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ── R CMD build ─────────────────────────────────────────────────────────────────
-* checking for file ‘/tmp/RtmpXp9Usx/remotes2603a798f103e/RIBBiTR-BII-ribbitrrr-8f9be81/DESCRIPTION’ ... OK
+* checking for file ‘/tmp/RtmpWSREDK/remotes9f7343c5c33a/RIBBiTR-BII-ribbitrrr-8f9be81/DESCRIPTION’ ... OK
 * preparing ‘ribbitrrr’:
 * checking DESCRIPTION meta-information ... OK
 * checking for LF line-endings in source and make files and shell scripts
@@ -512,9 +518,9 @@ Also try…
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dbconfig.py</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>ribbitr <span class="op">=</span> {</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"database"</span>:<span class="st">"ribbitr"</span>,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"host"</span>:<span class="st">"ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"port"</span>:<span class="st">"5432"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"database"</span>:<span class="st">"[DATABASE-HERE]"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"host"</span>:<span class="st">"[HOST-HERE]"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"port"</span>:<span class="st">"[PORT-HERE]"</span>,</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"user"</span>:<span class="st">"[YOUR-USERNAME-HERE]"</span>,</span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"password"</span>:<span class="st">"[YOUR-PASSWORD-HERE]"</span>,</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -625,7 +631,7 @@ Also try…
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/DBeaver_connection_setup_02.png" class="img-fluid figure-img"></p>
-<figcaption>Enter your database credentials as shown above, substituting your user and password.</figcaption>
+<figcaption>Enter your database credentials as shown above, substituting the database name, host, port, your user and password.</figcaption>
 </figure>
 </div>
 <ol start="4" type="1">
