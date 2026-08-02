@@ -53,9 +53,9 @@ Copy the following database connection parameters to your .Renviron file, substi
 
 ```{r, eval=FALSE}
 # RIBBiTR DB credentials
-ribbitr.dbname = "ribbitr"
-ribbitr.host = "ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com"
-ribbitr.port = "5432"
+ribbitr.dbname = "[DATABASE-HERE]"
+ribbitr.host = "[HOST-HERE]"
+ribbitr.port = "[PORT-HERE]"
 ribbitr.user = "[YOUR-USERNAME-HERE]"
 ribbitr.password = "[YOUR-PASSWORD-HERE]"
 ```
@@ -156,9 +156,9 @@ Create a file nammed `dbconfig.py` in your project working directory (or another
 # dbconfig.py
 
 ribbitr = {
-  "database":"ribbitr",
-  "host":"ribbitr.c6p56tuocn5n.us-west-1.rds.amazonaws.com",
-  "port":"5432",
+  "database":"[DATABASE-HERE]",
+  "host":"[HOST-HERE]",
+  "port":"[PORT-HERE]",
   "user":"[YOUR-USERNAME-HERE]",
   "password":"[YOUR-PASSWORD-HERE]",
 }
@@ -238,7 +238,7 @@ In this tutorial we will (re)orient ourselves to connecting to the RIBBiTR datab
 
 3) Enter your database credentials as shown above, substituting your user and password.
 
-![Enter your database credentials as shown above, substituting your user and password.](images/DBeaver_connection_setup_02.png)
+![Enter your database credentials as shown above, substituting the database name, host, port, your user and password.](images/DBeaver_connection_setup_02.png)
 
 4) Click `Test Connection` in the bottom left to make sure your credentials work. Then click `OK`.
 

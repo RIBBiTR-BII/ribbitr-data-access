@@ -22,6 +22,8 @@ website:
           - ./tutorial_series/08_database_refresher.qmd
       - section: "Database Resources"
         contents: 
+          - text: "RIBBiTR Data Portal"
+            href: https://pondr-app-production.up.railway.app/
           - section: "Schema Diagrams"
             contents:
               - text: "microclimate_data"
