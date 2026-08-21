@@ -7,7 +7,18 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
-## 2026-06023
+## 2026-08-21
+
+### Added
+
+- Sierra 2025 AMPs field data
+- Brazil, Santa Virginia 2024 Hylodes qPCR results
+
+### Changed
+
+- Cleaned up some misaligned Bd swab in Panama data
+
+## 2026-06-23
 
 ### Added
 
