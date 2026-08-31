@@ -7,6 +7,14 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-08-31
+
+### Additional Bd qPCR results from Pennsylvania (RZ lab) added to database
+
+## 2026-08-28
+
+### 2024 Hylodes Bd qPCR results for Santa Virginia, Brazil added to the database
+
 ## 2026-08-21
 
 ### Added
