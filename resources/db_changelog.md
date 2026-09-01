@@ -7,9 +7,17 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-09-01
+
+### Changed
+
+- Dropped Sierra AMP zoo results (SN_AMP0061 - SN_AMP0142)
+
 ## 2026-08-31
 
-### Additional Bd qPCR results from Pennsylvania (RZ lab) added to database
+### Added
+
+- Additional Bd qPCR results from Pennsylvania (RZ lab)
 
 ## 2026-08-28
 
