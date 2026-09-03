@@ -9,8 +9,15 @@ editor: source
 
 ## 2026-09-01
 
+### Added
+
+- eDNA tables added:
+  - edna_extraction
+  - edna_sequencing
+
 ### Changed
 
+- eDNA table renamed: edna_sample <- edna_collection
 - Dropped Sierra AMP zoo results (SN_AMP0061 - SN_AMP0142)
 
 ## 2026-08-31
