@@ -7,6 +7,12 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-09-04
+
+### Added
+
+- additional Mucosome GIA results
+
 ## 2026-09-01
 
 ### Added
