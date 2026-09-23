@@ -7,6 +7,21 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-09-23
+
+### Changed
+
+- All RIBBiTR Bd qPCR results out of RZ lab were previously scaled up to the swab scale with an errant factor (4, instead of 40). What changed:
+  - extract_volume_uL: 200 <- 20
+  - bd_target_quant_per_swab: now 10x previous value
+  - bd_its1_copies_per_swab: now 10x previous value
+
+## 2026-09-19
+
+### Changed
+
+- Brazil RIBBiTR captures now reflected as "adult" if reported as NA (previously reflected as NA)
+
 ## 2026-09-04
 
 ### Added
