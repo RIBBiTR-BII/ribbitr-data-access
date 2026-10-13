@@ -7,9 +7,26 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-10-13
+
+### Added
+
+- microclimate_data.deployment table to track deployment-specific variables
+- added 4 new views to easily join and fetch deployment data alongside timeseries data:
+  - microclimate_data.ts_dew_point_deployment
+  - microclimate_data.ts_illuminance_deployment
+  - microclimate_data.ts_relative_humidity_deployment
+  - microclimate_data.ts_temperature_deployment
+
+### Fixed
+
+- Updated microclimate timeseries data (temperature, RH, dew point, illuminance)
+  - fixed some time zone issues in Panama, Pennsylvania, and Sierra Nevada
+  - Dropped 2 problematic illuminance sensor deployments
+
 ## 2026-09-23
 
-### Changed
+### Fixed
 
 - All RIBBiTR Bd qPCR results out of RZ lab were previously scaled up to the swab scale with an errant factor (4, instead of 40). What changed:
   - extract_volume_uL: 200 <- 20
