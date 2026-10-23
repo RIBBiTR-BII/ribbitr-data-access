@@ -7,6 +7,30 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-10-22
+
+### Added
+
+- microbiome results tables:
+  - microbiome_library
+  - microbiom_analysis
+  - microbiome_library_stats
+  - microbiome_sequencing_file
+
+Above tables are updated with the following datasets:
+- RIBBiTR Sierra Nevada -- Jani Lab -- 16S libraries and sequencing files
+- RIBBiTR Brazil, Panama, Pennsylvania -- Woodhams Lab -- 16S and ITS libraries and sequencing files
+- Kira Miller PEP -- 16S libraries, sequencing files, analyses and library stats
+- Brazil Landscapes -- 16S libraries, sequencing files, analyses and library stats
+- SERDP newts -- analyses and library stats
+
+  
+## 2026-10-16
+
+### Added
+
+- edna_bd_qpcr_results - including bd qPCR results from all RIBBiTR eDNA samples
+
 ## 2026-10-13
 
 ### Added
