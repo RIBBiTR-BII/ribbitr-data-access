@@ -7,6 +7,13 @@ editor: source
 
 # Change Log for RIBBiTR_DB
 
+## 2026-10-30
+
+### Added:
+
+- microbiome_library_function table: functional descriptors of microbiome libraries such as antifungal, detrototoxin, etc.
+- SERDP newt microbiome results
+
 ## 2026-10-22
 
 ### Added
